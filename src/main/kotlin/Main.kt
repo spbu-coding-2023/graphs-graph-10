@@ -9,7 +9,6 @@ import model.graph.Graph
 import model.graph.UndirectedGraph
 import view.MainScreen
 import viewmodel.MainScreenViewModel
-import viewmodel.graph.CircularPlacementStrategy
 
 val sampleGraph: Graph<String, Long> = UndirectedGraph<String, Long>().apply {
     addVertex("A")
@@ -49,7 +48,7 @@ val sampleGraph: Graph<String, Long> = UndirectedGraph<String, Long>().apply {
 @Preview
 fun App() {
     MaterialTheme {
-        MainScreen(MainScreenViewModel(sampleGraph, CircularPlacementStrategy()))
+        MainScreen(MainScreenViewModel(sampleGraph))
     }
 }
 

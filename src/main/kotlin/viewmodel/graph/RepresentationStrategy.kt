@@ -1,6 +1,6 @@
 package viewmodel.graph
 
 interface RepresentationStrategy {
-    fun <V> place(width: Double, height: Double, vertices: Collection<VertexViewModel<V>>)
-    fun <V> onResize(width: Double, height: Double, vertices: Collection<VertexViewModel<V>>)
+    fun <V, T> place(width: Double, height: Double, originalGraph: GraphViewModel<V, T>)
+    fun <V>    move(old: Pair<Int, Int>, new: Pair<Int, Int>, vertices: Collection<VertexViewModel<V>>)
 }

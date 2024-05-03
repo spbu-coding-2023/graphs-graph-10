@@ -11,7 +11,7 @@ class VertexViewModel<V>(
     x: Dp = 0.dp,
     y: Dp = 0.dp,
     color: Color,
-    private val v: Vertex<V>,
+    val v: Vertex<V>,
     val radius: Dp = 25.dp
 ) {
     private var _x = mutableStateOf(x)
