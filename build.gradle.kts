@@ -1,4 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import java.nio.file.Files
+import java.nio.file.Paths
 
 plugins {
     kotlin("jvm")
@@ -15,11 +17,8 @@ repositories {
 }
 
 dependencies {
-    // Note, if you develop a li java.lang.NoClassDefFoundError: Could not initialize class org.jetbrains.kotlin.com.intellij.pom.java.LanguageLevelbrary, you should use compose.desktop.common.
-    // compose.desktop.currentOs should be used in launcher-sourceSet
-    // (in a separate module for demo project and in testMain).
-    // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
+    implementation(files("libs/gephi-toolkit-0.10.0-all.jar"))
 }
 
 compose.desktop {
@@ -32,4 +31,20 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+tasks.register("downloadGephiToolkit"){
+    val path = "libs/gephi-toolkit-0.10.0-all.jar"
+    val sourceUrl = "https://github.com/gephi/gephi-toolkit/releases/download/v0.10.0/gephi-toolkit-0.10.0-all.jar"
+
+    Files.createDirectory(Paths.get("libs/"))
+
+    val file = File(path)
+    if (!file.exists())
+        download(sourceUrl, path)
+}
+
+fun download(url: String, path: String){
+    val destinationFile = File(path)
+    ant.invokeMethod("get", mapOf("src" to url, "dest" to destinationFile))
 }

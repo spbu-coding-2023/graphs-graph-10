@@ -1,14 +1,18 @@
 package viewmodel
 
+import layouts.YifanHuPlacementStrategy
 import model.graph.Graph
 import viewmodel.graph.GraphViewModel
-import viewmodel.graph.RepresentationStrategy
 
-class MainScreenViewModel<V, E>(graph: Graph<V, E>, private val representationStrategy: RepresentationStrategy,) {
+class MainScreenViewModel<V, E>(graph: Graph<V, E>) {
+    private val representationStrategy = YifanHuPlacementStrategy()
     val graphViewModel = GraphViewModel(graph)
 
-    fun updateOnResize(width: Int, height: Int) {
-        representationStrategy.place(width.toDouble(), height.toDouble(), graphViewModel.vertices)
+    fun runLayoutAlgorithm(cords: Pair<Int, Int>) {
+        representationStrategy.place(cords.first.toDouble(), cords.second.toDouble(), graphViewModel)
     }
 
+    fun updateOnResize(old: Pair<Int, Int>, new: Pair<Int, Int>) {
+        representationStrategy.move(old, new, graphViewModel.vertices)
+    }
 }
