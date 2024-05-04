@@ -1,6 +1,4 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import java.nio.file.Files
-import java.nio.file.Paths
 
 plugins {
     kotlin("jvm")
@@ -33,15 +31,22 @@ compose.desktop {
     }
 }
 
-tasks.register("downloadGephiToolkit"){
+tasks.register("downloadGephiToolkit") {
     val path = "libs/gephi-toolkit-0.10.0-all.jar"
     val sourceUrl = "https://github.com/gephi/gephi-toolkit/releases/download/v0.10.0/gephi-toolkit-0.10.0-all.jar"
 
-    Files.createDirectory(Paths.get("libs/"))
+    val libsDirectory = File("libs")
+    val jarFile = File(path)
 
-    val file = File(path)
-    if (!file.exists())
+    if (!libsDirectory.exists())
+        libsDirectory.mkdir()
+
+    if (!jarFile.exists())
         download(sourceUrl, path)
+}
+
+tasks.build {
+    dependsOn("downloadGephiToolkit")
 }
 
 fun download(url: String, path: String){
