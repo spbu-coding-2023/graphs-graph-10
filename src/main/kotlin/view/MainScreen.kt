@@ -1,7 +1,7 @@
 package view
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.rememberTransformableState
+import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.ui.Modifier
@@ -13,10 +13,13 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.IntOffset
 import view.graph.GraphView
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
+import kotlin.math.roundToInt
 import kotlin.math.sign
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -34,6 +37,9 @@ fun <V, E> MainScreen(viewModel: MainScreenViewModel<V, E>) {
         scale = (scale * exp(delta * 0.1f)).coerceIn(0.05f, 4.0f)
     }
 
+    var offsetX by remember { mutableStateOf(0f) }
+    var offsetY by remember { mutableStateOf(0f) }
+
     Row(
         horizontalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier.background(Color.White)
@@ -50,7 +56,8 @@ fun <V, E> MainScreen(viewModel: MainScreenViewModel<V, E>) {
         }
 
         Surface(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
                 .onSizeChanged {
                     viewModel.updateOnResize(resolution, Pair(it.width, it.height))
                     resolution = Pair(it.width, it.height)
@@ -60,8 +67,22 @@ fun <V, E> MainScreen(viewModel: MainScreenViewModel<V, E>) {
                     val delta = change.scrollDelta.y.toInt().sign
                     scaleBox(delta)
                 }
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consume()
+                        offsetX += dragAmount.x * 1.5f
+                        offsetY += dragAmount.y * 1.5f
+                    }
+                }
         ) {
-            GraphView(viewModel.graphViewModel, displayGraph, state, scale)
+            GraphView(
+                viewModel.graphViewModel,
+                displayGraph,
+                state,
+                scale,
+                offsetX,
+                offsetY
+            )
         }
     }
 }
