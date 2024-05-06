@@ -15,11 +15,10 @@ import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.DpOffset
 import view.graph.GraphView
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
-import kotlin.math.roundToInt
 import kotlin.math.sign
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -37,8 +36,7 @@ fun <V, E> MainScreen(viewModel: MainScreenViewModel<V, E>) {
         scale = (scale * exp(delta * 0.1f)).coerceIn(0.05f, 4.0f)
     }
 
-    var offsetX by remember { mutableStateOf(0f) }
-    var offsetY by remember { mutableStateOf(0f) }
+    var offset by remember { mutableStateOf(DpOffset.Zero) }
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(20.dp),
@@ -70,8 +68,10 @@ fun <V, E> MainScreen(viewModel: MainScreenViewModel<V, E>) {
                 .pointerInput(Unit) {
                     detectDragGestures { change, dragAmount ->
                         change.consume()
-                        offsetX += dragAmount.x * 1.5f
-                        offsetY += dragAmount.y * 1.5f
+                        offset += DpOffset(
+                            (dragAmount.x * (1/scale)).toDp(),
+                            (dragAmount.y * (1/scale)).toDp()
+                        )
                     }
                 }
         ) {
@@ -80,8 +80,7 @@ fun <V, E> MainScreen(viewModel: MainScreenViewModel<V, E>) {
                 displayGraph,
                 state,
                 scale,
-                offsetX,
-                offsetY
+                offset
             )
         }
     }
