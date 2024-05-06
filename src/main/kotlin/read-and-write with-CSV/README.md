@@ -39,12 +39,13 @@ We create the **edges** of the **graph** and assign a unique key to each
     addEdge("H", "N", 12)
 }
 ```
-After all the work done, we call the **`.writing()`** method and we create a file called **`graph.csv`**
+After all the work done, we call the **`.writing("fileName")`** method and we create a file called **`"fileName"`**
 
-![2024-05-06 18-44-21 (1)](https://github.com/spbu-coding-2023/graphs-graph-10/assets/117384050/36ad7cbb-60ac-450d-9c73-d78ca5a94498)
+![2024-05-07 01-29-31](https://github.com/spbu-coding-2023/graphs-graph-10/assets/117384050/60292ba7-0544-4084-a008-ef9458859e58)
 
 
-Thus, our file was recorded in **`.CSV`**
+
+Thus, our file was recorded in **`.csv`**
 ___
 # How to read?
 
@@ -87,19 +88,19 @@ A value of **`1`** indicates that there is a path between the vertices, and **`0
 
 Before reading, you need to create an object of **`class Graph`**
 ```kotlin
-val graph: Graph<String, Long> = UndirectedGraph<String, Long>()
+val graph: Graph<String, Long> = UndirectedGraph()
 ```
 
-Next, you need to call the **`.reading<String, Long>("path to the file")`** method and specify the path to the file
+Next, you need to call the **`.reading("path to the file")`** method and specify the path to the file
 ```kotlin
-graph.reading<String, Long>("graph.csv")
+graph.reading("graph.csv")
 ```
 When reading the graph, all vertices (even those that do not have edges) will be written to the  field **`.vertices`** 
 
-And in the **`edges`** field, *only* the vertices between which there is a path
+And in the **`.edges`** field, *only* the vertices between which there is a path
 
 
-For the csv file 
+For the csv file:
 ```
 ;;A;B;C;D;E;F;G
 A;0;1;1;1;1;1;0
@@ -110,7 +111,7 @@ E;1;0;0;0;0;0;0
 F;1;0;0;0;0;0;0
 G;0;0;0;0;0;0;0
 ```
- we will get the result:
+ We will get the result:
  ``` kotlin
     //println(graph.edges)
     //println(graph.vertices)

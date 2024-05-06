@@ -2,15 +2,15 @@ import model.graph.Graph
 import java.io.File
 import java.io.PrintWriter
 
-fun <V, E> Graph<V, E>.writing(){
-    val writer = PrintWriter(File("graph.csv"))
+fun Graph<String, Long>.writing(fileName: String){
+    val writer = PrintWriter(File(fileName))
     val countVertex = this.vertices.size
     var table = Array(countVertex){ ByteArray(countVertex) }
     var edgesIndex = HashMap<Int, String>()
 
     this.vertices.forEach {
         val index = this.vertices.indexOf(it)
-        edgesIndex[index] = it.element.toString()
+        edgesIndex[index] = it.element
     }
     this.edges.forEach {
         val first = it.vertices.first.element
@@ -19,8 +19,8 @@ fun <V, E> Graph<V, E>.writing(){
         val indexFirst = this.vertices.indexOf(it.vertices.first)
         val indexSecond = this.vertices.indexOf(it.vertices.second)
 
-        edgesIndex[indexFirst] = first.toString()
-        edgesIndex[indexSecond] = second.toString()
+        edgesIndex[indexFirst] = first
+        edgesIndex[indexSecond] = second
 
         table[indexFirst][indexSecond] = 1
         table[indexSecond][indexFirst] = 1
@@ -30,10 +30,10 @@ fun <V, E> Graph<V, E>.writing(){
 
     this.vertices.forEach {
         if (it == this.vertices.last()) {
-            writer.print("${it.element}")
+            writer.print(it.element)
         }
         else
-            writer.print("${it.element};")
+            writer.print(it.element + ';')
     }
 
     writer.println()

@@ -1,9 +1,8 @@
 import model.graph.Graph
 import java.io.File
-import java.io.PrintWriter
 import java.io.BufferedReader
 
-fun <V, E> Graph<String, Long>.reading(fileName: String){
+fun Graph<String, Long>.reading(fileName: String){
     val csvFile = File(fileName)
     val reader = BufferedReader(csvFile.reader())
     val edgesIndex = HashMap<Int, String>()
