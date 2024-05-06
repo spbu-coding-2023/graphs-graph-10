@@ -9,9 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.DpOffset
 import viewmodel.graph.GraphViewModel
-import kotlin.math.roundToInt
 
 @Composable
 fun <V, E> GraphView(
@@ -19,8 +18,7 @@ fun <V, E> GraphView(
     displayGraph: MutableState<Boolean>,
     state: TransformableState,
     scale: Float,
-    offsetX: Float,
-    offsetY: Float
+    offset: DpOffset
 ) {
     Box(modifier = Modifier
         .fillMaxSize()
@@ -30,12 +28,7 @@ fun <V, E> GraphView(
             scaleY = scale
         )
         .transformable(state = state)
-        .offset {
-            IntOffset(
-                offsetX.roundToInt(),
-                offsetY.roundToInt()
-            )
-        }
+        .offset(offset.x, offset.y)
     ) {
         if (displayGraph.value) {
             viewModel.edges.forEach { e ->
