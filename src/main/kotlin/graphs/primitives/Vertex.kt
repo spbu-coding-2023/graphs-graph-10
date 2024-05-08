@@ -1,4 +1,4 @@
-package model.graph
+package graphs.primitives
 
 interface Vertex<V> {
     var element: V
