@@ -58,7 +58,7 @@ class YifanHuPlacementStrategy : RepresentationStrategy {
         layout.isAdaptiveCooling = true
 
         var i = 0
-        while (i < 100 && layout.canAlgo()) {
+        while (i < 1000 && layout.canAlgo()) {
             layout.goAlgo()
             i++
         }
