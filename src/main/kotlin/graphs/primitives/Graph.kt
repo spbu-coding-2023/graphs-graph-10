@@ -1,9 +1,10 @@
-package model.graph
+package graphs.primitives
 
 interface Graph<V, E> {
     val vertices: Collection<Vertex<V>>
     val edges: Collection<Edge<E, V>>
 
     fun addVertex(v: V): Vertex<V>
-    fun addEdge(u: V, v: V, e: E): Edge<E, V>
+    fun addEdge(u: V, v: V, e: E, weight: Int? = null)
+    fun findcycle(v: V): Graph<V, E>
 }

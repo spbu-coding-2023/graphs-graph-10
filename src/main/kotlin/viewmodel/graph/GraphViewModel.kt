@@ -2,7 +2,7 @@ package viewmodel.graph
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import model.graph.Graph
+import graphs.primitives.Graph
 
 class GraphViewModel<V, E>(
     private val graph: Graph<V, E>,

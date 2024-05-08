@@ -1,7 +1,7 @@
 package viewmodel
 
 import layouts.YifanHuPlacementStrategy
-import model.graph.Graph
+import graphs.primitives.Graph
 import viewmodel.graph.GraphViewModel
 
 class MainScreenViewModel<V, E>(graph: Graph<V, E>) {

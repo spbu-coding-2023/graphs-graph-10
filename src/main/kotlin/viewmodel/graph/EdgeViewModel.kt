@@ -1,6 +1,6 @@
 package viewmodel.graph
 
-import model.graph.Edge
+import graphs.primitives.Edge
 
 class EdgeViewModel<E, V>(
     val u: VertexViewModel<V>,

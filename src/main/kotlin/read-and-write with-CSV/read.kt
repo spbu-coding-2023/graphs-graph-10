@@ -1,4 +1,5 @@
-import model.graph.Graph
+import graphs.primitives.Graph
+
 import java.io.File
 import java.io.BufferedReader
 

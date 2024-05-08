@@ -5,12 +5,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
-import model.graph.Graph
-import model.graph.UndirectedGraph
+import graphs.primitives.Graph
+import graphs.types.DirectedGraph
+import graphs.types.UndirectedGraph
+import graphs.types.WeightedDirectedGraph
+import graphs.types.WeightedUndirectedGraph
 import view.MainScreen
 import viewmodel.MainScreenViewModel
 
-val sampleGraph: Graph<String, Long> = UndirectedGraph()
+val sampleGraph: Graph<String, Long> = DirectedGraph()
 
 @Composable
 @Preview
