@@ -16,6 +16,7 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.DpOffset
+import view.algo.drawCycleOnGraph
 import view.graph.GraphView
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
@@ -23,7 +24,7 @@ import kotlin.math.sign
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun <V, E> MainScreen(viewModel: MainScreenViewModel<V, E>) {
+fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
     var resolution = Pair(0, 0)
     val displayGraph = remember { mutableStateOf(false) }
 
@@ -38,26 +39,40 @@ fun <V, E> MainScreen(viewModel: MainScreenViewModel<V, E>) {
 
     var offset by remember { mutableStateOf(DpOffset.Zero) }
 
+    var textData by remember{ mutableStateOf("") }
+
     Row(
         horizontalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier.background(Color.White)
+        modifier = Modifier
+            .background(Color(0xfa, 0xfa, 0xfa))
     ) {
-        Column(modifier = Modifier.width(350.dp).padding(7.dp)) {
+        Column(
+            modifier = Modifier
+                .width(350.dp)
+                .padding(7.dp),
+            verticalArrangement = Arrangement.Top
+        ) {
             Button(
                 onClick = {
-                    viewModel.runLayoutAlgorithm(resolution)
+                    mainViewModel.restoreGraphState()
+                    mainViewModel.runLayoutAlgorithm(resolution)
                     displayGraph.value = true
+                    textData = ""
                 }
-            ) {
-                Text("Reload visualization")
-            }
+            ) { Text("Reload visualization") }
+            Button(
+                onClick = {
+                    textData = drawCycleOnGraph(mainViewModel.graphViewModel)
+                }
+            ) { Text("Check cycles for vertex") }
+            Text(textData)
         }
 
         Surface(
             modifier = Modifier
                 .weight(1f)
                 .onSizeChanged {
-                    viewModel.updateOnResize(resolution, Pair(it.width, it.height))
+                    mainViewModel.updateOnResize(resolution, Pair(it.width, it.height))
                     resolution = Pair(it.width, it.height)
                 }
                 .onPointerEvent(PointerEventType.Scroll) {
@@ -76,7 +91,7 @@ fun <V, E> MainScreen(viewModel: MainScreenViewModel<V, E>) {
                 }
         ) {
             GraphView(
-                viewModel.graphViewModel,
+                mainViewModel.graphViewModel,
                 displayGraph,
                 state,
                 scale,

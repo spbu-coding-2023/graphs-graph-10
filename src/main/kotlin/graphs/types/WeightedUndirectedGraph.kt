@@ -1,17 +1,10 @@
 package graphs.types
 
-
-import graphs.primitives.Graph
 import graphs.abstracts.WeightedGraph
 
 internal class WeightedUndirectedGraph<V, E> : WeightedGraph<V, E>() {
 
     fun findSCC(){
-        TODO("Not yet implemented")
-    }
-
-
-    override fun findcycle(v: V): Graph<V, E> {
         TODO("Not yet implemented")
     }
 
@@ -23,5 +16,7 @@ internal class WeightedUndirectedGraph<V, E> : WeightedGraph<V, E>() {
         TODO("Not yet implemented")
     }
 
-
+    override fun findCycle(v: V): List<V> {
+        TODO("Not yet implemented")
+    }
 }

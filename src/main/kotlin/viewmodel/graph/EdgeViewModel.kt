@@ -1,9 +1,12 @@
 package viewmodel.graph
 
+import androidx.compose.ui.graphics.Color
 import graphs.primitives.Edge
 
 class EdgeViewModel<E, V>(
     val u: VertexViewModel<V>,
     val v: VertexViewModel<V>,
-    private val e: Edge<E, V>,
+    val e: Edge<E, V>,
+    var color: Color = Color.Black,
+    var width: Float = 1f
 )

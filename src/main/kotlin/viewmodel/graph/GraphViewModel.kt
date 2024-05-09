@@ -5,12 +5,12 @@ import androidx.compose.ui.unit.dp
 import graphs.primitives.Graph
 
 class GraphViewModel<V, E>(
-    private val graph: Graph<V, E>,
+    val graph: Graph<V, E>
 ) {
     private val _vertices = graph.vertices.associateWith { v ->
         VertexViewModel(0.dp, 0.dp, Color.Gray, v)
     }
-    private val _edges = graph.edges.associateWith { e ->
+     val _edges = graph.edges.associateWith { e ->
         val fst = _vertices[e.vertices.first]
             ?: throw IllegalStateException("VertexView for ${e.vertices.first} not found")
         val snd = _vertices[e.vertices.second]
@@ -23,4 +23,6 @@ class GraphViewModel<V, E>(
 
     val edges: Collection<EdgeViewModel<E, V>>
         get() = _edges.values
+
+    val pickedVertices = mutableSetOf<V>()
 }
