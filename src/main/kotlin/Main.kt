@@ -6,17 +6,17 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import graphs.primitives.Graph
-import graphs.types.UndirectedGraph
+import graphs.types.WeightedUndirectedGraph
 import io.reading
 import view.MainScreen
 import viewmodel.MainScreenViewModel
 
-val sampleGraph: Graph<String, Long> = UndirectedGraph<String, Long>()
+val sampleGraph: Graph<String, Long> = WeightedUndirectedGraph()
 
 @Composable
 @Preview
 fun App() {
-    sampleGraph.reading("examples/airports.csv")
+    sampleGraph.reading("examples/weighted_undirected.csv")
     MaterialTheme {
         MainScreen(MainScreenViewModel(sampleGraph))
     }

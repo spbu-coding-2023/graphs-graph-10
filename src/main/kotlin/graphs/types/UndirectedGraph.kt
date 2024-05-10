@@ -20,9 +20,10 @@ internal class UndirectedGraph<V, E> : UnweightedGraph<V, E>() {
             if (!hasCycle)
                 stack.addLast(vertex)
             adjList[vertex]?.forEach {
-                if (it !in visited) {
-                    searchCycle(it, vertex)
-                } else if (parent != it && it == v) {
+                val (currentVertex, _) = it
+                if (currentVertex !in visited) {
+                    searchCycle(currentVertex, vertex)
+                } else if (parent != currentVertex && currentVertex == v) {
                     if (!hasCycle) stack.addLast(v)
                     hasCycle = true
                     return

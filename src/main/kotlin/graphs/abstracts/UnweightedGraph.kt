@@ -14,7 +14,7 @@ abstract class UnweightedGraph<V, E> : Graph<V, E> {
 
     override fun addVertex(v: V): Vertex<V> = _vertices.getOrPut(v) { Vertex(v) }
 
-    override fun addEdge(u: V, v: V, e: E, weight: Int?) {
+    override fun addEdge(u: V, v: V, e: E, weight: E?) {
         val first = addVertex(u)
         val second = addVertex(v)
         _edges.getOrPut(e) { Edge(e, first, second) }

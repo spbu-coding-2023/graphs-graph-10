@@ -28,15 +28,14 @@ fun Graph<String, Long>.reading(fileName: String){
             val firstVert = edgesIndex[i - 1]
             val secondVert = edgesIndex[j - 1]
 
-            val isEdge = data[i][j].toInt()
-
+            val isEdge = data[i][j].toLong()
             if (firstVert != null)
                 this.addVertex(firstVert)
             if (secondVert != null)
                 this.addVertex(secondVert)
 
-            if (isEdge == 1 && firstVert != null && secondVert != null) {
-                this.addEdge(firstVert, secondVert, element)
+            if (isEdge >= 1 && firstVert != null && secondVert != null) {
+                this.addEdge(firstVert, secondVert, element, isEdge)
                 element++
             }
         }

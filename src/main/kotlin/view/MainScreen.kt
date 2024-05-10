@@ -16,7 +16,9 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.DpOffset
+import graphs.types.WeightedUndirectedGraph
 import view.algo.drawCycleOnGraph
+import view.algo.drawPathOnGraph
 import view.graph.GraphView
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
@@ -65,6 +67,11 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                     textData = drawCycleOnGraph(mainViewModel.graphViewModel)
                 }
             ) { Text("Check cycles for vertex") }
+            Button(
+                onClick = {
+                    drawPathOnGraph(mainViewModel.graphViewModel)
+                }
+            ) { Text("Find path with Dijkstra") }
             Text(textData)
         }
 

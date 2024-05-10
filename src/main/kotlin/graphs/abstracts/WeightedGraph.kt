@@ -13,24 +13,20 @@ abstract class WeightedGraph<V, E> : Graph<V, E> {
     override val vertices: Collection<Vertex<V>>
         get() = _vertices.values
 
-    private val _weights = hashMapOf<E, Int?>()
-
     override fun addVertex(v: V): Vertex<V> = _vertices.getOrPut(v) { graphs.abstracts.Vertex(v) }
 
-    override fun addEdge(u: V, v: V, e: E, weight: Int?) {
+    override fun addEdge(u: V, v: V, e: E, weight: E?) {
 
         val first = addVertex(u)
         val second = addVertex(v)
-        _edges.getOrPut(e) { Edge(e, first, second) }
         //I set default value of weight to 1 if weight was  not declared, both edge and its weight are accessible by the same key
         if (weight == null) {
-            _weights.getOrPut(e) { 1 }
-
+            _edges.getOrPut(e) { Edge(e, first, second, 1L as E) }
         } else {
-            _weights.getOrPut(e) { weight }
+            _edges.getOrPut(e) { Edge(e, first, second, weight) }
         }
     }
 
-    abstract fun MinimalPathDeikstra(start: V, target: V): WeightedGraph<V, E>
+    abstract fun MinimalPathDijkstra(start: V, target: V): List<V>
     abstract fun MinimalPathFloidBellman(start: V, target: V): WeightedGraph<V, E>
 }
