@@ -86,16 +86,16 @@ That is, all vertices and values(0 or 1) **must be** separated **`;`**  (At the 
 
 A value of **`1`** indicates that there is a path between the vertices, and **`0`** indicates that there is no path
 
-Before reading, you need to create an object of **`class Graph`**
+Before io.reading, you need to create an object of **`class Graph`**
 ```kotlin
 val graph: Graph<String, Long> = UndirectedGraph()
 ```
 
-Next, you need to call the **`.reading("path to the file")`** method and specify the path to the file
+Next, you need to call the **`.io.reading("path to the file")`** method and specify the path to the file
 ```kotlin
-graph.reading("graph.csv")
+graph.io.reading("graph.csv")
 ```
-When reading the graph, all vertices (even those that do not have edges) will be written to the  field **`.vertices`** 
+When io.reading the graph, all vertices (even those that do not have edges) will be written to the  field **`.vertices`** 
 
 And in the **`.edges`** field, *only* the vertices between which there is a path
 

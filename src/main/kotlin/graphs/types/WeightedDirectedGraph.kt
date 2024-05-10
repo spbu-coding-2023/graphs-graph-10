@@ -2,6 +2,7 @@ package graphs.types
 
 import graphs.primitives.Graph
 import graphs.abstracts.WeightedGraph
+import graphs.primitives.Vertex
 
 class WeightedDirectedGraph<V, E>: WeightedGraph<V, E>() {
 
@@ -18,8 +19,7 @@ class WeightedDirectedGraph<V, E>: WeightedGraph<V, E>() {
         TODO("Not yet implemented")
     }
 
-
-    override fun findcycle(v: V): Graph<V, E> {
+    override fun findCycle(v: V): List<V> {
         TODO("Not yet implemented")
     }
 }

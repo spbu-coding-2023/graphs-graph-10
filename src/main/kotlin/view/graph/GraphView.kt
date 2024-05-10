@@ -14,7 +14,7 @@ import viewmodel.graph.GraphViewModel
 
 @Composable
 fun <V, E> GraphView(
-    viewModel: GraphViewModel<V, E>,
+    graphViewModel: GraphViewModel<V, E>,
     displayGraph: MutableState<Boolean>,
     state: TransformableState,
     scale: Float,
@@ -31,11 +31,11 @@ fun <V, E> GraphView(
         .offset(offset.x, offset.y)
     ) {
         if (displayGraph.value) {
-            viewModel.edges.forEach { e ->
+            graphViewModel.edges.forEach { e ->
                 EdgeView(e, Modifier)
             }
-            viewModel.vertices.forEach { v ->
-                VertexView(v, Modifier)
+            graphViewModel.vertices.forEach { v ->
+                VertexView(v, Modifier, graphViewModel)
             }
         }
     }
