@@ -1,8 +1,6 @@
 package graphs.types
 
-import graphs.primitives.Graph
 import graphs.abstracts.WeightedGraph
-import graphs.primitives.Vertex
 
 class WeightedDirectedGraph<V, E>: WeightedGraph<V, E>() {
 
@@ -10,8 +8,7 @@ class WeightedDirectedGraph<V, E>: WeightedGraph<V, E>() {
         TODO("Not yet implemented")
     }
 
-
-    override fun MinimalPathDeikstra(start: V, target: V): WeightedGraph<V, E> {
+    override fun MinimalPathDijkstra(start: V, target: V): List<V> {
         TODO("Not yet implemented")
     }
 
