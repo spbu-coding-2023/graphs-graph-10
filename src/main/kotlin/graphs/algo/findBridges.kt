@@ -19,12 +19,12 @@ fun <V> findBridges(graph: Graph<V, *>): List<Pair<V, V>> {
         for (v in dictGraph[u] ?: emptyList()) {
             if (v !in visited) {
                 dfs(v, u)
-                low[u] = minOf(low[u]!!, low[v]!!)
-                if (low[v]!! > disc[u]!!) {
+                low[u] = minOf(low[u] ?: Int.MAX_VALUE, low[v] ?: Int.MAX_VALUE)
+                if ((low[v] ?: Int.MAX_VALUE) > (disc[u] ?: Int.MAX_VALUE)) {
                     bridges.add(v to u)
                 }
             } else if (v != parent) {
-                low[u] = minOf(low[u]!!, disc[v]!!)
+                low[u] = minOf(low[u] ?: Int.MAX_VALUE, (disc[v] ?: Int.MAX_VALUE))
             }
         }
     }
