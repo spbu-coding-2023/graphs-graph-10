@@ -6,6 +6,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import graphs.primitives.Graph
+import graphs.types.UndirectedGraph
 import graphs.types.WeightedUndirectedGraph
 import io.reading
 import view.MainScreen
