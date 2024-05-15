@@ -6,13 +6,21 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import graphs.primitives.Graph
+import graphs.types.DirectedGraph
 import graphs.types.UndirectedGraph
+import graphs.types.WeightedDirectedGraph
 import graphs.types.WeightedUndirectedGraph
 import io.reading
 import view.MainScreen
 import viewmodel.MainScreenViewModel
 
-val sampleGraph: Graph<String, Long> = WeightedUndirectedGraph()
+/*
+    DirectedGraph
+    UndirectedGraph
+    WeightedDirectedGraph
+    WeightedUndirectedGraph
+*/
+val sampleGraph: Graph<String, Long> = WeightedDirectedGraph()
 
 @Composable
 @Preview

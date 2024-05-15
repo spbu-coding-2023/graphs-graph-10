@@ -1,27 +1,14 @@
-package view.graph
+package view.graph.edge
 
 import androidx.compose.foundation.Canvas
-
 import androidx.compose.foundation.layout.fillMaxSize
-
-
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import viewmodel.graph.EdgeViewModel
-import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
-import viewmodel.graph.GraphViewModel
-import viewmodel.graph.VertexViewModel
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.Fill
 
-import androidx.compose.ui.unit.dp
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -30,9 +17,8 @@ import kotlin.math.sin
 @Composable
 fun <E, V> DirectedEdgeView(
     edgeViewModel: EdgeViewModel<E, V>,
+    displayWeight: MutableState<Boolean>,
     modifier: Modifier = Modifier,
-
-
     ) {
     Canvas(modifier = modifier.fillMaxSize()) {
         // Рисуем линию
@@ -82,4 +68,7 @@ fun <E, V> DirectedEdgeView(
         )
 
     }
+
+    if (displayWeight.value)
+        WeightView(edgeViewModel, Modifier)
 }
