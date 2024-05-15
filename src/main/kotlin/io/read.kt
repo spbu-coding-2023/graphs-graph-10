@@ -17,7 +17,7 @@ fun Graph<String, Long>.reading(fileName: String){
     for (vertex in data[0]) {
         if (vertex != "") {
             edgesIndex[countVertex] = vertex
-            countVertex ++
+            countVertex++
         }
     }
 
