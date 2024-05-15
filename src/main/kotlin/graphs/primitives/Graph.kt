@@ -6,5 +6,4 @@ interface Graph<V, E> {
 
     fun addVertex(v: V): Vertex<V>
     fun addEdge(u: V, v: V, e: E, weight: E? = null)
-    fun findCycle(v: V): List<V>
 }

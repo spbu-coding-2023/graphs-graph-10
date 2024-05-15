@@ -20,7 +20,18 @@ import viewmodel.MainScreenViewModel
     WeightedDirectedGraph
     WeightedUndirectedGraph
 */
-val sampleGraph: Graph<String, Long> = WeightedDirectedGraph()
+val sampleGraph: Graph<String, Long> = WeightedUndirectedGraph<String, Long>()
+//    .apply {
+//        addVertex("A")
+//        addVertex("B")
+//        addVertex("C")
+//        addVertex("D")
+//
+//        addEdge("A", "B", 1)
+//        addEdge("B", "C", 2)
+//        addEdge("C", "A", 3)
+//        addEdge("C", "D", 4)
+//    }
 
 @Composable
 @Preview
