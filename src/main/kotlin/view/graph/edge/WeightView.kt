@@ -1,7 +1,5 @@
-package view.graph
+package view.graph.edge
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,11 +8,6 @@ import viewmodel.graph.EdgeViewModel
 
 
 import androidx.compose.material.Text
-
-
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 
 
 @Composable

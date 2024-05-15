@@ -4,11 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.Checkbox
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventType
@@ -16,6 +18,8 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.DpOffset
+import graphs.types.UndirectedGraph
+import graphs.types.WeightedDirectedGraph
 import graphs.types.WeightedUndirectedGraph
 import view.algo.drawCycleOnGraph
 import view.algo.drawPathOnGraph
@@ -40,8 +44,8 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
     }
 
     var offset by remember { mutableStateOf(DpOffset.Zero) }
-
     var textData by remember{ mutableStateOf("") }
+    val displayWeight = remember { mutableStateOf(false) }
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(20.dp),
@@ -73,6 +77,21 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                 }
             ) { Text("Find path with Dijkstra") }
             Text(textData)
+
+            if (mainViewModel.graph is WeightedDirectedGraph ||
+                mainViewModel.graph is WeightedUndirectedGraph) {
+                Row (
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Display weights:")
+                    Checkbox(
+                        checked = displayWeight.value,
+                        onCheckedChange = {
+                            displayWeight.value = it
+                        }
+                    )
+                }
+            }
         }
 
         Surface(
@@ -100,6 +119,7 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
             GraphView(
                 mainViewModel.graphViewModel,
                 displayGraph,
+                displayWeight,
                 state,
                 scale,
                 offset

@@ -10,12 +10,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.DpOffset
+import graphs.types.DirectedGraph
+import graphs.types.WeightedDirectedGraph
+import view.graph.edge.DirectedEdgeView
+import view.graph.edge.EdgeView
 import viewmodel.graph.GraphViewModel
 
 @Composable
 fun <V, E> GraphView(
     graphViewModel: GraphViewModel<V, E>,
     displayGraph: MutableState<Boolean>,
+    displayWeight: MutableState<Boolean>,
     state: TransformableState,
     scale: Float,
     offset: DpOffset
@@ -31,8 +36,15 @@ fun <V, E> GraphView(
         .offset(offset.x, offset.y)
     ) {
         if (displayGraph.value) {
-            graphViewModel.edges.forEach { e ->
-                EdgeView(e, Modifier)
+            if (graphViewModel.graph is DirectedGraph
+                || graphViewModel.graph is WeightedDirectedGraph) {
+                graphViewModel.edges.forEach { e ->
+                    DirectedEdgeView(e, displayWeight, Modifier)
+                }
+            } else {
+                graphViewModel.edges.forEach { e ->
+                    EdgeView(e, displayWeight, Modifier)
+                }
             }
             graphViewModel.vertices.forEach { v ->
                 VertexView(v, Modifier, graphViewModel)

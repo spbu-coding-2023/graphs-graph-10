@@ -1,8 +1,9 @@
-package view.graph
+package view.graph.edge
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import viewmodel.graph.EdgeViewModel
@@ -10,6 +11,7 @@ import viewmodel.graph.EdgeViewModel
 @Composable
 fun <E, V> EdgeView(
     edgeViewModel: EdgeViewModel<E, V>,
+    displayWeight: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {
     Canvas(modifier = modifier.fillMaxSize()) {
@@ -26,4 +28,7 @@ fun <E, V> EdgeView(
             strokeWidth = edgeViewModel.width
         )
     }
+
+    if (displayWeight.value)
+        WeightView(edgeViewModel, Modifier)
 }
