@@ -1,18 +1,19 @@
 package view.algo
 
 import androidx.compose.ui.graphics.Color
-import graphs.types.WeightedUndirectedGraph
+import graphs.algo.MinimalPathDijkstra
 import viewmodel.graph.GraphViewModel
 
-fun <V, E> drawPathOnGraph(graphViewModel: GraphViewModel<V, E>) {
-    val weightedUndirectedGraph = graphViewModel.graph as WeightedUndirectedGraph<V, E>
+fun <V, E> drawPathOnGraph(graphViewModel: GraphViewModel<V, E>): String {
     val pickedVertices = graphViewModel.pickedVertices
 
     if (pickedVertices.size != 2) {
-        println("Path not found")
-        return
+        println("Count of picked vertices != 2")
+        return "Count of picked vertices != 2"
     }
-    val path = weightedUndirectedGraph.MinimalPathDijkstra(
+
+    val path = MinimalPathDijkstra(
+        graphViewModel.graph,
         pickedVertices.first(),
         pickedVertices.last()
     )
@@ -30,4 +31,8 @@ fun <V, E> drawPathOnGraph(graphViewModel: GraphViewModel<V, E>) {
         }
     }
     graphViewModel.pickedVertices.clear()
+
+    if (path.isEmpty())
+        return "Can't find path for given vertices."
+    return "Path on display"
 }

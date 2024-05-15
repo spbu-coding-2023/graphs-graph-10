@@ -27,6 +27,5 @@ abstract class WeightedGraph<V, E> : Graph<V, E> {
         }
     }
 
-    abstract fun MinimalPathDijkstra(start: V, target: V): List<V>
     abstract fun MinimalPathFloidBellman(start: V, target: V): WeightedGraph<V, E>
 }

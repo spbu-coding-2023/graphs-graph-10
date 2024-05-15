@@ -73,7 +73,7 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
             ) { Text("Check cycles for vertex") }
             Button(
                 onClick = {
-                    drawPathOnGraph(mainViewModel.graphViewModel)
+                    textData = drawPathOnGraph(mainViewModel.graphViewModel)
                 }
             ) { Text("Find path with Dijkstra") }
             Text(textData)
