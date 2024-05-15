@@ -1,6 +1,7 @@
 package view.algo
 
 import androidx.compose.ui.graphics.Color
+import graphs.algo.findCycle
 import viewmodel.graph.GraphViewModel
 
 fun <V, E> drawCycleOnGraph(graphViewModel: GraphViewModel<V, E>): String {
@@ -9,7 +10,7 @@ fun <V, E> drawCycleOnGraph(graphViewModel: GraphViewModel<V, E>): String {
         println("You can pick only one vertex")
         return "You can pick only one vertex"
     }
-    val cycle = graphViewModel.graph.findCycle(t.first())
+    val cycle = findCycle(graphViewModel.graph, t.first())
     if (cycle.isEmpty()) {
         return "No cycles for given vertex"
     }

@@ -11,8 +11,4 @@ internal class WeightedUndirectedGraph<V, E> : WeightedGraph<V, E>() {
     override fun MinimalPathFloidBellman(start: V, target: V): WeightedGraph<V, E> {
         TODO("Not yet implemented")
     }
-
-    override fun findCycle(v: V): List<V> {
-        TODO("Not yet implemented")
-    }
 }
