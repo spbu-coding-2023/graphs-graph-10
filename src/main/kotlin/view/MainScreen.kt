@@ -3,12 +3,9 @@ package view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Checkbox
+import androidx.compose.material.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -18,7 +15,6 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.DpOffset
-import graphs.types.UndirectedGraph
 import graphs.types.WeightedDirectedGraph
 import graphs.types.WeightedUndirectedGraph
 import view.algo.drawCycleOnGraph
@@ -34,7 +30,7 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
     var resolution = Pair(0, 0)
     val displayGraph = remember { mutableStateOf(false) }
 
-    var scale by remember { mutableStateOf(1f) }
+    var scale by mainViewModel.scale
     val state = rememberTransformableState { zoomChange, _, _ ->
         scale *= zoomChange
     }
@@ -43,9 +39,12 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
         scale = (scale * exp(delta * 0.1f)).coerceIn(0.05f, 4.0f)
     }
 
-    var offset by remember { mutableStateOf(DpOffset.Zero) }
+    var offset by mainViewModel.offset
     var textData by remember{ mutableStateOf("") }
     val displayWeight = remember { mutableStateOf(false) }
+
+    val displaySaveDialog = remember { mutableStateOf(false) }
+    val displayLoadDialog = remember { mutableStateOf(false) }
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(20.dp),
@@ -92,6 +91,32 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                     )
                 }
             }
+
+            if (displaySaveDialog.value) {
+                SaveToNeo4jDialog(onDismissRequest = {
+                    displaySaveDialog.value = false
+                }, "save", mainViewModel)
+            }
+            if (displayLoadDialog.value) {
+                SaveToNeo4jDialog(onDismissRequest = {
+                    displayLoadDialog.value = false
+                }, "load", mainViewModel)
+                displayGraph.value = true
+            }
+
+            Row {
+                Button(
+                    onClick = {
+                        displaySaveDialog.value = true
+                    }
+                ) { Text("Save to Neo4j") }
+                Button(
+                    onClick = {
+                        displayLoadDialog.value = true
+                    }
+                ) { Text("Load from Neo4j") }
+            }
+
         }
 
         Surface(
