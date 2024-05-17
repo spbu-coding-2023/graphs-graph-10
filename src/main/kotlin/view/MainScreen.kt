@@ -22,6 +22,7 @@ import graphs.types.UndirectedGraph
 import graphs.types.WeightedDirectedGraph
 import graphs.types.WeightedUndirectedGraph
 import view.algo.drawCycleOnGraph
+import view.algo.drawMST
 import view.algo.drawPathOnGraph
 import view.graph.GraphView
 import viewmodel.MainScreenViewModel
@@ -44,7 +45,7 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
     }
 
     var offset by remember { mutableStateOf(DpOffset.Zero) }
-    var textData by remember{ mutableStateOf("") }
+    var textData by remember { mutableStateOf("") }
     val displayWeight = remember { mutableStateOf(false) }
 
     Row(
@@ -74,13 +75,21 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
             Button(
                 onClick = {
                     textData = drawPathOnGraph(mainViewModel.graphViewModel)
+
                 }
             ) { Text("Find path with Dijkstra") }
             Text(textData)
-
+            if (mainViewModel.graph is WeightedUndirectedGraph) {
+                Button(
+                    onClick = {
+                        drawMST(mainViewModel.graphViewModel)
+                    }
+                ) { Text("Find Minimal spanning tree with Kraskal") }
+            }
             if (mainViewModel.graph is WeightedDirectedGraph ||
-                mainViewModel.graph is WeightedUndirectedGraph) {
-                Row (
+                mainViewModel.graph is WeightedUndirectedGraph
+            ) {
+                Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text("Display weights:")
@@ -110,8 +119,8 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                     detectDragGestures { change, dragAmount ->
                         change.consume()
                         offset += DpOffset(
-                            (dragAmount.x * (1/scale)).toDp(),
-                            (dragAmount.y * (1/scale)).toDp()
+                            (dragAmount.x * (1 / scale)).toDp(),
+                            (dragAmount.y * (1 / scale)).toDp()
                         )
                     }
                 }

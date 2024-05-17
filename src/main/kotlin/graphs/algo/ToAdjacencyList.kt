@@ -8,9 +8,9 @@ import graphs.types.WeightedDirectedGraph
  * This method was originally written by Danil Usoltsev [https://github.com/Sibiri4ok]
  */
 fun <V, E> toAdjacencyList(graph: Graph<V, E>):
-        MutableMap< V, MutableSet<Pair<V, E?>> > {
+        MutableMap< V, MutableSet<Pair<V, Long?>> > {
 
-    val d = mutableMapOf< V, MutableSet<Pair<V, E?>> >()
+    val d = mutableMapOf< V, MutableSet<Pair<V, Long?>> >()
     graph.vertices.forEach {
         d[it.element] = mutableSetOf()
     }
