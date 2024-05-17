@@ -17,6 +17,7 @@ repositories {
 dependencies {
     implementation(compose.desktop.currentOs)
     implementation(files("libs/gephi-toolkit-0.10.0-all.jar"))
+    implementation("org.neo4j.driver", "neo4j-java-driver", "5.6.0")
 }
 
 compose.desktop {
