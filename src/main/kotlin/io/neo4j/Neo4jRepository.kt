@@ -85,7 +85,7 @@ class Neo4jRepository {
                     it["u"].toString() as V,
                     it["v"].toString() as V,
                     it["e"].toString() as E,
-                    weight = (it["weight"].toString().toLong() as E?)
+                    weight = (it["weight"].toString().toLong() as Long?)
                 )
                 edgeMap[it["e"].toString()] = Color(it["color"].asString().toULong())
             }
