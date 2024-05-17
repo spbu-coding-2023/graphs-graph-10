@@ -1,5 +1,0 @@
-package database
-
-class GraphDBFormat {
-
-}
