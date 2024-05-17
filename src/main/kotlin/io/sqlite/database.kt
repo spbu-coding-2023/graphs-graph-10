@@ -1,7 +1,7 @@
-package database
+package io.sqlite
 
 
-import database.connectedEntity.GraphDBFormat
+import io.sqlite.connectedEntity.GraphDBFormat
 import viewmodel.graph.EdgeViewModel
 import viewmodel.graph.VertexViewModel
 import java.sql.Connection

@@ -1,4 +1,4 @@
-package database.connectedEntity
+package io.sqlite.connectedEntity
 
 
 class GraphDBFormat<V, E>() {

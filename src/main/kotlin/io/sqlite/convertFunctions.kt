@@ -1,6 +1,6 @@
-package database
+package io.sqlite
 
-import database.connectedEntity.GraphDBFormat
+import io.sqlite.connectedEntity.GraphDBFormat
 import viewmodel.graph.GraphViewModel
 
 fun convertToDBFormat(existedGraph: GraphViewModel<String, Long>): GraphDBFormat<String, Long> {
