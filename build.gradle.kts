@@ -17,6 +17,7 @@ repositories {
 dependencies {
     implementation(compose.desktop.currentOs)
     implementation(files("libs/gephi-toolkit-0.10.0-all.jar"))
+    implementation("org.xerial:sqlite-jdbc:3.41.2.2")
 }
 
 compose.desktop {

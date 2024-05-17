@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
+import database.GraphDatabase
 import graphs.primitives.Graph
 import graphs.types.DirectedGraph
 import graphs.types.UndirectedGraph
@@ -26,6 +27,7 @@ val sampleGraph: Graph<String, Long> = WeightedDirectedGraph()
 @Preview
 fun App() {
     sampleGraph.reading("examples/weighted_undirected.csv")
+    val database = GraphDatabase("AppStateDB.db")
     MaterialTheme {
         MainScreen(MainScreenViewModel(sampleGraph))
     }
