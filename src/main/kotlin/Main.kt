@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
+import graphs.algo.Kraskal
 import graphs.primitives.Graph
 import graphs.types.DirectedGraph
 import graphs.types.UndirectedGraph
@@ -26,11 +27,17 @@ val sampleGraph: Graph<String, Long> = WeightedUndirectedGraph<String, Long>()
 //        addVertex("B")
 //        addVertex("C")
 //        addVertex("D")
-//
-//        addEdge("A", "B", 1)
-//        addEdge("B", "C", 2)
-//        addEdge("C", "A", 3)
-//        addEdge("C", "D", 4)
+//        addVertex("E")
+//        addVertex("F")
+//        addEdge("A", "B", 1, 7)
+//        addEdge("B", "C", 2, 11)
+//        addEdge("C", "A", 3, 8)
+//        //addEdge("B", "D", 4, 2)
+//        //addEdge("C", "D", 5, 6)
+//        //addEdge("C", "E", 6, 9)
+//        addEdge("D", "F", 7, 9)
+//        addEdge("E", "F", 8, 10)
+//        addEdge("D", "E", 9, 11)
 //    }
 
 @Composable
@@ -43,6 +50,7 @@ fun App() {
 }
 
 fun main() = application {
+
     Window(
         onCloseRequest = ::exitApplication,
         state = WindowState(width = 1150.dp, height = 700.dp),
@@ -50,4 +58,5 @@ fun main() = application {
     ) {
         App()
     }
+
 }

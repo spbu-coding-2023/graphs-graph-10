@@ -5,5 +5,5 @@ interface Graph<V, E> {
     val edges: Collection<Edge<E, V>>
 
     fun addVertex(v: V): Vertex<V>
-    fun addEdge(u: V, v: V, e: E, weight: E? = null)
+    fun addEdge(u: V, v: V, e: E, weight: Long? = null)
 }

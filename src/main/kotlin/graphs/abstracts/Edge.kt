@@ -7,7 +7,7 @@ class Edge<E, V>(
     override var element: E,
     var first: Vertex<V>,
     var second: Vertex<V>,
-    override var weight: E? = null
+    override var weight: Long? = null
 ) : Edge<E, V> {
     override val vertices
         get() = first to second
