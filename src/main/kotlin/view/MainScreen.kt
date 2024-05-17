@@ -37,7 +37,7 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
 
     var offset by mainViewModel.offset
     var textData by remember{ mutableStateOf("") }
-    val displayWeight = remember { mutableStateOf(false) }
+    val displayWeight = mainViewModel.displayWeight
 
     val displaySaveDialog = remember { mutableStateOf(false) }
     val displayLoadDialog = remember { mutableStateOf(false) }

@@ -40,7 +40,8 @@ class Neo4jRepository {
             val scale = mainScreenViewModel.scale.value
             val offsetX = mainScreenViewModel.offset.value.x.value
             val offsetY = mainScreenViewModel.offset.value.y.value
-            tx.run("CREATE (:GraphInfo {scale: ${scale}, offsetX: ${offsetX}, offsetY: ${offsetY}})")
+            val displayWeight = mainScreenViewModel.displayWeight.value
+            tx.run("CREATE (:GraphInfo {scale: ${scale}, offsetX: ${offsetX}, offsetY: ${offsetY}, displayWeight: ${displayWeight}})")
         }
 
         mainScreenViewModel.graphViewModel.edges.forEach {
@@ -91,12 +92,13 @@ class Neo4jRepository {
 
             result =
                 tx.run(
-                    "MATCH (v:GraphInfo) return v.scale as scale, v.offsetX as offsetX, v.offsetY as offsetY"
+                    "MATCH (v:GraphInfo) return v.scale as scale, v.offsetX as offsetX, v.offsetY as offsetY, v.displayWeight as displayWeight"
                 )
             val record = result.stream().findFirst().get()
             val scale = record["scale"].toString().toFloat()
             val offsetX = record["offsetX"].toString().toFloat()
             val offsetY = record["offsetY"].toString().toFloat()
+            val displayWeight = record["displayWeight"].toString().toBoolean()
 
             mainScreenViewModel.graphViewModel = GraphViewModel(graph)
 
@@ -112,6 +114,7 @@ class Neo4jRepository {
             }
             mainScreenViewModel.scale.value = scale
             mainScreenViewModel.offset.value = DpOffset(offsetX.dp, offsetY.dp)
+            mainScreenViewModel.displayWeight.value = displayWeight
         }
         println("Graph was loaded")
     }
