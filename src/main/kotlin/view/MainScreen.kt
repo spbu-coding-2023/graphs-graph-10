@@ -31,10 +31,6 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
     val displayGraph = remember { mutableStateOf(false) }
 
     var scale by mainViewModel.scale
-    val state = rememberTransformableState { zoomChange, _, _ ->
-        scale *= zoomChange
-    }
-
     fun scaleBox(delta: Int) {
         scale = (scale * exp(delta * 0.1f)).coerceIn(0.05f, 4.0f)
     }
@@ -145,7 +141,6 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                 mainViewModel.graphViewModel,
                 displayGraph,
                 displayWeight,
-                state,
                 scale,
                 offset
             )
