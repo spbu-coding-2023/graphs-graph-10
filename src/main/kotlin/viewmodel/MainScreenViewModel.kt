@@ -1,6 +1,8 @@
 package viewmodel
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.DpOffset
 import layouts.YifanHuPlacementStrategy
 import graphs.primitives.Graph
 import viewmodel.graph.GraphViewModel
@@ -8,6 +10,9 @@ import viewmodel.graph.GraphViewModel
 class MainScreenViewModel<V, E>(var graph: Graph<V, E>) {
     private val representationStrategy = YifanHuPlacementStrategy()
     var graphViewModel = GraphViewModel(graph)
+    var scale = mutableStateOf(1f)
+    var offset = mutableStateOf(DpOffset.Zero)
+    var displayWeight = mutableStateOf(false)
 
     fun runLayoutAlgorithm(cords: Pair<Int, Int>) {
         representationStrategy.place(cords.first.toDouble(), cords.second.toDouble(), graphViewModel)
