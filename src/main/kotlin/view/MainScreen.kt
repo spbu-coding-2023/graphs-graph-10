@@ -22,6 +22,7 @@ import graphs.types.UndirectedGraph
 import graphs.types.WeightedDirectedGraph
 import graphs.types.WeightedUndirectedGraph
 import view.algo.drawCycleOnGraph
+import view.algo.drawMst
 import view.algo.drawPathOnGraph
 import view.graph.GraphView
 import viewmodel.MainScreenViewModel
@@ -76,6 +77,11 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                     textData = drawPathOnGraph(mainViewModel.graphViewModel)
                 }
             ) { Text("Find path with Dijkstra") }
+            Button(
+                onClick = {
+                    textData = drawMst(mainViewModel.graphViewModel)
+                }
+            ) { Text("Find MST") }
             Text(textData)
 
             if (mainViewModel.graph is WeightedDirectedGraph ||
