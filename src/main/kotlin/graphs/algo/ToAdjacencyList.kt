@@ -29,7 +29,7 @@ fun <V, E> toAdjacencyList(graph: Graph<V, E>):
             d[firstEdge]?.add(
                 Pair(secondEdge, it.weight)
             )
-            d[secondEdge] = mutableSetOf(
+            d[secondEdge]?.add(
                 Pair(firstEdge, it.weight)
             )
         }
