@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.DpOffset
 import graphs.types.WeightedDirectedGraph
 import graphs.types.WeightedUndirectedGraph
 import view.algo.drawCycleOnGraph
+import view.algo.drawMst
 import view.algo.drawMST
 import view.algo.drawPathOnGraph
 import view.graph.GraphView
@@ -76,6 +77,11 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                     textData = drawPathOnGraph(mainViewModel.graphViewModel)
                 }
             ) { Text("Find path with Dijkstra") }
+            Button(
+                onClick = {
+                    textData = drawMst(mainViewModel.graphViewModel)
+                }
+            ) { Text("Find Minimal spanning tree with Prim") }
             Text(textData)
             if (mainViewModel.graph is WeightedUndirectedGraph) {
                 Button(
