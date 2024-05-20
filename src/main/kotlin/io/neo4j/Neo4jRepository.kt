@@ -3,6 +3,11 @@ package io.neo4j
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import graphs.primitives.Graph
+import graphs.types.DirectedGraph
+import graphs.types.UndirectedGraph
+import graphs.types.WeightedDirectedGraph
+import graphs.types.WeightedUndirectedGraph
 import org.neo4j.driver.AuthTokens
 import org.neo4j.driver.Driver
 import org.neo4j.driver.GraphDatabase
@@ -41,7 +46,16 @@ class Neo4jRepository {
             val offsetX = mainScreenViewModel.offset.value.x.value
             val offsetY = mainScreenViewModel.offset.value.y.value
             val displayWeight = mainScreenViewModel.displayWeight.value
-            tx.run("CREATE (:GraphInfo {scale: ${scale}, offsetX: ${offsetX}, offsetY: ${offsetY}, displayWeight: ${displayWeight}})")
+            val graphType = mainScreenViewModel.graph::class.simpleName
+            tx.run(
+                "CREATE (:GraphInfo {" +
+                        "scale: ${scale}, " +
+                        "offsetX: ${offsetX}, " +
+                        "offsetY: ${offsetY}, " +
+                        "displayWeight: ${displayWeight}, " +
+                        "graphType: '${graphType}'" +
+                "})"
+            )
         }
 
         mainScreenViewModel.graphViewModel.edges.forEach {
@@ -58,12 +72,36 @@ class Neo4jRepository {
     }
 
     fun <V, E> readData(mainScreenViewModel: MainScreenViewModel<V, E>) {
-        val graph = mainScreenViewModel.graph
+        var graph: Graph<V, E>
 
         val vertexMap = mutableMapOf<V, VertexData>()
         val edgeMap = mutableMapOf<String, Color>()
         session.executeRead { tx ->
             var result =
+                tx.run(
+                    "MATCH (v:GraphInfo) return v.graphType as graphType, v.scale as scale, v.offsetX as offsetX, v.offsetY as offsetY, v.displayWeight as displayWeight"
+                )
+
+            val record = result.stream().findFirst().get()
+            val graphType = record["graphType"].asString()
+            val scale = record["scale"].toString().toFloat()
+            val offsetX = record["offsetX"].toString().toFloat()
+            val offsetY = record["offsetY"].toString().toFloat()
+            val displayWeight = record["displayWeight"].toString().toBoolean()
+
+            graph = when (graphType) {
+                DirectedGraph::class.simpleName ->
+                    DirectedGraph()
+                UndirectedGraph::class.simpleName ->
+                    UndirectedGraph()
+                WeightedDirectedGraph::class.simpleName ->
+                    WeightedDirectedGraph()
+                WeightedUndirectedGraph::class.simpleName ->
+                    WeightedUndirectedGraph()
+                else -> throw Exception("Incorrect graph type.")
+            }
+
+            result =
                 tx.run(
                     "MATCH (v:Vertex) RETURN v.element as element, v.x as x, v.y as y, v.color as color"
                 )
@@ -90,15 +128,6 @@ class Neo4jRepository {
                 edgeMap[it["e"].toString()] = Color(it["color"].asString().toULong())
             }
 
-            result =
-                tx.run(
-                    "MATCH (v:GraphInfo) return v.scale as scale, v.offsetX as offsetX, v.offsetY as offsetY, v.displayWeight as displayWeight"
-                )
-            val record = result.stream().findFirst().get()
-            val scale = record["scale"].toString().toFloat()
-            val offsetX = record["offsetX"].toString().toFloat()
-            val offsetY = record["offsetY"].toString().toFloat()
-            val displayWeight = record["displayWeight"].toString().toBoolean()
 
             mainScreenViewModel.graphViewModel = GraphViewModel(graph)
 
