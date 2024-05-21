@@ -15,7 +15,7 @@ import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.unit.Dp
+
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import graphs.types.WeightedDirectedGraph
@@ -23,6 +23,7 @@ import graphs.types.WeightedUndirectedGraph
 import view.algo.*
 import view.graph.GraphView
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.ui.unit.Dp
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
 import kotlin.math.sign
@@ -33,11 +34,7 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
     var resolution = Pair(0, 0)
     val displayGraph = remember { mutableStateOf(false) }
 
-    var scale by remember { mutableStateOf(1f) }
-    val state = rememberTransformableState { zoomChange, _, _ ->
-        scale *= zoomChange
-    }
-
+    var scale by mainViewModel.scale
     fun scaleBox(delta: Int) {
         scale = (scale * exp(delta * 0.1f)).coerceIn(0.05f, 4.0f)
     }
@@ -94,6 +91,11 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                         }
                     ) { Text("Find Minimal spanning tree with Kraskal") }
                 }
+                Button(
+                    onClick = {
+                        drawCommunities(mainViewModel.graphViewModel)
+                    }
+                ) { Text("Find Communities") }
                 if (mainViewModel.graph is WeightedDirectedGraph ||
                     mainViewModel.graph is WeightedUndirectedGraph
                 ) {
