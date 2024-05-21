@@ -6,7 +6,7 @@ import graphs.algo.Kraskal
 import graphs.primitives.Graph
 import viewmodel.graph.GraphViewModel
 
-fun <V, E> drawMST(graphViewModel: GraphViewModel<V, E>) {
+fun <V, E> drawKrusMST(graphViewModel: GraphViewModel<V, E>) {
     val MST = Kraskal(graphViewModel.graph)
     MST.forEach {
         graphViewModel.edges.forEach { e ->
