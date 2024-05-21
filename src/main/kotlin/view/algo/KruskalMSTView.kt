@@ -2,12 +2,11 @@ package view.algo
 
 
 import androidx.compose.ui.graphics.Color
-import graphs.algo.Kraskal
-import graphs.primitives.Graph
+import graphs.algo.Kruskal
 import viewmodel.graph.GraphViewModel
 
-fun <V, E> drawKrusMST(graphViewModel: GraphViewModel<V, E>) {
-    val MST = Kraskal(graphViewModel.graph)
+fun <V, E> drawKruskalMST(graphViewModel: GraphViewModel<V, E>) {
+    val MST = Kruskal(graphViewModel.graph)
     MST.forEach {
         graphViewModel.edges.forEach { e ->
             if (((e.v.v == it.vertices.second) && (e.u.v == it.vertices.first)) || ((e.v.v == it.vertices.first) && (e.u.v == it.vertices.second))) {

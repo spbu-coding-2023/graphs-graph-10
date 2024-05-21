@@ -20,10 +20,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import graphs.types.WeightedDirectedGraph
 import graphs.types.WeightedUndirectedGraph
-import view.algo.drawCycleOnGraph
-import view.algo.drawMst
-import view.algo.drawMST
-import view.algo.drawPathOnGraph
+import view.algo.*
 import view.graph.GraphView
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
@@ -91,9 +88,9 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
             if (mainViewModel.graph is WeightedUndirectedGraph) {
                 Button(
                     onClick = {
-                        drawMST(mainViewModel.graphViewModel)
+                        drawKruskalMST(mainViewModel.graphViewModel)
                     }
-                ) { Text("Find Minimal spanning tree with Kraskal") }
+                ) { Text("Find Minimal spanning tree with Kruskal") }
             }
             if (mainViewModel.graph is WeightedDirectedGraph ||
                 mainViewModel.graph is WeightedUndirectedGraph
