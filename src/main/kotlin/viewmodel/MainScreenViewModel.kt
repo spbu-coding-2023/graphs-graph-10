@@ -7,7 +7,7 @@ import layouts.YifanHuPlacementStrategy
 import graphs.primitives.Graph
 import viewmodel.graph.GraphViewModel
 
-class MainScreenViewModel<V, E>(var graph: Graph<V, E>) {
+class MainScreenViewModel<V, E>(var graph: Graph<V,E>) {
     private val representationStrategy = YifanHuPlacementStrategy()
     var graphViewModel = GraphViewModel(graph)
     var scale = mutableStateOf(1f)

@@ -1,10 +1,13 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.Navigator
+import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import graphs.algo.Kraskal
 import graphs.primitives.Graph
 import graphs.types.DirectedGraph
@@ -13,15 +16,22 @@ import graphs.types.WeightedDirectedGraph
 import graphs.types.WeightedUndirectedGraph
 import io.reading
 import view.MainScreen
+
+import view.Welcome
 import viewmodel.MainScreenViewModel
 
+
+
 /*
+
     DirectedGraph
     UndirectedGraph
     WeightedDirectedGraph
     WeightedUndirectedGraph
 */
-val sampleGraph: Graph<String, Long> = WeightedUndirectedGraph<String, Long>()
+
+
+val sampleGraph: Graph<String, Long> = DirectedGraph<String, Long>()
 //    .apply {
 //        addVertex("A")
 //        addVertex("B")
@@ -40,17 +50,36 @@ val sampleGraph: Graph<String, Long> = WeightedUndirectedGraph<String, Long>()
 //        addEdge("D", "E", 9, 11)
 //    }
 
-@Composable
-@Preview
-fun App() {
-    sampleGraph.reading("examples/weighted_undirected.csv")
-    MaterialTheme {
+object WelcomeScreen : Screen {
+    @Composable
+    override fun Content() {
+        Welcome()
+    }
+}
+
+object GraphScreen : Screen {
+    @Composable
+    override fun Content() {
         MainScreen(MainScreenViewModel(sampleGraph))
     }
 }
 
-fun main() = application {
+@Composable
+@Preview
+fun App() {
 
+/*  sampleGraph.reading("C:\\Users\\dabze\\IdeaProjects\\graphs-graph-10\\examples\\weighted_undirected.csv")
+      MaterialTheme {
+          MainScreen(MainScreenViewModel(sampleGraph))
+      }
+     *//*
+*/
+/* Welcome()*/
+
+    Navigator(WelcomeScreen)
+
+}
+fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         state = WindowState(width = 1150.dp, height = 700.dp),
@@ -58,5 +87,6 @@ fun main() = application {
     ) {
         App()
     }
-
 }
+
+
