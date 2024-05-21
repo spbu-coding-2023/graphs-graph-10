@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+
 @Composable
 fun GetGraphType(
     onDismissRequest: (GraphType?) -> Unit,
@@ -36,7 +37,7 @@ fun GetGraphType(
                         checked = selectedGraphType == GraphType.WEIGHTED,
                         onCheckedChange = { if (it) selectedGraphType = GraphType.WEIGHTED }
                     )
-                    Text("Weighted Graph", fontSize = 20.sp, modifier = Modifier.padding(start = 10.dp))
+                    Text("Weighted Undirected", fontSize = 20.sp, modifier = Modifier.padding(start = 10.dp))
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically) {

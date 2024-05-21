@@ -1,20 +1,23 @@
 package view
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.*
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
 import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import graphs.types.WeightedDirectedGraph
 import graphs.types.WeightedUndirectedGraph
@@ -49,14 +52,18 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
     val displaySaveDialog = remember { mutableStateOf(false) }
     val displayLoadDialog = remember { mutableStateOf(false) }
     var showFilePicker by remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(true) }
+    val columnWidth: Dp by animateDpAsState(targetValue = if (isExpanded) 350.dp else 0.dp)
+
     Row(
-        horizontalArrangement = Arrangement.spacedBy(20.dp),
+        horizontalArrangement = Arrangement.Start,
         modifier = Modifier
             .background(Color(0xfa, 0xfa, 0xfa))
+            .fillMaxSize()
     ) {
         Column(
             modifier = Modifier
-                .width(350.dp)
+                .width(columnWidth)
                 .padding(7.dp),
             verticalArrangement = Arrangement.Top
         ) {
@@ -148,7 +155,23 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                     }
                 ) { Text("Load from Neo4j") }
             }
+        }
 
+        Box(
+            modifier = Modifier
+                .background(Color.LightGray)
+                .width(24.dp)
+                .fillMaxHeight(),
+            contentAlignment = Alignment.Center
+        ) {
+            Button(
+                onClick = {
+                    isExpanded = !isExpanded
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+            ) {
+                Text(if (isExpanded) "<" else ">", color = Color.White)
+            }
         }
 
         Surface(
