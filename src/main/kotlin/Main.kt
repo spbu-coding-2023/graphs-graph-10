@@ -1,5 +1,4 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -7,14 +6,8 @@ import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
-import com.darkrockstudios.libraries.mpfilepicker.FilePicker
-import graphs.algo.Kraskal
 import graphs.primitives.Graph
 import graphs.types.DirectedGraph
-import graphs.types.UndirectedGraph
-import graphs.types.WeightedDirectedGraph
-import graphs.types.WeightedUndirectedGraph
-import io.reading
 import view.MainScreen
 
 import view.Welcome
