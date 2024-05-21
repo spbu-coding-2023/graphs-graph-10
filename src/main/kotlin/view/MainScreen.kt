@@ -1,24 +1,29 @@
 package view
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.*
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+
 import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
 import graphs.types.WeightedDirectedGraph
 import graphs.types.WeightedUndirectedGraph
 import view.algo.*
 import view.graph.GraphView
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.ui.unit.Dp
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
 import kotlin.math.sign
@@ -35,88 +40,92 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
     }
 
     var offset by mainViewModel.offset
-    var textData by remember{ mutableStateOf("") }
+    var textData by remember { mutableStateOf("") }
     val displayWeight = mainViewModel.displayWeight
-
     val displaySaveDialog = remember { mutableStateOf(false) }
     val displayLoadDialog = remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(true) }
+    val columnWidth: Dp by animateDpAsState(targetValue = if (isExpanded) 350.dp else 0.dp)
 
     Row(
-        horizontalArrangement = Arrangement.spacedBy(20.dp),
+        horizontalArrangement = Arrangement.Start,
         modifier = Modifier
             .background(Color(0xfa, 0xfa, 0xfa))
+            .fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier
-                .width(350.dp)
-                .padding(7.dp),
-            verticalArrangement = Arrangement.Top
-        ) {
-            Button(
-                onClick = {
-                    mainViewModel.restoreGraphState()
-                    mainViewModel.runLayoutAlgorithm(resolution)
-                    displayGraph.value = true
-                    textData = ""
-                }
-            ) { Text("Reload visualization") }
-            Button(
-                onClick = {
-                    textData = drawCycleOnGraph(mainViewModel.graphViewModel)
-                }
-            ) { Text("Check cycles for vertex") }
-            Button(
-                onClick = {
-                    textData = drawPathOnGraph(mainViewModel.graphViewModel)
-                }
-            ) { Text("Find path with Dijkstra") }
-            Button(
-                onClick = {
-                    textData = drawMst(mainViewModel.graphViewModel)
-                }
-            ) { Text("Find Minimal spanning tree with Prim") }
-            Text(textData)
-            if (mainViewModel.graph is WeightedUndirectedGraph) {
+        AnimatedVisibility(visible = isExpanded) {
+            Column(
+                modifier = Modifier
+                    .width(350.dp)
+                    .padding(7.dp),
+                verticalArrangement = Arrangement.Top
+            ) {
                 Button(
                     onClick = {
-                        drawMST(mainViewModel.graphViewModel)
+                        mainViewModel.restoreGraphState()
+                        mainViewModel.runLayoutAlgorithm(resolution)
+                        displayGraph.value = true
+                        textData = ""
                     }
-                ) { Text("Find Minimal spanning tree with Kraskal") }
-            }
-            Button(
-                onClick = {
-                    drawCommunities(mainViewModel.graphViewModel)
-                }
-            ) { Text("Find Communities") }
-            if (mainViewModel.graph is WeightedDirectedGraph ||
-                mainViewModel.graph is WeightedUndirectedGraph
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("Display weights:")
-                    Checkbox(
-                        checked = displayWeight.value,
-                        onCheckedChange = {
-                            displayWeight.value = it
+                ) { Text("Reload visualization") }
+                Button(
+                    onClick = {
+                        textData = drawCycleOnGraph(mainViewModel.graphViewModel)
+                    }
+                ) { Text("Check cycles for vertex") }
+                Button(
+                    onClick = {
+                        textData = drawPathOnGraph(mainViewModel.graphViewModel)
+                    }
+                ) { Text("Find path with Dijkstra") }
+                Button(
+                    onClick = {
+                        textData = drawMst(mainViewModel.graphViewModel)
+                    }
+                ) { Text("Find Minimal spanning tree with Prim") }
+                Text(textData)
+                if (mainViewModel.graph is WeightedUndirectedGraph) {
+                    Button(
+                        onClick = {
+                            drawKruskalMST(mainViewModel.graphViewModel)
                         }
-                    )
+                    ) { Text("Find Minimal spanning tree with Kraskal") }
                 }
-            }
+                Button(
+                    onClick = {
+                        drawCommunities(mainViewModel.graphViewModel)
+                    }
+                ) { Text("Find Communities") }
+                if (mainViewModel.graph is WeightedDirectedGraph ||
+                    mainViewModel.graph is WeightedUndirectedGraph
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("Display weights:")
+                        Checkbox(
+                            checked = displayWeight.value,
+                            onCheckedChange = {
+                                displayWeight.value = it
+                            }
+                        )
+                    }
+                }
 
-            if (displaySaveDialog.value) {
-                SaveToNeo4jDialog(onDismissRequest = {
-                    displaySaveDialog.value = false
-                }, "save", mainViewModel)
-            }
-            if (displayLoadDialog.value) {
-                SaveToNeo4jDialog(onDismissRequest = {
-                    displayLoadDialog.value = false
-                }, "load", mainViewModel)
-                displayGraph.value = true
-            }
+                if (displaySaveDialog.value) {
+                    SaveToNeo4jDialog(onDismissRequest = {
+                        displaySaveDialog.value = false
+                    }, "save", mainViewModel)
+                }
+                if (displayLoadDialog.value) {
+                    SaveToNeo4jDialog(onDismissRequest = {
+                        displayLoadDialog.value = false
+                    }, "load", mainViewModel)
+                    displayGraph.value = true
+                }
 
-            Row {
+
+
                 Button(
                     onClick = {
                         displaySaveDialog.value = true
@@ -127,8 +136,24 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                         displayLoadDialog.value = true
                     }
                 ) { Text("Load from Neo4j") }
-            }
 
+            }
+        }
+        Box(
+            modifier = Modifier
+                .background(Color.LightGray)
+                .width(24.dp)
+                .fillMaxHeight(),
+            contentAlignment = Alignment.Center
+        ) {
+            Button(
+                onClick = {
+                    isExpanded = !isExpanded
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+            ) {
+                Text(if (isExpanded) "<" else ">", color = Color.White)
+            }
         }
 
         Surface(
@@ -161,5 +186,6 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                 offset
             )
         }
+
     }
 }
