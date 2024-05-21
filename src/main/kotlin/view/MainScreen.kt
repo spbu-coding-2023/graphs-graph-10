@@ -32,11 +32,7 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
     var resolution = Pair(0, 0)
     val displayGraph = remember { mutableStateOf(false) }
 
-    var scale by remember { mutableStateOf(1f) }
-    val state = rememberTransformableState { zoomChange, _, _ ->
-        scale *= zoomChange
-    }
-
+    var scale by mainViewModel.scale
     fun scaleBox(delta: Int) {
         scale = (scale * exp(delta * 0.1f)).coerceIn(0.05f, 4.0f)
     }
