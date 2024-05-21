@@ -18,6 +18,11 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation(files("libs/gephi-toolkit-0.10.0-all.jar"))
     implementation("org.neo4j.driver", "neo4j-java-driver", "5.6.0")
+
+    implementation("com.darkrockstudios:mpfilepicker:3.1.0")
+    val voyagerVersion = "1.0.0"
+    implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
+    implementation("cafe.adriel.voyager:voyager-screenmodel:$voyagerVersion")
 }
 
 compose.desktop {
@@ -50,7 +55,7 @@ tasks.build {
     dependsOn("downloadGephiToolkit")
 }
 
-fun download(url: String, path: String){
+fun download(url: String, path: String) {
     val destinationFile = File(path)
     ant.invokeMethod("get", mapOf("src" to url, "dest" to destinationFile))
 }

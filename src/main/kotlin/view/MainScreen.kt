@@ -15,6 +15,7 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.DpOffset
+import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import graphs.types.WeightedDirectedGraph
 import graphs.types.WeightedUndirectedGraph
 import view.algo.drawCycleOnGraph
@@ -41,12 +42,12 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
     }
 
     var offset by mainViewModel.offset
-    var textData by remember{ mutableStateOf("") }
+    var textData by remember { mutableStateOf("") }
     val displayWeight = mainViewModel.displayWeight
 
     val displaySaveDialog = remember { mutableStateOf(false) }
     val displayLoadDialog = remember { mutableStateOf(false) }
-
+    var showFilePicker by remember { mutableStateOf(false) }
     Row(
         horizontalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier
@@ -111,7 +112,24 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                 }, "load", mainViewModel)
                 displayGraph.value = true
             }
+            Button(
+                onClick = {
+                    showFilePicker = true
+                }
+            ) { Text("Выбрать файл") }
 
+
+            if (showFilePicker) {
+                val fileType = listOf("jpg", "png")
+                FilePicker(show = showFilePicker, fileExtensions = fileType) { platformFile ->
+                    showFilePicker = false
+                    platformFile?.let { file ->
+                        // Обрабатываем выбранный файл здесь
+                        textData = "Выбран файл: ${file}"
+                        println(textData)
+                    }
+                }
+            }
             Row {
                 Button(
                     onClick = {
