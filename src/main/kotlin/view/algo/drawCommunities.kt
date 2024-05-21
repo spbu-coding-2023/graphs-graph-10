@@ -14,7 +14,5 @@ fun <V, E>drawCommunities(graphViewModel: GraphViewModel<V, E>) {
             }
         }
     }
-    graphViewModel.pickedVertices.clear()
-
 }
 

@@ -2,10 +2,9 @@ package graphs.algo
 
 import graphs.primitives.Edge
 import graphs.primitives.Graph
-import graphs.primitives.Vertex
 
 
-fun <V, E> Kraskal(graph: Graph<V, E>): List<Edge<E, V>> {
+fun <V, E> Kruskal(graph: Graph<V, E>): List<Edge<E, V>> {
     val edgeList = mutableListOf<Edge<E, V>>()
     val sccmap = HashMap<V, V>()
     val MST = mutableListOf<Edge<E, V>>()

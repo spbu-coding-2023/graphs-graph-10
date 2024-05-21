@@ -4,14 +4,8 @@ import androidx.compose.ui.graphics.Color
 import graphs.algo.searchMstPrim
 import viewmodel.graph.GraphViewModel
 
-fun <V, E>drawMst(graphViewModel: GraphViewModel<V, E>): String {
-    val pickedVertices = graphViewModel.pickedVertices
-
-    if (pickedVertices.size != 1) {
-        println("Count of picked vertices != 1")
-        return "Count of picked vertices != 1"
-    }
-    val mst = searchMstPrim(graphViewModel.graph, graphViewModel.pickedVertices.first())
+fun <V, E>drawMst(graphViewModel: GraphViewModel<V, E>){
+    val mst = searchMstPrim(graphViewModel.graph, graphViewModel.vertices.elementAt(0).v.element)
     for (i in mst) {
         graphViewModel.edges.forEach { e ->
             val f = e.v.v.element
@@ -24,7 +18,4 @@ fun <V, E>drawMst(graphViewModel: GraphViewModel<V, E>): String {
             }
         }
     }
-    graphViewModel.pickedVertices.clear()
-
-    return "Tree on display"
 }
