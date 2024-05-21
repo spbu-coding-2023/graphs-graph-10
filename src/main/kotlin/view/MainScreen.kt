@@ -92,6 +92,11 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                     drawCommunities(mainViewModel.graphViewModel)
                 }
             ) { Text("Find Communities") }
+            Button(
+                onClick = {
+                    drawTarjan(mainViewModel.graphViewModel)
+                }
+            ) { Text("Find articulated vertices Tarjan") }
             if (mainViewModel.graph is WeightedDirectedGraph ||
                 mainViewModel.graph is WeightedUndirectedGraph
             ) {
