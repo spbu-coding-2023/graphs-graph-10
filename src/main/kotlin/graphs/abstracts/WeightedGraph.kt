@@ -26,6 +26,4 @@ abstract class WeightedGraph<V, E> : Graph<V, E> {
             _edges.getOrPut(e) { Edge(e, first, second, weight) }
         }
     }
-
-    abstract fun MinimalPathFloidBellman(start: V, target: V): WeightedGraph<V, E>
 }
