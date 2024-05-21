@@ -14,7 +14,7 @@ import androidx.compose.ui.window.Dialog
 fun GetGraphType(
     onDismissRequest: (GraphType?) -> Unit,
 ) {
-    // State for the selected checkbox
+
     var selectedGraphType by remember { mutableStateOf<GraphType?>(null) }
 
     Dialog(onDismissRequest = { onDismissRequest(null) }) {
@@ -66,7 +66,6 @@ fun GetGraphType(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Align the button to the end of the column
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End

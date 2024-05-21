@@ -3,25 +3,17 @@ package view
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
-import androidx.compose.material.Checkbox
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
-import com.darkrockstudios.libraries.mpfilepicker.FilePicker
-import androidx.compose.material.Text
 import graphs.primitives.Graph
 import graphs.types.WeightedUndirectedGraph
 import io.reading
-import org.apache.poi.sl.usermodel.TextParagraph
 import viewmodel.MainScreenViewModel
-
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-
 import androidx.compose.ui.unit.dp
 import graphs.types.DirectedGraph
 import graphs.types.UndirectedGraph
@@ -102,7 +94,7 @@ fun Welcome() {
                         }
 
                     }
-                    showFilePicker = false // Установить showFilePicker в false при закрытии
+                    showFilePicker = false
                 }
             }
         }
