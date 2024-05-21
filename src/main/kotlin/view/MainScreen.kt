@@ -78,12 +78,12 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                         textData = drawPathOnGraph(mainViewModel.graphViewModel)
                     }
                 ) { Text("Find path with Dijkstra") }
-                Button(
-                    onClick = {
-                        drawMst(mainViewModel.graphViewModel)
-                    }
-                ) { Text("Find Minimal spanning tree with Prim") }
                 if (mainViewModel.graph is WeightedUndirectedGraph) {
+                    Button(
+                        onClick = {
+                            drawMst(mainViewModel.graphViewModel)
+                        }
+                    ) { Text("Find Minimal spanning tree with Prim") }
                     Button(
                         onClick = {
                             drawKruskalMST(mainViewModel.graphViewModel)
