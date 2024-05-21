@@ -25,6 +25,7 @@ import view.algo.drawMst
 import view.algo.drawMST
 import view.algo.drawPathOnGraph
 import view.graph.GraphView
+import androidx.compose.animation.AnimatedVisibility
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
 import kotlin.math.sign
@@ -58,72 +59,74 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
             .background(Color(0xfa, 0xfa, 0xfa))
             .fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier
-                .width(columnWidth)
-                .padding(7.dp),
-            verticalArrangement = Arrangement.Top
-        ) {
-            Button(
-                onClick = {
-                    mainViewModel.restoreGraphState()
-                    mainViewModel.runLayoutAlgorithm(resolution)
-                    displayGraph.value = true
-                    textData = ""
-                }
-            ) { Text("Reload visualization") }
-            Button(
-                onClick = {
-                    textData = drawCycleOnGraph(mainViewModel.graphViewModel)
-                }
-            ) { Text("Check cycles for vertex") }
-            Button(
-                onClick = {
-                    textData = drawPathOnGraph(mainViewModel.graphViewModel)
-                }
-            ) { Text("Find path with Dijkstra") }
-            Button(
-                onClick = {
-                    textData = drawMst(mainViewModel.graphViewModel)
-                }
-            ) { Text("Find Minimal spanning tree with Prim") }
-            Text(textData)
-            if (mainViewModel.graph is WeightedUndirectedGraph) {
+        AnimatedVisibility(visible = isExpanded) {
+            Column(
+                modifier = Modifier
+                    .width(350.dp)
+                    .padding(7.dp),
+                verticalArrangement = Arrangement.Top
+            ) {
                 Button(
                     onClick = {
-                        drawMST(mainViewModel.graphViewModel)
+                        mainViewModel.restoreGraphState()
+                        mainViewModel.runLayoutAlgorithm(resolution)
+                        displayGraph.value = true
+                        textData = ""
                     }
-                ) { Text("Find Minimal spanning tree with Kraskal") }
-            }
-            if (mainViewModel.graph is WeightedDirectedGraph ||
-                mainViewModel.graph is WeightedUndirectedGraph
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("Display weights:")
-                    Checkbox(
-                        checked = displayWeight.value,
-                        onCheckedChange = {
-                            displayWeight.value = it
+                ) { Text("Reload visualization") }
+                Button(
+                    onClick = {
+                        textData = drawCycleOnGraph(mainViewModel.graphViewModel)
+                    }
+                ) { Text("Check cycles for vertex") }
+                Button(
+                    onClick = {
+                        textData = drawPathOnGraph(mainViewModel.graphViewModel)
+                    }
+                ) { Text("Find path with Dijkstra") }
+                Button(
+                    onClick = {
+                        textData = drawMst(mainViewModel.graphViewModel)
+                    }
+                ) { Text("Find Minimal spanning tree with Prim") }
+                Text(textData)
+                if (mainViewModel.graph is WeightedUndirectedGraph) {
+                    Button(
+                        onClick = {
+                            drawMST(mainViewModel.graphViewModel)
                         }
-                    )
+                    ) { Text("Find Minimal spanning tree with Kraskal") }
                 }
-            }
+                if (mainViewModel.graph is WeightedDirectedGraph ||
+                    mainViewModel.graph is WeightedUndirectedGraph
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("Display weights:")
+                        Checkbox(
+                            checked = displayWeight.value,
+                            onCheckedChange = {
+                                displayWeight.value = it
+                            }
+                        )
+                    }
+                }
 
-            if (displaySaveDialog.value) {
-                SaveToNeo4jDialog(onDismissRequest = {
-                    displaySaveDialog.value = false
-                }, "save", mainViewModel)
-            }
-            if (displayLoadDialog.value) {
-                SaveToNeo4jDialog(onDismissRequest = {
-                    displayLoadDialog.value = false
-                }, "load", mainViewModel)
-                displayGraph.value = true
-            }
+                if (displaySaveDialog.value) {
+                    SaveToNeo4jDialog(onDismissRequest = {
+                        displaySaveDialog.value = false
+                    }, "save", mainViewModel)
+                }
+                if (displayLoadDialog.value) {
+                    SaveToNeo4jDialog(onDismissRequest = {
+                        displayLoadDialog.value = false
+                    }, "load", mainViewModel)
+                    displayGraph.value = true
+                }
 
-            Row {
+
+
                 Button(
                     onClick = {
                         displaySaveDialog.value = true
@@ -134,9 +137,9 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                         displayLoadDialog.value = true
                     }
                 ) { Text("Load from Neo4j") }
+
             }
         }
-
         Box(
             modifier = Modifier
                 .background(Color.LightGray)
@@ -184,5 +187,6 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                 offset
             )
         }
+
     }
 }
