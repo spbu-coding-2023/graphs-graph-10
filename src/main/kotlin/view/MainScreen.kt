@@ -95,11 +95,18 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                         }
                     ) { Text("Find Minimal spanning tree with Kruskal") }
                 }
-                Button(
-                    onClick = {
-                        drawCommunities(mainViewModel.graphViewModel)
-                    }
-                ) { Text("Find Communities") }
+                    Button(
+                        onClick = {
+                            drawCommunities(mainViewModel.graphViewModel)
+                        }
+                    ) { Text("Find Communities") }
+
+                    Button(
+                        onClick = {
+                            drawFindBridge(mainViewModel.graphViewModel)
+                        }
+                    ) { Text("Find Bridge") }
+
                 Button(
                     onClick = {
                         drawTarjan(mainViewModel.graphViewModel)
