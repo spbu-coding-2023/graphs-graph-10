@@ -22,7 +22,8 @@ import viewmodel.MainScreenViewModel
 fun <V, E> SaveToNeo4jDialog(
     onDismissRequest: () -> Unit,
     actionType: String,
-    mainScreenViewModel: MainScreenViewModel<V, E>
+    mainScreenViewModel: MainScreenViewModel<V, E>,
+    callback: () -> Unit = {}
 ) {
     var addressPort by remember { mutableStateOf("localhost:7687") }
     var loginPassword by remember { mutableStateOf("neo4j:password") }
@@ -51,7 +52,10 @@ fun <V, E> SaveToNeo4jDialog(
         }
         when (actionType) {
             "save" -> {
-                try { db.writeData(mainScreenViewModel) }
+                try {
+                    db.writeData(mainScreenViewModel)
+                    callback()
+                }
                 catch (e: Exception) {
                     e.printStackTrace()
                     actionStatus = "Unexpected error while writing data"
@@ -63,6 +67,7 @@ fun <V, E> SaveToNeo4jDialog(
                 try {
                     db.readData(mainScreenViewModel)
                     onDismissRequest()
+                    callback()
                 }
                 catch (e: Exception) {
                     e.printStackTrace()
