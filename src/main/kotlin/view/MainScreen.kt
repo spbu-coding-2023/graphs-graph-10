@@ -31,8 +31,8 @@ import kotlin.math.sign
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
-    var resolution = Pair(0, 0)
-    val displayGraph = remember { mutableStateOf(false) }
+    var resolution = Pair(800, 700)
+    val displayGraph = remember { mutableStateOf(true) }
 
     var scale by mainViewModel.scale
     fun scaleBox(delta: Int) {
@@ -46,6 +46,11 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
     val displayLoadDialog = remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(true) }
     val columnWidth: Dp by animateDpAsState(targetValue = if (isExpanded) 350.dp else 0.dp)
+
+    if (mainViewModel.runLayout) {
+        println(resolution)
+        mainViewModel.runLayoutAlgorithm(resolution)
+    }
 
     Row(
         horizontalArrangement = Arrangement.Start,
@@ -121,23 +126,11 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                         displaySaveDialog.value = false
                     }, "save", mainViewModel)
                 }
-                if (displayLoadDialog.value) {
-                    SaveToNeo4jDialog(onDismissRequest = {
-                        displayLoadDialog.value = false
-                    }, "load", mainViewModel)
-                    displayGraph.value = true
-                }
                 Button(
                     onClick = {
                         displaySaveDialog.value = true
                     }
                 ) { Text("Save to Neo4j") }
-                Button(
-                    onClick = {
-                        displayLoadDialog.value = true
-                    }
-                ) { Text("Load from Neo4j") }
-
             }
         }
         Box(

@@ -13,6 +13,7 @@ class MainScreenViewModel<V, E>(var graph: Graph<V,E>) {
     var scale = mutableStateOf(1f)
     var offset = mutableStateOf(DpOffset.Zero)
     var displayWeight = mutableStateOf(false)
+    var runLayout = false
 
     fun runLayoutAlgorithm(cords: Pair<Int, Int>) {
         representationStrategy.place(cords.first.toDouble(), cords.second.toDouble(), graphViewModel)

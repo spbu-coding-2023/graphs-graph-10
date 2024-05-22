@@ -1,6 +1,7 @@
 package view
 
 
+import GraphScreen
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -15,6 +16,8 @@ import viewmodel.MainScreenViewModel
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import graphs.types.DirectedGraph
 import graphs.types.UndirectedGraph
 import graphs.types.WeightedDirectedGraph
@@ -37,6 +40,10 @@ fun Welcome() {
     var showFilePicker by remember { mutableStateOf(false) }
     var textData by remember { mutableStateOf("") }
     var graph by remember { mutableStateOf<Graph<String, Long>?>(null) }
+    val displayLoadDialog = remember { mutableStateOf(false) }
+    val displayGraph = remember { mutableStateOf(false) }
+    val navigator = LocalNavigator.currentOrThrow
+
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -67,11 +74,12 @@ fun Welcome() {
                     Text("SQLite")
                 }
 
-                Button(onClick = {
-                    currentFileType = "neo4j"
-                }) {
-                    Text("Neo4j")
-                }
+                Button(
+                    onClick = {
+                        currentFileType = "neo4j"
+                        displayLoadDialog.value = true
+                    }
+                ) { Text("Neo4j") }
             }
             if (currentFileType == "csv") {
                 if (showTypeDialog) {
@@ -86,7 +94,6 @@ fun Welcome() {
 
                 if (showFilePicker) {
                     FileExplorer(fileType = "csv") { selectedFilePath ->
-
                         graphType?.let {
                             graph = createGraph<String, Long>(it)
                             graph!!.reading(selectedFilePath)
@@ -99,9 +106,20 @@ fun Welcome() {
             }
         }
 
-        if (graph != null) {
+        if (displayLoadDialog.value) {
+            val tempGraph: Graph<String, Long> = DirectedGraph()
+            val mainViewModel = MainScreenViewModel(tempGraph)
+            SaveToNeo4jDialog(onDismissRequest = {
+                displayLoadDialog.value = false
+            }, "load", mainViewModel, {
+                navigator.push(GraphScreen(mainViewModel))
+            })
+        }
+
+        if (graph != null && currentFileType == "csv") {
             val mainScreenViewModel = MainScreenViewModel<String, Long>(graph!!)
-            MainScreen(mainScreenViewModel)
+            mainScreenViewModel.runLayout = true
+            navigator.push(GraphScreen(mainScreenViewModel))
         }
     }
 
