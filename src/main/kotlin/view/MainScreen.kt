@@ -78,24 +78,28 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                         textData = drawPathOnGraph(mainViewModel.graphViewModel)
                     }
                 ) { Text("Find path with Dijkstra") }
-                Button(
-                    onClick = {
-                        textData = drawMst(mainViewModel.graphViewModel)
-                    }
-                ) { Text("Find Minimal spanning tree with Prim") }
-                Text(textData)
                 if (mainViewModel.graph is WeightedUndirectedGraph) {
+                    Button(
+                        onClick = {
+                            drawMst(mainViewModel.graphViewModel)
+                        }
+                    ) { Text("Find Minimal spanning tree with Prim") }
                     Button(
                         onClick = {
                             drawKruskalMST(mainViewModel.graphViewModel)
                         }
-                    ) { Text("Find Minimal spanning tree with Kraskal") }
+                    ) { Text("Find Minimal spanning tree with Kruskal") }
                 }
                 Button(
                     onClick = {
                         drawCommunities(mainViewModel.graphViewModel)
                     }
                 ) { Text("Find Communities") }
+                Button(
+                    onClick = {
+                        drawTarjan(mainViewModel.graphViewModel)
+                    }
+                ) { Text("Find articulated vertices Tarjan") }
                 if (mainViewModel.graph is WeightedDirectedGraph ||
                     mainViewModel.graph is WeightedUndirectedGraph
                 ) {
@@ -123,9 +127,6 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                     }, "load", mainViewModel)
                     displayGraph.value = true
                 }
-
-
-
                 Button(
                     onClick = {
                         displaySaveDialog.value = true
