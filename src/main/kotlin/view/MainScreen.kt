@@ -30,7 +30,7 @@ import kotlin.math.sign
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
+fun <V, Long> MainScreen(mainViewModel: MainScreenViewModel<V, Long>) {
     var resolution = Pair(0, 0)
     val displayGraph = remember { mutableStateOf(false) }
 
@@ -90,11 +90,18 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                         }
                     ) { Text("Find Minimal spanning tree with Kruskal") }
                 }
-                Button(
-                    onClick = {
-                        drawCommunities(mainViewModel.graphViewModel)
-                    }
-                ) { Text("Find Communities") }
+                    Button(
+                        onClick = {
+                            drawCommunities(mainViewModel.graphViewModel)
+                        }
+                    ) { Text("Find Communities") }
+
+                    Button(
+                        onClick = {
+                            drawFindBridge(mainViewModel.graphViewModel)
+                        }
+                    ) { Text("Find Bridge") }
+
                 Button(
                     onClick = {
                         drawTarjan(mainViewModel.graphViewModel)
