@@ -1,5 +1,6 @@
 package view
 
+import WelcomeScreen
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -24,6 +25,8 @@ import view.algo.*
 import view.graph.GraphView
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.ui.unit.Dp
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
 import kotlin.math.sign
@@ -46,7 +49,8 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
     val displayLoadDialog = remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(true) }
     val columnWidth: Dp by animateDpAsState(targetValue = if (isExpanded) 350.dp else 0.dp)
-
+    val backToWelcome = remember { mutableStateOf(false) }
+    val navigator = LocalNavigator.currentOrThrow
     if (mainViewModel.runLayout) {
         println(resolution)
         mainViewModel.runLayoutAlgorithm(resolution)
@@ -95,17 +99,17 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                         }
                     ) { Text("Find Minimal spanning tree with Kruskal") }
                 }
-                    Button(
-                        onClick = {
-                            drawCommunities(mainViewModel.graphViewModel)
-                        }
-                    ) { Text("Find Communities") }
+                Button(
+                    onClick = {
+                        drawCommunities(mainViewModel.graphViewModel)
+                    }
+                ) { Text("Find Communities") }
 
-                    Button(
-                        onClick = {
-                            drawFindBridge(mainViewModel.graphViewModel)
-                        }
-                    ) { Text("Find Bridge") }
+                Button(
+                    onClick = {
+                        drawFindBridge(mainViewModel.graphViewModel)
+                    }
+                ) { Text("Find Bridge") }
 
                     Button(
                         onClick = {
@@ -144,6 +148,14 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                         displaySaveDialog.value = true
                     }
                 ) { Text("Save to Neo4j") }
+                Button(
+                    onClick = {
+                    backToWelcome.value = true
+                }
+                ){Text("New Graph")}
+                if(backToWelcome.value) {
+                    navigator.push(WelcomeScreen)
+                }
             }
         }
         Box(

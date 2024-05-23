@@ -14,9 +14,7 @@ fun <V, E> drawKruskalMST(graphViewModel: GraphViewModel<V, E>) {
                 e.v.color = Color.Cyan
                 e.u.color = Color.Cyan
                 e.width = 4f
-
             }
-
         }
     }
 }
