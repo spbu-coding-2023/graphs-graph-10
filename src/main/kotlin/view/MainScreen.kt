@@ -111,6 +111,12 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                     }
                 ) { Text("Find Bridge") }
 
+                    Button(
+                        onClick = {
+                            drawFordBellman(mainViewModel.graphViewModel)
+                        }
+                    ) { Text("Find path with Ford-Bellman") }
+
                 Button(
                     onClick = {
                         drawTarjan(mainViewModel.graphViewModel)
