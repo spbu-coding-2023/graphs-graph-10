@@ -31,7 +31,7 @@ class Neo4jRepository {
         println("Connected to Neo4l db.")
     }
 
-    fun <V, E> writeData(mainScreenViewModel: MainScreenViewModel<V, E>) {
+    fun writeData(mainScreenViewModel: MainScreenViewModel) {
         clearDB()
         val buffer = StringBuilder()
         mainScreenViewModel.graphViewModel.vertices.forEach {
@@ -71,10 +71,9 @@ class Neo4jRepository {
         println("Graph was saved")
     }
 
-    fun <V, E> readData(mainScreenViewModel: MainScreenViewModel<V, E>) {
-        var graph: Graph<V, E>
-
-        val vertexMap = mutableMapOf<V, VertexData>()
+    fun readData(mainScreenViewModel: MainScreenViewModel) {
+        var graph: Graph
+        val vertexMap = mutableMapOf<Long, VertexData>()
         val edgeMap = mutableMapOf<String, Color>()
         session.executeRead { tx ->
             var result =
@@ -106,8 +105,8 @@ class Neo4jRepository {
                     "MATCH (v:Vertex) RETURN v.element as element, v.x as x, v.y as y, v.color as color"
                 )
             result.stream().forEach {
-                graph.addVertex(it["element"].toString() as V)
-                vertexMap[it["element"].toString() as V] =
+                graph.addVertex(it["element"].asLong())
+                vertexMap[it["element"].asLong()] =
                     VertexData(
                         it["x"].toString().toFloat(),
                         it["y"].toString().toFloat(),
@@ -120,10 +119,10 @@ class Neo4jRepository {
                 )
             result.stream().forEach {
                 graph.addEdge(
-                    it["u"].toString() as V,
-                    it["v"].toString() as V,
-                    it["e"].toString() as E,
-                    weight = (it["weight"].asString().toLongOrNull())
+                    it["u"].asLong(),
+                    it["v"].asLong(),
+                    it["e"].asLong(),
+                    weight = (it["weight"].toString().toLongOrNull())
                 )
                 edgeMap[it["e"].toString()] = Color(it["color"].asString().toULong())
             }

@@ -1,15 +1,15 @@
 package graphs.algo
 import graphs.primitives.Graph
 //!! will be fixed soon
-fun <V, E> findBridges(graph: Graph<V, E>) : MutableList<Pair<V,V>> {
+fun findBridges(graph: Graph) : MutableList<Pair<Long, Long>> {
     val dictGraph = toAdjacencyList(graph)
-    val visited = mutableSetOf<V>()
-    val low = mutableMapOf<V, Int>()
-    val disc = mutableMapOf<V, Int>()
+    val visited = mutableSetOf<Long>()
+    val low = mutableMapOf<Long, Int>()
+    val disc = mutableMapOf<Long, Int>()
     var time = 0
-    val bridges = mutableListOf<Pair<V, V>>()
+    val bridges = mutableListOf<Pair<Long, Long>>()
 
-    fun dfs(u: V, parent: V?) {
+    fun dfs(u: Long, parent: Long?) {
         visited.add(u)
         disc[u] = time
         low[u] = time

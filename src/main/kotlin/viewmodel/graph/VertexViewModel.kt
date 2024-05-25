@@ -9,11 +9,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import graphs.primitives.Vertex
 
-class VertexViewModel<V>(
+class VertexViewModel(
     x: Dp = 0.dp,
     y: Dp = 0.dp,
     color: Color = Color.Black,
-    val v: Vertex<V>,
+    val v: Vertex,
     val radius: Dp = 20.dp
 ) {
     private var _x = mutableStateOf(x)

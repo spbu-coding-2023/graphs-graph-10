@@ -3,10 +3,10 @@ package graphs.algo
 import graphs.primitives.Graph
 
 
-fun <V, E> fordBellman(graph: Graph<V, E>, start: V, end: V): Pair<List<V>, Long?>?{
+fun fordBellman(graph: Graph, start: Long, end: Long): Pair<List<Long>, Long?>?{
 
     val adjList = toAdjacencyList(graph)
-    val distances = mutableMapOf<V, Long>()
+    val distances = mutableMapOf<Long, Long>()
     for (i in adjList.keys.distinct()) {
         distances[i] = Int.MAX_VALUE.toLong()
     }

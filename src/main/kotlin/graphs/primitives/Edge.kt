@@ -1,7 +1,7 @@
 package graphs.primitives
 
-interface Edge<E, V> {
-    var element: E
+interface Edge {
+    var element: Long
     var weight: Long?
-    val vertices: Pair<Vertex<V>, Vertex<V>>
+    val vertices: Pair<Vertex, Vertex>
 }

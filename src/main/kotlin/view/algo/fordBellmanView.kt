@@ -3,7 +3,7 @@ import androidx.compose.ui.graphics.Color
 import graphs.algo.fordBellman
 import viewmodel.graph.GraphViewModel
 
-fun <V, E> drawFordBellman(graphViewModel: GraphViewModel<V, E>) : String {
+fun drawFordBellman(graphViewModel: GraphViewModel) : String {
     val pickedVertices = graphViewModel.pickedVertices
 
     if (pickedVertices.size != 2) {

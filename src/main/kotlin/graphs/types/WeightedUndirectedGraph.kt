@@ -2,13 +2,13 @@ package graphs.types
 
 import graphs.abstracts.WeightedGraph
 
-class WeightedUndirectedGraph<V, E> : WeightedGraph<V, E>() {
+class WeightedUndirectedGraph : WeightedGraph() {
 
     fun findSCC(){
         TODO("Not yet implemented")
     }
 
-    override fun MinimalPathFloidBellman(start: V, target: V): WeightedGraph<V, E> {
+    override fun MinimalPathFloidBellman(start: Long, target: Long): WeightedGraph {
         TODO("Not yet implemented")
     }
 }

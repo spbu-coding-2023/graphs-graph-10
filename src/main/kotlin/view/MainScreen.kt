@@ -33,7 +33,7 @@ import kotlin.math.sign
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
+fun MainScreen(mainViewModel: MainScreenViewModel) {
     var resolution = Pair(800, 700)
     val displayGraph = remember { mutableStateOf(true) }
 

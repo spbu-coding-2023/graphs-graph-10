@@ -23,7 +23,7 @@ import graphs.types.UndirectedGraph
 import graphs.types.WeightedDirectedGraph
 import view.graph.FileExplorer
 
-fun <V, E> createGraph(graphType: GraphType): Graph<V, E> {
+fun createGraph(graphType: GraphType): Graph {
     return when (graphType) {
         GraphType.WEIGHTED -> WeightedUndirectedGraph()
         GraphType.WEIGHTED_DIRECTED -> WeightedDirectedGraph()
@@ -39,7 +39,7 @@ fun Welcome() {
     var showTypeDialog by remember { mutableStateOf(false) }
     var showFilePicker by remember { mutableStateOf(false) }
     var textData by remember { mutableStateOf("") }
-    var graph by remember { mutableStateOf<Graph<String, Long>?>(null) }
+    var graph by remember { mutableStateOf<Graph?>(null) }
     val displayLoadDialog = remember { mutableStateOf(false) }
     val displayGraph = remember { mutableStateOf(false) }
     val navigator = LocalNavigator.currentOrThrow
@@ -95,7 +95,7 @@ fun Welcome() {
                 if (showFilePicker) {
                     FileExplorer(fileType = "csv") { selectedFilePath ->
                         graphType?.let {
-                            graph = createGraph<String, Long>(it)
+                            graph = createGraph(it)
                             graph!!.reading(selectedFilePath)
                             // Now graph is available outside the if blocks
                         }
@@ -107,7 +107,7 @@ fun Welcome() {
         }
 
         if (displayLoadDialog.value) {
-            val tempGraph: Graph<String, Long> = DirectedGraph()
+            val tempGraph: Graph = DirectedGraph()
             val mainViewModel = MainScreenViewModel(tempGraph)
             SaveToNeo4jDialog(onDismissRequest = {
                 displayLoadDialog.value = false
@@ -117,7 +117,7 @@ fun Welcome() {
         }
 
         if (graph != null && currentFileType == "csv") {
-            val mainScreenViewModel = MainScreenViewModel<String, Long>(graph!!)
+            val mainScreenViewModel = MainScreenViewModel(graph!!)
             mainScreenViewModel.runLayout = true
             navigator.push(GraphScreen(mainScreenViewModel))
         }

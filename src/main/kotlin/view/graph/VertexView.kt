@@ -19,10 +19,10 @@ import viewmodel.graph.GraphViewModel
 import viewmodel.graph.VertexViewModel
 
 @Composable
-fun <V> VertexView(
-    vertexViewModel: VertexViewModel<V>,
+fun VertexView(
+    vertexViewModel: VertexViewModel,
     modifier: Modifier = Modifier,
-    graphViewModel: GraphViewModel<V, *>
+    graphViewModel: GraphViewModel
 ) {
     var savedVertexColor by remember{ mutableStateOf(vertexViewModel.color) }
     var borderColor by remember{ mutableStateOf(Color.Gray) }

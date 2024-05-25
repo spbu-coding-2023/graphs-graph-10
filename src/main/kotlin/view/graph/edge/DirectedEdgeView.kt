@@ -15,8 +15,8 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 @Composable
-fun <E, V> DirectedEdgeView(
-    edgeViewModel: EdgeViewModel<E, V>,
+fun DirectedEdgeView(
+    edgeViewModel: EdgeViewModel,
     displayWeight: MutableState<Boolean>,
     modifier: Modifier = Modifier,
     ) {
