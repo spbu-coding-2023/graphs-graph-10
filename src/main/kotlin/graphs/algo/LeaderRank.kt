@@ -5,22 +5,6 @@ import graphs.primitives.Graph
 import graphs.primitives.Vertex
 import graphs.types.DirectedGraph
 import graphs.types.WeightedDirectedGraph
-
-/*
-
-
-LeaderRank(graph G, damping_factor d, convergence_threshold epsilon)
-1. Инициализируем рейтинги вершин: каждая вершина v_i имеет рейтинг R(v_i) = 1 / |V|, где |V| - общее количество вершин в графе G.
-2. Построим матрицу смежности A графа G.
-3. Построим матрицу переходных вероятностей P: P = A / deg, где deg - количество исходящих ребер для каждой вершины.
-4. Повторяем до сходимости:
-4.1. Вычисляем новые рейтинги вершин: R_new = (1-d) / |V| + d * P * R, где d - коэффициент затухания.
-4.2. Вычисляем изменение в рейтингах: diff = ||R_new - R||
-4.3. Если diff < epsilon, прерываем итерации.
-4.4. Присваиваем R = R_new и продолжаем итерации.
-5. Выводим рейтинги вершин в порядке убывания.
-*/
-
 import kotlin.math.abs
 
 fun <V, E> LeaderRank(G: Graph<V, E>, d: Double, epsilon: Double): List<Pair<Vertex<V>, Double>> {
