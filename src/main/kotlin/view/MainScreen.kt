@@ -4,7 +4,6 @@ import WelcomeScreen
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -16,7 +15,6 @@ import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
-
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import graphs.types.WeightedDirectedGraph
@@ -27,6 +25,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.ui.unit.Dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import graphs.algo.LeaderRank
+
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
 import kotlin.math.sign
@@ -42,14 +42,18 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
         scale = (scale * exp(delta * 0.1f)).coerceIn(0.05f, 4.0f)
     }
 
+    var vertindex: Int = 0
     var offset by mainViewModel.offset
     var textData by remember { mutableStateOf("") }
     val displayWeight = mainViewModel.displayWeight
     val displaySaveDialog = remember { mutableStateOf(false) }
-    val displayLoadDialog = remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(true) }
-    val columnWidth: Dp by animateDpAsState(targetValue = if (isExpanded) 350.dp else 0.dp)
     val backToWelcome = remember { mutableStateOf(false) }
+    var LeaderRankDialog = remember { mutableStateOf(false) }
+    var n by remember { mutableStateOf<Int?>(null) }
+    var gap by remember { mutableStateOf<Double?>(null) }
+    var leaderRankStart by remember { mutableStateOf(false) }
+
     val navigator = LocalNavigator.currentOrThrow
     if (mainViewModel.runLayout) {
         println(resolution)
@@ -84,7 +88,15 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                 ) { Text("Check cycles for vertex") }
                 Button(
                     onClick = {
+
+                        LeaderRankDialog.value = true
+
+                    }
+                ) { Text("Find key vertices with LeaderRank") }
+                Button(
+                    onClick = {
                         textData = drawPathOnGraph(mainViewModel.graphViewModel)
+
                     }
                 ) { Text("Find path with Dijkstra") }
                 if (mainViewModel.graph is WeightedUndirectedGraph) {
@@ -101,7 +113,9 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                 }
                 Button(
                     onClick = {
+
                         drawCommunities(mainViewModel.graphViewModel)
+
                     }
                 ) { Text("Find Communities") }
 
@@ -111,11 +125,11 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                     }
                 ) { Text("Find Bridge") }
 
-                    Button(
-                        onClick = {
-                            drawFordBellman(mainViewModel.graphViewModel)
-                        }
-                    ) { Text("Find path with Ford-Bellman") }
+                Button(
+                    onClick = {
+                        drawFordBellman(mainViewModel.graphViewModel)
+                    }
+                ) { Text("Find path with Ford-Bellman") }
 
                 Button(
                     onClick = {
@@ -137,7 +151,25 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                         )
                     }
                 }
+                if (LeaderRankDialog.value) {
 
+                    LeaderRankDisplay(
+                        onDismissRequest = { LeaderRankDialog.value = false },
+                        onResult = { amountOfKeyVertices, gapToCheck, StartAlgo ->
+                            n = amountOfKeyVertices
+                            gap = gapToCheck
+                            leaderRankStart = StartAlgo
+                        },
+                        mainViewModel.graph
+                    )
+
+
+                }
+                if ((n != null || gap != null) && leaderRankStart) {
+
+                    LeaderRankView(mainViewModel.graphViewModel, n, gap)
+                    leaderRankStart = false
+                }
                 if (displaySaveDialog.value) {
                     SaveToNeo4jDialog(onDismissRequest = {
                         displaySaveDialog.value = false
@@ -150,10 +182,10 @@ fun <V, E> MainScreen(mainViewModel: MainScreenViewModel<V, E>) {
                 ) { Text("Save to Neo4j") }
                 Button(
                     onClick = {
-                    backToWelcome.value = true
-                }
-                ){Text("New Graph")}
-                if(backToWelcome.value) {
+                        backToWelcome.value = true
+                    }
+                ) { Text("New Graph") }
+                if (backToWelcome.value) {
                     navigator.push(WelcomeScreen)
                 }
             }
