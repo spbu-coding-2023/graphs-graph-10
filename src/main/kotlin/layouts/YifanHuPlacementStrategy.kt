@@ -17,7 +17,7 @@ import viewmodel.graph.VertexViewModel
 import java.util.Random
 
 class YifanHuPlacementStrategy : RepresentationStrategy {
-    override fun <V, T> place(width: Double, height: Double, originalGraph: GraphViewModel<V, T>) {
+    override fun place(width: Double, height: Double, originalGraph: GraphViewModel) {
         val random = Random(1L)
 
         val pc = Lookup.getDefault().lookup(ProjectController::class.java)
@@ -26,7 +26,7 @@ class YifanHuPlacementStrategy : RepresentationStrategy {
         val graphModel = Lookup.getDefault().lookup(GraphController::class.java).graphModel
         val graph = graphModel.undirectedGraph
 
-        val map = mutableMapOf<V, Node>()
+        val map = mutableMapOf<Long, Node>()
         for (vert in originalGraph.vertices) {
             val n: Node = graphModel.factory().newNode(vert.v.element.toString())
             n.setX(random.nextFloat()*10)
@@ -71,7 +71,7 @@ class YifanHuPlacementStrategy : RepresentationStrategy {
         }
     }
 
-    override fun <V> move(old: Pair<Int, Int>, new: Pair<Int, Int>, vertices: Collection<VertexViewModel<V>>) {
+    override fun move(old: Pair<Int, Int>, new: Pair<Int, Int>, vertices: Collection<VertexViewModel>) {
         if (old.first == 0 || old.second == 0) return
 
         val xOffset: Float = new.first.toFloat() / 2 - old.first.toFloat() / 2

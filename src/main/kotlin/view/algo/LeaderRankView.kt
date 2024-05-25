@@ -32,10 +32,10 @@ import viewmodel.MainScreenViewModel
 import viewmodel.graph.GraphViewModel
 
 @Composable
-fun <V, E> LeaderRankDisplay(
+fun LeaderRankDisplay(
     onDismissRequest: () -> Unit,
     onResult: (Int?, Double?, Boolean) -> Unit,
-    graph: Graph<V, E>,
+    graph: Graph,
 ) {
     var textAmountOfKeyVertices by remember { mutableStateOf("") }
     var textGapToCheck by remember { mutableStateOf("") }
@@ -101,7 +101,7 @@ fun <V, E> LeaderRankDisplay(
 }
 
 @Composable
-fun <V, E> LeaderRankView(graphViewModel: GraphViewModel<V, E>, topKeys: Int? = 0, gap: Double? = null) {
+fun LeaderRankView(graphViewModel: GraphViewModel, topKeys: Int? = 0, gap: Double? = null) {
     var rankedList = LeaderRank(graphViewModel.graph, d = 0.15, epsilon = 0.008)
     if (topKeys != null) {
         rankedList = rankedList.take(topKeys)

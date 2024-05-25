@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import graphs.algo.findCycle
 import viewmodel.graph.GraphViewModel
 
-fun <V, E> drawCycleOnGraph(graphViewModel: GraphViewModel<V, E>): String {
+fun drawCycleOnGraph(graphViewModel: GraphViewModel): String {
     val t = graphViewModel.pickedVertices
     if (t.size != 1) {
         println("You can pick only one vertex")

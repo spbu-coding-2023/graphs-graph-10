@@ -6,7 +6,7 @@ import graphs.algo.findBridges
 import graphs.algo.fordBellman
 import viewmodel.graph.GraphViewModel
 
-fun <V, E> drawFindBridge(graphViewModel: GraphViewModel<V, E>) {
+fun drawFindBridge(graphViewModel: GraphViewModel) {
     val findBridge = findBridges(graphViewModel.graph)
     findBridge.forEach{
         graphViewModel.edges.forEach {v ->

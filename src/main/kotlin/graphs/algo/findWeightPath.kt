@@ -2,7 +2,7 @@ package graphs.algo
 
 import graphs.primitives.Graph
 
-fun <V, E> findWeightPath(graph: Graph<V, E>, path : List<V>) : Long? {
+fun findWeightPath(graph: Graph, path: List<Long>) : Long? {
     val n = path.size
     if (n < 1) {
         println("There is no such way")

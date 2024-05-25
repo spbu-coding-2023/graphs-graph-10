@@ -5,7 +5,7 @@ import graphs.primitives.Graph
 import java.io.File
 import java.io.BufferedReader
 
-fun Graph<String, Long>.reading(fileName: String){
+fun Graph.reading(fileName: String) {
     val csvFile = File(fileName)
     val reader = BufferedReader(csvFile.reader())
     val edgesIndex = HashMap<Int, String>()
@@ -30,12 +30,12 @@ fun Graph<String, Long>.reading(fileName: String){
 
             val isEdge = data[i][j].toLong()
             if (firstVert != null)
-                this.addVertex(firstVert)
+                this.addVertex(firstVert.toLong())
             if (secondVert != null)
-                this.addVertex(secondVert)
+                this.addVertex(secondVert.toLong())
 
             if (isEdge >= 1 && firstVert != null && secondVert != null) {
-                this.addEdge(firstVert, secondVert, element, isEdge)
+                this.addEdge(firstVert.toLong(), secondVert.toLong(), element, isEdge)
                 element++
             }
         }

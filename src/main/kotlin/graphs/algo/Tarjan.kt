@@ -4,16 +4,16 @@ package graphs.algo
 import graphs.primitives.Graph
 
 
-fun <V, E> findArticulationVerticesTarjan(graph: Graph<V, E>): List<V> {
-    val visited = mutableSetOf<V>()
-    val disc = mutableMapOf<V, Int>()
-    val low = mutableMapOf<V, Int>()
-    val parent = mutableMapOf<V, V>()
-    val articulationPoints = mutableListOf<V>()
+fun findArticulationVerticesTarjan(graph: Graph): List<Long> {
+    val visited = mutableSetOf<Long>()
+    val disc = mutableMapOf<Long, Int>()
+    val low = mutableMapOf<Long, Int>()
+    val parent = mutableMapOf<Long, Long>()
+    val articulationPoints = mutableListOf<Long>()
 
     var time = 0
 
-    fun findTarjanRecursive(u: V) {
+    fun findTarjanRecursive(u: Long) {
         visited.add(u)
         disc[u] = time
         low[u] = time

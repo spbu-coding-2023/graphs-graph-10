@@ -19,10 +19,10 @@ import viewmodel.MainScreenViewModel
 
 
 @Composable
-fun <V, E> SaveToNeo4jDialog(
+fun SaveToNeo4jDialog(
     onDismissRequest: () -> Unit,
     actionType: String,
-    mainScreenViewModel: MainScreenViewModel<V, E>,
+    mainScreenViewModel: MainScreenViewModel,
     callback: () -> Unit = {}
 ) {
     var addressPort by remember { mutableStateOf("localhost:7687") }

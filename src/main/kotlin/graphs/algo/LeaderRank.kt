@@ -7,17 +7,17 @@ import graphs.types.DirectedGraph
 import graphs.types.WeightedDirectedGraph
 import kotlin.math.abs
 
-fun <V, E> LeaderRank(G: Graph<V, E>, d: Double, epsilon: Double): List<Pair<Vertex<V>, Double>> {
+fun LeaderRank(G: Graph, d: Double, epsilon: Double): List<Pair<Vertex, Double>> {
     val adjacencyList = toAdjacencyList(G)
     val n = G.vertices.size
-    var R = mutableMapOf<Vertex<V>, Double>()
+    var R = mutableMapOf<Vertex, Double>()
     G.vertices.forEach { vertex -> R[vertex] = 1.0 / n }
 
     val deg = buildOutDegreeMatrix(adjacencyList)
 
     var diff = Double.MAX_VALUE
     while (diff >= epsilon) {
-        val R_new = mutableMapOf<Vertex<V>, Double>()
+        val R_new = mutableMapOf<Vertex, Double>()
         G.vertices.forEach { v ->
             var sum = 0.0
             G.vertices.forEach { u ->
@@ -40,8 +40,8 @@ fun <V, E> LeaderRank(G: Graph<V, E>, d: Double, epsilon: Double): List<Pair<Ver
     return sortedRatings
 }
 
-fun <V> buildOutDegreeMatrix(adjacencyList: Map<V, Set<Pair<V, Long?>>>): Map<V, Int> {
-    val deg = mutableMapOf<V, Int>()
+fun buildOutDegreeMatrix(adjacencyList: Map<Long, Set<Pair<Long, Long?>>>): Map<Long, Int> {
+    val deg = mutableMapOf<Long, Int>()
 
     for ((v, neighbors) in adjacencyList) {
         deg[v] = neighbors.size
@@ -50,7 +50,7 @@ fun <V> buildOutDegreeMatrix(adjacencyList: Map<V, Set<Pair<V, Long?>>>): Map<V,
     return deg
 }
 
-fun <V> printAdjacencyMatrix(adjacencyMatrix: Map<Vertex<V>, Map<Vertex<V>, Long?>>) {
+fun <V> printAdjacencyMatrix(adjacencyMatrix: Map<Vertex, Map<Vertex, Long?>>) {
     for ((vertex, neighbors) in adjacencyMatrix) {
         println("Vertex ${vertex.element}:")
         for ((neighbor, edge) in neighbors) {

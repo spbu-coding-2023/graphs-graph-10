@@ -18,7 +18,7 @@ object WelcomeScreen : Screen {
     }
 }
 
-data class GraphScreen<V, E>(val mainViewModel: MainScreenViewModel<V, E>) : Screen {
+data class GraphScreen(val mainViewModel: MainScreenViewModel) : Screen {
     @Composable
     override fun Content() {
         MainScreen(mainViewModel)

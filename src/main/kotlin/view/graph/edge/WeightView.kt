@@ -11,8 +11,8 @@ import androidx.compose.material.Text
 
 
 @Composable
-fun <E, V> WeightView(
-    edgeViewModel: EdgeViewModel<E, V>,
+fun WeightView(
+    edgeViewModel: EdgeViewModel,
     modifier: Modifier = Modifier,
 ) {
     val weightToDraw = edgeViewModel.e.weight.toString()

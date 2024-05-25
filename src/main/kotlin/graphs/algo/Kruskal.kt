@@ -4,16 +4,16 @@ import graphs.primitives.Edge
 import graphs.primitives.Graph
 
 
-fun <V, E> Kruskal(graph: Graph<V, E>): List<Edge<E, V>> {
-    val edgeList = mutableListOf<Edge<E, V>>()
-    val sccmap = HashMap<V, V>()
-    val MST = mutableListOf<Edge<E, V>>()
+fun Kruskal(graph: Graph): List<Edge> {
+    val edgeList = mutableListOf<Edge>()
+    val sccmap = HashMap<Long, Long>()
+    val MST = mutableListOf<Edge>()
 
     graph.edges.forEach { edgeList.add(it) }
     graph.vertices.forEach { sccmap[it.element] = it.element }
     edgeList.sortBy { it.weight }
 
-    fun repaintTheMap(to: V, from: V, sccmap: HashMap<V, V>) {
+    fun repaintTheMap(to: Long, from: Long, sccmap: HashMap<Long, Long>) {
         sccmap.entries.forEach { entry ->
             if (entry.value == from) {
                 entry.setValue(to)
