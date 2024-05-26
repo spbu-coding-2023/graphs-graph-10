@@ -27,6 +27,7 @@ class Neo4jRepository {
 
     fun connect(uri: String, user: String, password: String) {
         driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password))
+        driver.verifyConnectivity()
         session = driver.session()
         println("Connected to Neo4l db.")
     }
