@@ -5,13 +5,16 @@ import graphs.types.WeightedUndirectedGraph
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 
-
+/**
+ * MinimalPathDijkstraKtTest class contains unit tests for finding the minimal path
+ * in weighted undirected and directed graphs using Dijkstra's algorithm.
+ */
 class MinimalPathDijkstraKtTest {
 
-    // algorithm for weighted graphs
-    // weighted undirected
-    // weighted directed
-
+    /**
+     * Tests finding a path in a weighted undirected graph.
+     * Verifies that the path from vertex 1 to vertex 3 is correct.
+     */
     @Test
     fun `path in undirected graph`() {
         val graph = WeightedUndirectedGraph().apply {
@@ -27,6 +30,10 @@ class MinimalPathDijkstraKtTest {
         assertEquals(listOf<Long>(1, 2, 3), pathList)
     }
 
+    /**
+     * Tests finding no path in a weighted undirected graph.
+     * Verifies that there is no path from vertex 1 to vertex 4.
+     */
     @Test
     fun `no path in undirected graph`() {
         val graph = WeightedUndirectedGraph().apply {
@@ -42,6 +49,10 @@ class MinimalPathDijkstraKtTest {
         assertEquals(0, pathList.size)
     }
 
+    /**
+     * Tests finding a path in a weighted directed graph.
+     * Verifies that the path from vertex 1 to vertex 3 is correct.
+     */
     @Test
     fun `path in directed graph`() {
         val graph = WeightedDirectedGraph().apply {
@@ -57,6 +68,10 @@ class MinimalPathDijkstraKtTest {
         assertEquals(listOf<Long>(1, 2, 3), pathList)
     }
 
+    /**
+     * Tests finding no path in a weighted directed graph.
+     * Verifies that there is no path from vertex 1 to vertex 4.
+     */
     @Test
     fun `no path in directed graph`() {
         val graph = WeightedDirectedGraph().apply {
