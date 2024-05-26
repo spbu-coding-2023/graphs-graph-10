@@ -18,14 +18,11 @@ repositories {
 dependencies {
     implementation(compose.desktop.currentOs)
     implementation("org.gephi", "gephi-toolkit", "0.10.1", classifier = "all")
-
     implementation("org.neo4j.driver", "neo4j-java-driver", "5.6.0")
-
     implementation("com.darkrockstudios:mpfilepicker:3.1.0")
-    val voyagerVersion = "1.0.0"
-    implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
-    implementation("cafe.adriel.voyager:voyager-screenmodel:$voyagerVersion")
-
+    implementation("cafe.adriel.voyager:voyager-navigator:1.0.0")
+    implementation("cafe.adriel.voyager:voyager-screenmodel:1.0.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
 
 compose.desktop {
@@ -38,4 +35,8 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
