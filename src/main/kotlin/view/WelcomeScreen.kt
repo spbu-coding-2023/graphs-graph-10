@@ -21,6 +21,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import graphs.types.DirectedGraph
 import graphs.types.UndirectedGraph
 import graphs.types.WeightedDirectedGraph
+import view.components.CoolButton
+import view.components.SmallBtn
 import view.graph.FileExplorer
 
 fun createGraph(graphType: GraphType): Graph {
@@ -61,24 +63,24 @@ fun Welcome() {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Button(onClick = {
+                CoolButton(onClick = {
                     currentFileType = "csv"
                     showTypeDialog = true
-                }) {
+                }, SmallBtn) {
                     Text("CSV")
                 }
-
-                Button(onClick = {
+                Spacer(Modifier.width(4.dp))
+                CoolButton(onClick = {
                     currentFileType = "sqlite"
-                }) {
+                }, SmallBtn) {
                     Text("SQLite")
                 }
-
-                Button(
+                Spacer(Modifier.width(4.dp))
+                CoolButton(
                     onClick = {
                         currentFileType = "neo4j"
                         displayLoadDialog.value = true
-                    }
+                    }, SmallBtn
                 ) { Text("Neo4j") }
             }
             if (currentFileType == "csv") {
