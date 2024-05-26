@@ -13,7 +13,7 @@ abstract class WeightedGraph : Graph {
     override val vertices: Collection<Vertex>
         get() = _vertices.values
 
-    override fun addVertex(v: Long): Vertex = _vertices.getOrPut(v) { graphs.abstracts.Vertex(v) }
+    override fun addVertex(v: Long, data: String?): graphs.primitives.Vertex = _vertices.getOrPut(v) { Vertex(v, data) }
 
     override fun addEdge(u: Long, v: Long, e: Long, weight: Long?) {
 

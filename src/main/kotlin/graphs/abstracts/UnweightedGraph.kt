@@ -12,7 +12,7 @@ abstract class UnweightedGraph : Graph {
     override val edges: Collection<Edge>
         get() = _edges.values
 
-    override fun addVertex(v: Long): Vertex = _vertices.getOrPut(v) { Vertex(v) }
+    override fun addVertex(v: Long, data: String?): Vertex = _vertices.getOrPut(v) { Vertex(v, data) }
 
     override fun addEdge(u: Long, v: Long, e: Long, weight: Long?) {
         val first = addVertex(u)
