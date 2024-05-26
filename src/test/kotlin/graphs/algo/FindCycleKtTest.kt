@@ -2,8 +2,9 @@ package graphs.algo
 
 import graphs.types.DirectedGraph
 import graphs.types.UndirectedGraph
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
+
 
 class FindCycleKtTest {
 
@@ -13,7 +14,7 @@ class FindCycleKtTest {
 
     @Test
     fun `undirected graph without cycle`() {
-        val graph = UndirectedGraph<Long, Long>().apply {
+        val graph = UndirectedGraph().apply {
             addVertex(1)
             addVertex(2)
             addVertex(3)
@@ -27,7 +28,7 @@ class FindCycleKtTest {
 
     @Test
     fun `undirected graph with cycle`() {
-        val graph = UndirectedGraph<Long, Long>().apply {
+        val graph = UndirectedGraph().apply {
             addVertex(1)
             addVertex(2)
             addVertex(3)
@@ -43,7 +44,7 @@ class FindCycleKtTest {
 
     @Test
     fun `directed graph without cycle`() {
-        val graph = DirectedGraph<Long, Long>().apply {
+        val graph = DirectedGraph().apply {
             addVertex(1)
             addVertex(2)
             addVertex(3)
@@ -58,7 +59,7 @@ class FindCycleKtTest {
 
     @Test
     fun `directed graph with cycle`() {
-        val graph = DirectedGraph<Long, Long>().apply {
+        val graph = DirectedGraph().apply {
             addVertex(1)
             addVertex(2)
             addVertex(3)
