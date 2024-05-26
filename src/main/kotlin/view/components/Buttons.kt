@@ -19,7 +19,7 @@ interface BtnSize {
 }
 
 object BigBtn: BtnSize {
-    override var width: Dp = 200.dp
+    override var width: Dp = 220.dp
     override var height: Dp = 40.dp
 }
 
