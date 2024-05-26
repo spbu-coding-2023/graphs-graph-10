@@ -26,6 +26,12 @@ import androidx.compose.ui.unit.Dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import graphs.algo.LeaderRank
+import graphs.types.UndirectedGraph
+import view.components.BigBtn
+import view.components.CoolButton
+import view.components.SmallBtn
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.sp
 
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
@@ -66,58 +72,125 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
             .background(Color(0xfa, 0xfa, 0xfa))
             .fillMaxSize()
     ) {
-        AnimatedVisibility(visible = isExpanded) {
+        AnimatedVisibility(visible = isExpanded)
+        {
             Column(
                 modifier = Modifier
-                    .width(350.dp)
+                    .width(230.dp)
                     .padding(7.dp),
                 verticalArrangement = Arrangement.Top
             ) {
-                Button(
-                    onClick = {
-                        mainViewModel.restoreGraphState()
-                        mainViewModel.runLayoutAlgorithm(resolution)
-                        displayGraph.value = true
-                        textData = ""
-                    }
-                ) { Text("Reload visualization") }
-                Button(
-                    onClick = {
-                        textData = drawCycleOnGraph(mainViewModel.graphViewModel)
-                    }
-                ) { Text("Check cycles for vertex") }
-                Button(
-                    onClick = {
-
-                        LeaderRankDialog.value = true
-
-                    }
-                ) { Text("Find key vertices with LeaderRank") }
-                Button(
-                    onClick = {
-                        textData = drawPathOnGraph(mainViewModel.graphViewModel)
-
-                    }
-                ) { Text("Find path with Dijkstra") }
-                if (mainViewModel.graph is WeightedUndirectedGraph) {
-                    Button(
+                Row {
+                    CoolButton(
                         onClick = {
-                            drawMst(mainViewModel.graphViewModel)
-                        }
-                    ) { Text("Find Minimal spanning tree with Prim") }
-                    Button(
+                            mainViewModel.restoreGraphState()
+                            mainViewModel.runLayoutAlgorithm(resolution)
+                            displayGraph.value = true
+                            textData = ""
+                        }, SmallBtn
+                    ) { Text("Reload visualization") }
+                    Spacer(modifier = Modifier.width(20.dp))
+                    CoolButton(
                         onClick = {
-                            drawKruskalMST(mainViewModel.graphViewModel)
-                        }
-                    ) { Text("Find Minimal spanning tree with Kruskal") }
+                            backToWelcome.value = true
+                        }, SmallBtn
+                    ) { Text("Back to menu") }
                 }
-                Button(
+                Spacer(modifier = Modifier.height(10.dp))
+                CoolButton(
                     onClick = {
+                        LeaderRankDialog.value = true
+                    }, BigBtn
+                ) { Text("Find key vertices with") }
 
-                        drawCommunities(mainViewModel.graphViewModel)
+                Spacer(modifier = Modifier.height(10.dp))
+
+                CoolButton(
+                    onClick = {
+                        drawTarjan(mainViewModel.graphViewModel)
+                    }, BigBtn
+                ) { Text("Articulated vertices") }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+
+
+                if (mainViewModel.graph is UndirectedGraph ||
+                    mainViewModel.graph is WeightedUndirectedGraph
+                ) {
+                    Column {
+                        CoolButton(
+                            onClick = {
+                                textData = drawCycleOnGraph(mainViewModel.graphViewModel)
+                            }, BigBtn
+                        ) { Text("Cycles") }
+                        Spacer(modifier = Modifier.height(10.dp))
+                        CoolButton(
+                            onClick = {
+                                drawCommunities(mainViewModel.graphViewModel)
+                            }, BigBtn
+                        ) { Text("Communities") }
 
                     }
-                ) { Text("Find Communities") }
+                } else {
+                    Row {
+                        CoolButton(
+                            onClick = {
+                                textData = drawCycleOnGraph(mainViewModel.graphViewModel)
+                            }, SmallBtn
+                        ) { Text("Cycles") }
+                        Spacer(modifier = Modifier.width(20.dp))
+                        CoolButton(
+                            onClick = {
+                                drawCommunities(mainViewModel.graphViewModel)
+                            }, SmallBtn
+                        ) { Text("SCC") }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+                if (mainViewModel.graph is WeightedUndirectedGraph) {
+                    Text(
+                        text = "Draw MST",
+                    )
+                    Box {
+                        Row {
+                            CoolButton(
+                                onClick = {
+                                    drawMst(mainViewModel.graphViewModel)
+                                }, SmallBtn
+                            ) { Text("Prim") }
+                            Spacer(modifier = Modifier.width(20.dp))
+                            CoolButton(
+                                onClick = {
+                                    drawKruskalMST(mainViewModel.graphViewModel)
+                                }, SmallBtn
+                            ) { Text("Kruskal") }
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                if (mainViewModel.graph is WeightedUndirectedGraph ||
+                    mainViewModel.graph is WeightedDirectedGraph
+                ) {
+                    Text(
+                        text = "Find minimal Path",
+                    )
+                    Column {
+                        CoolButton(
+                            onClick = {
+                                textData = drawPathOnGraph(mainViewModel.graphViewModel)
+                            }, BigBtn
+                        ) { Text("Dijkstra") }
+                        Spacer(modifier = Modifier.height(10.dp))
+                        CoolButton(
+                            onClick = {
+                                drawFordBellman(mainViewModel.graphViewModel)
+                            }, BigBtn
+                        ) { Text("Ford-Bellman") }
+                    }
+
+                }
 
                 Button(
                     onClick = {
@@ -125,17 +198,6 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     }
                 ) { Text("Find Bridge") }
 
-                Button(
-                    onClick = {
-                        drawFordBellman(mainViewModel.graphViewModel)
-                    }
-                ) { Text("Find path with Ford-Bellman") }
-
-                Button(
-                    onClick = {
-                        drawTarjan(mainViewModel.graphViewModel)
-                    }
-                ) { Text("Find articulated vertices Tarjan") }
                 if (mainViewModel.graph is WeightedDirectedGraph ||
                     mainViewModel.graph is WeightedUndirectedGraph
                 ) {
@@ -175,21 +237,41 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                         displaySaveDialog.value = false
                     }, "save", mainViewModel)
                 }
-                Button(
-                    onClick = {
-                        displaySaveDialog.value = true
+                Box(
+                    contentAlignment = Alignment.BottomCenter,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        CoolButton(
+                            onClick = {
+                                displaySaveDialog.value = true
+                            }, SmallBtn
+                        ) {
+                            Text("Neo4j")
+                        }
+
+                        Spacer(modifier = Modifier.width(20.dp))
+
+                        CoolButton(
+                            onClick = {
+                                displaySaveDialog.value = true
+                            }, SmallBtn
+
+                        ) {
+                            Text("SQLite")
+                        }
                     }
-                ) { Text("Save to Neo4j") }
-                Button(
-                    onClick = {
-                        backToWelcome.value = true
-                    }
-                ) { Text("New Graph") }
-                if (backToWelcome.value) {
-                    navigator.push(WelcomeScreen)
                 }
             }
+            if (backToWelcome.value) {
+                navigator.push(WelcomeScreen)
+            }
+
+
         }
+
         Box(
             modifier = Modifier
                 .background(Color.LightGray)
