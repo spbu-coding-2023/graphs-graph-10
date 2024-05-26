@@ -28,6 +28,10 @@ object SmallBtn: BtnSize {
     override var height: Dp = 40.dp
 }
 
+object LargeBtn: BtnSize {
+    override var width: Dp = 100.dp
+    override var height: Dp = 60.dp
+}
 @Composable
 fun CoolButton(
     onClick: () -> Unit,
@@ -40,7 +44,7 @@ fun CoolButton(
             .size(width = size.width, height = size.height)
             .pointerHoverIcon(PointerIcon(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR))),
         colors = ButtonDefaults.textButtonColors(
-            backgroundColor = Color.DarkGray,
+            backgroundColor = Color(112,102,119),
             contentColor = Color.White
         ),
         content = content
