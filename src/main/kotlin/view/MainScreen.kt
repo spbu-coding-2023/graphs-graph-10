@@ -31,7 +31,9 @@ import view.components.BigBtn
 import view.components.CoolButton
 import view.components.SmallBtn
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import view.components.LargeBtn
 
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
@@ -88,13 +90,13 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                             mainViewModel.runLayoutAlgorithm(resolution)
                             displayGraph.value = true
                             textData = ""
-                        }, SmallBtn
-                    ) { Text("Reload visualization") }
+                        }, LargeBtn
+                    ) { Text("Reload view") }
                     Spacer(modifier = Modifier.width(20.dp))
                     CoolButton(
                         onClick = {
                             backToWelcome.value = true
-                        }, SmallBtn
+                        }, LargeBtn
                     ) { Text("Back to menu") }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
@@ -157,6 +159,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                 if (mainViewModel.graph is WeightedUndirectedGraph) {
                     Text(
                         text = "Draw MST",
+                        fontWeight = FontWeight.Bold
                     )
                     Box {
                         Row {
@@ -180,6 +183,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                 ) {
                     Text(
                         text = "Find minimal Path",
+                        fontWeight = FontWeight.Bold
                     )
                     Column {
                         CoolButton(
