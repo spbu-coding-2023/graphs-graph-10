@@ -78,6 +78,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                 modifier = Modifier
                     .width(230.dp)
                     .padding(7.dp),
+
                 verticalArrangement = Arrangement.Top
             ) {
                 Row {
@@ -101,7 +102,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     onClick = {
                         LeaderRankDialog.value = true
                     }, BigBtn
-                ) { Text("Find key vertices with") }
+                ) { Text("Find key vertices") }
 
                 Spacer(modifier = Modifier.height(10.dp))
 
@@ -112,7 +113,6 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                 ) { Text("Articulated vertices") }
 
                 Spacer(modifier = Modifier.height(10.dp))
-
 
 
                 if (mainViewModel.graph is UndirectedGraph ||
@@ -147,7 +147,12 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                         ) { Text("SCC") }
                     }
                 }
-
+                Spacer(modifier = Modifier.height(10.dp))
+                CoolButton(
+                    onClick = {
+                        drawFindBridge(mainViewModel.graphViewModel)
+                    }, BigBtn
+                ) { Text("Find Bridge") }
                 Spacer(modifier = Modifier.height(10.dp))
                 if (mainViewModel.graph is WeightedUndirectedGraph) {
                     Text(
@@ -192,11 +197,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
 
                 }
 
-                Button(
-                    onClick = {
-                        drawFindBridge(mainViewModel.graphViewModel)
-                    }
-                ) { Text("Find Bridge") }
+
 
                 if (mainViewModel.graph is WeightedDirectedGraph ||
                     mainViewModel.graph is WeightedUndirectedGraph
