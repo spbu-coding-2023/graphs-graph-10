@@ -27,6 +27,7 @@ class Neo4jRepository {
 
     fun connect(uri: String, user: String, password: String) {
         driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password))
+        driver.verifyConnectivity()
         session = driver.session()
         println("Connected to Neo4l db.")
     }
@@ -63,7 +64,7 @@ class Neo4jRepository {
                 "MATCH (u:Vertex) WHERE u.element = ${it.u.v.element} \n" +
                 "MATCH (v:Vertex) WHERE v.element = ${it.v.v.element} \n" +
                 "CREATE (u)-[:Edge {weight: ${it.e.weight as Long?}, u: ${it.u.v.element}, " +
-                        "v: ${it.v.v.element}, e: ${it.e.element}, color: '${it.color.value}'}]->(v) \n"
+                        "v: ${it.v.v.element}, e: ${it.e.element}, color: '${it.color.value}', width: ${it.width}}]->(v) \n"
             session.executeWrite { tx ->
                 tx.run(query)
             }
@@ -74,7 +75,7 @@ class Neo4jRepository {
     fun readData(mainScreenViewModel: MainScreenViewModel) {
         var graph: Graph
         val vertexMap = mutableMapOf<Long, VertexData>()
-        val edgeMap = mutableMapOf<String, Color>()
+        val edgeMap = mutableMapOf<String, Pair<Color, Float>>()
         session.executeRead { tx ->
             var result =
                 tx.run(
@@ -115,7 +116,7 @@ class Neo4jRepository {
             }
             result =
                 tx.run(
-                    "MATCH ()-[e:Edge]->() RETURN e.u as u, e.v as v, e.e as e, e.weight as weight, e.color as color"
+                    "MATCH ()-[e:Edge]->() RETURN e.u as u, e.v as v, e.e as e, e.weight as weight, e.color as color, e.width as width"
                 )
             result.stream().forEach {
                 graph.addEdge(
@@ -124,7 +125,7 @@ class Neo4jRepository {
                     it["e"].asLong(),
                     weight = (it["weight"].toString().toLongOrNull())
                 )
-                edgeMap[it["e"].toString()] = Color(it["color"].asString().toULong())
+                edgeMap[it["e"].toString()] = Pair(Color(it["color"].asString().toULong()), it["width"].asFloat())
             }
 
 
@@ -137,8 +138,9 @@ class Neo4jRepository {
                 it.color = element.color
             }
             mainScreenViewModel.graphViewModel.edges.forEach {
-                val color = edgeMap[it.e.element.toString()] ?: return@forEach
+                val (color, width) = edgeMap[it.e.element.toString()] ?: return@forEach
                 it.color = color
+                it.width = width
             }
             mainScreenViewModel.scale.value = scale
             mainScreenViewModel.offset.value = DpOffset(offsetX.dp, offsetY.dp)
