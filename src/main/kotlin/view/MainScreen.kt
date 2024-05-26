@@ -40,7 +40,7 @@ import kotlin.math.sign
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainScreen(mainViewModel: MainScreenViewModel) {
-    var resolution = Pair(800, 700)
+    var resolution = Pair(0, 0)
     val displayGraph = remember { mutableStateOf(true) }
 
     var scale by mainViewModel.scale
