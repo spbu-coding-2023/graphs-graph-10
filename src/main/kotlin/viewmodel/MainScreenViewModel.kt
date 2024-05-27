@@ -16,7 +16,8 @@ class MainScreenViewModel(var graph: Graph) {
     var runLayout = false
 
     fun runLayoutAlgorithm(cords: Pair<Int, Int>) {
-        representationStrategy.place(cords.first.toDouble(), cords.second.toDouble(), graphViewModel)
+        scale.value = representationStrategy.place(cords.first.toDouble(), cords.second.toDouble(), graphViewModel)
+            .toFloat()
     }
 
     fun updateOnResize(old: Pair<Int, Int>, new: Pair<Int, Int>) {
