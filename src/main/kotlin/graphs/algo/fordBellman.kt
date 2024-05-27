@@ -30,14 +30,15 @@ fun fordBellman(graph: Graph, start: Long, end: Long): Pair<List<Long>, Long?>?{
     for (u in adjList.keys) {
         for ((v, weight) in adjList[u] ?: emptyList() ) {
             if (distances[u]!! + weight!! < distances[v]!!) {
-                return null //
+                return null // negative cycle
             }
         }
     }
     
     val path = mutableListOf(end)
+    val countVertices = graph.vertices.size
     var currentNode = end
-    while (currentNode != start) {
+    while (currentNode != start && path.size <= countVertices) {
         for (u in adjList.keys) {
             for ((v, weight) in adjList[u] ?: emptyList()) {
                 if (v == currentNode && distances[u]!! + weight!! == distances[v]!!) {
@@ -49,5 +50,6 @@ fun fordBellman(graph: Graph, start: Long, end: Long): Pair<List<Long>, Long?>?{
         }
     }
 
-    return Pair(path, findWeightPath(graph,path))
+    return if (currentNode == start) Pair(path, findWeightPath(graph,path)) else null
+    //if there is  negative cycle, then we return null
 }
