@@ -27,5 +27,5 @@ fun drawCycleOnGraph(graphViewModel: GraphViewModel): String {
         }
     }
     graphViewModel.pickedVertices.clear()
-    return ""
+    return "Cycle on display"
 }

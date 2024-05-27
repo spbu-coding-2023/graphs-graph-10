@@ -27,13 +27,10 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import graphs.algo.LeaderRank
 import graphs.types.UndirectedGraph
-import view.components.BigBtn
-import view.components.CoolButton
-import view.components.SmallBtn
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import view.components.LargeBtn
+import view.components.*
 
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
@@ -42,17 +39,15 @@ import kotlin.math.sign
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainScreen(mainViewModel: MainScreenViewModel) {
-    var resolution = Pair(0, 0)
-    val displayGraph = remember { mutableStateOf(true) }
-
+    var resolution by remember{ mutableStateOf(Pair(0, 0)) }
+    val displayGraph = remember { mutableStateOf(false) }
     var scale by mainViewModel.scale
     fun scaleBox(delta: Int) {
         scale = (scale * exp(delta * 0.1f)).coerceIn(0.05f, 4.0f)
     }
 
-    var vertindex: Int = 0
     var offset by mainViewModel.offset
-    var textData by remember { mutableStateOf("") }
+    var textData by remember { mutableStateOf("Graph loaded successfully") }
     val displayWeight = mainViewModel.displayWeight
     val displaySaveDialog = remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(true) }
@@ -63,10 +58,14 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
     var leaderRankStart by remember { mutableStateOf(false) }
 
     val navigator = LocalNavigator.currentOrThrow
-    if (mainViewModel.runLayout) {
-        println(resolution)
+
+    if (displayGraph.value && mainViewModel.runLayout) {
         mainViewModel.runLayoutAlgorithm(resolution)
+        mainViewModel.runLayout = false
     }
+
+    if (textData == "")
+        textData = "Graph loaded successfully"
 
     Row(
         horizontalArrangement = Arrangement.Start,
@@ -194,7 +193,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                         Spacer(modifier = Modifier.height(10.dp))
                         CoolButton(
                             onClick = {
-                                drawFordBellman(mainViewModel.graphViewModel)
+                                textData = drawFordBellman(mainViewModel.graphViewModel)
                             }, BigBtn
                         ) { Text("Ford-Bellman") }
                     }
@@ -246,26 +245,34 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     contentAlignment = Alignment.BottomCenter,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        CoolButton(
-                            onClick = {
-                                displaySaveDialog.value = true
-                            }, SmallBtn
+                    Column {
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier.padding(vertical = 10.dp)
                         ) {
-                            Text("Neo4j")
+                            InformationBox(textData)
                         }
-
-                        Spacer(modifier = Modifier.width(20.dp))
-
-                        CoolButton(
-                            onClick = {
-                                displaySaveDialog.value = true
-                            }, SmallBtn
-
+                        Row(
+                            horizontalArrangement = Arrangement.Center
                         ) {
-                            Text("SQLite")
+                            CoolButton(
+                                onClick = {
+                                    displaySaveDialog.value = true
+                                }, SmallBtn
+                            ) {
+                                Text("Neo4j")
+                            }
+
+                            Spacer(modifier = Modifier.width(20.dp))
+
+                            CoolButton(
+                                onClick = {
+                                    displaySaveDialog.value = true
+                                }, SmallBtn
+
+                            ) {
+                                Text("SQLite")
+                            }
                         }
                     }
                 }
@@ -300,6 +307,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                 .onSizeChanged {
                     mainViewModel.updateOnResize(resolution, Pair(it.width, it.height))
                     resolution = Pair(it.width, it.height)
+                    displayGraph.value = true
                 }
                 .onPointerEvent(PointerEventType.Scroll) {
                     val change = it.changes.first()

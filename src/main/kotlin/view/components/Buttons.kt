@@ -32,6 +32,7 @@ object LargeBtn: BtnSize {
     override var width: Dp = 100.dp
     override var height: Dp = 60.dp
 }
+
 @Composable
 fun CoolButton(
     onClick: () -> Unit,
