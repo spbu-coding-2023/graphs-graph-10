@@ -15,10 +15,18 @@ import viewmodel.graph.RepresentationStrategy
 import viewmodel.graph.VertexViewModel
 
 import java.util.Random
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
 class YifanHuPlacementStrategy : RepresentationStrategy {
-    override fun place(width: Double, height: Double, originalGraph: GraphViewModel) {
+    override fun place(width: Double, height: Double, originalGraph: GraphViewModel): Double {
         val random = Random(1L)
+
+        var maxX = Int.MIN_VALUE
+        var minX = Int.MAX_VALUE
+        var maxY = Int.MIN_VALUE
+        var minY = Int.MAX_VALUE
 
         val pc = Lookup.getDefault().lookup(ProjectController::class.java)
         pc.newProject()
@@ -66,9 +74,19 @@ class YifanHuPlacementStrategy : RepresentationStrategy {
 
         for (vertex in originalGraph.vertices) {
             val n: Node = graph.getNode(vertex.v.element.toString())
-            vertex.x = ((width/2 + n.x()* 3 / 1)).dp
-            vertex.y = ((height/2 + n.y()* 3 / 1)).dp
+            val x = ((width/2 + n.x() * 3))
+            val y = ((height/2 + n.y() * 3))
+            vertex.x = x.dp
+            vertex.y = y.dp
+
+            maxX = max(maxX, x.toInt())
+            minX = min(minX, x.toInt())
+            maxY = max(maxY, y.toInt())
+            minY = min(minY, y.toInt())
         }
+        val graphWidthScale = width / (maxX + abs(minX))
+        val graphHeightScale = height / (maxY + abs(minY))
+        return min(graphWidthScale, graphHeightScale)
     }
 
     override fun move(old: Pair<Int, Int>, new: Pair<Int, Int>, vertices: Collection<VertexViewModel>) {
