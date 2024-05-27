@@ -2,13 +2,13 @@ package graphs.algo
 
 import graphs.primitives.Graph
 
-fun <V, E> findCycle(graph: Graph<V, E>, v: V): List<V> {
+fun findCycle(graph: Graph, v: Long): List<Long> {
     val adjList = toAdjacencyList(graph)
-    val visited = mutableSetOf<V>()
-    val stack = ArrayDeque<V>()
+    val visited = mutableSetOf<Long>()
+    val stack = ArrayDeque<Long>()
     var hasCycle = false
 
-    fun searchCycle(vertex: V, parent: V?) {
+    fun searchCycle(vertex: Long, parent: Long?) {
         visited.add(vertex)
         if (!hasCycle)
             stack.addLast(vertex)

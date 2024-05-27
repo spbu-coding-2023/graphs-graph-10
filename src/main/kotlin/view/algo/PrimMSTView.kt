@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import graphs.algo.searchMstPrim
 import viewmodel.graph.GraphViewModel
 
-fun <V, E>drawMst(graphViewModel: GraphViewModel<V, E>){
+fun drawMst(graphViewModel: GraphViewModel){
     val mst = searchMstPrim(graphViewModel.graph, graphViewModel.vertices.elementAt(0).v.element)
     for (i in mst) {
         graphViewModel.edges.forEach { e ->

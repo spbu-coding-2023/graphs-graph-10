@@ -3,20 +3,24 @@ package graphs.algo
 import graphs.primitives.Graph
 
 
-fun <V> fordBellman(graph: Graph<V, Long>, source: V, destination: V): Pair<List<V>, Long?>?{
-    // Initializing distances for all vertices
+fun fordBellman(graph: Graph, start: Long, end: Long): Pair<List<Long>, Long?>?{
+
     val adjList = toAdjacencyList(graph)
-    val distances = mutableMapOf<V, Long>()
+    val distances = mutableMapOf<Long, Long>()
     for (i in adjList.keys.distinct()) {
         distances[i] = Int.MAX_VALUE.toLong()
     }
-    distances[source] = 0
+    distances[start] = 0
 
-    // Finding minimal weight for 2 vertex
+
     for (i in 1 until adjList.size) {
         for (u in adjList.keys) {
             for ((v, weight) in adjList[u] ?: emptyList() ) {
-                if (distances[u]!! +  weight!! < distances[v]!!) {
+                if (weight == null) {
+                    println("The Ford-Bellman algorithm only works with weighted graphs")
+                    return null
+                }
+                if (distances[u]!! +  weight < distances[v]!!) {
                     distances[v] = distances[u]!! + weight
                 }
             }
@@ -30,11 +34,10 @@ fun <V> fordBellman(graph: Graph<V, Long>, source: V, destination: V): Pair<List
             }
         }
     }
-
-    // Restoring the shortest path
-    val path = mutableListOf(destination)
-    var currentNode = destination
-    while (currentNode != source) {
+    
+    val path = mutableListOf(end)
+    var currentNode = end
+    while (currentNode != start) {
         for (u in adjList.keys) {
             for ((v, weight) in adjList[u] ?: emptyList()) {
                 if (v == currentNode && distances[u]!! + weight!! == distances[v]!!) {

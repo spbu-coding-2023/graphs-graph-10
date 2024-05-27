@@ -2,10 +2,10 @@ package graphs.algo
 
 import graphs.primitives.Graph
 
-fun <V, E> louvain(graph: Graph<V, E>): List<Set<V>> {
+fun louvain(graph: Graph): List<Set<Long>> {
     val adjList = toAdjacencyList(graph)
-    val communities = mutableMapOf<V, Int>()
-    adjList.keys.forEach{communities[it] = it.hashCode()}
+    val communities = mutableMapOf<Long, Long>()
+    adjList.keys.forEach{communities[it] = it.hashCode().toLong()}
 
     var bestModularity : Double
     var bestCommunities = communities.toMap()
@@ -34,9 +34,9 @@ fun <V, E> louvain(graph: Graph<V, E>): List<Set<V>> {
                 break
         }
     } while (changed)
-    val resultCommunities = mutableListOf<Set<V>>()
+    val resultCommunities = mutableListOf<Set<Long>>()
     for (value in bestCommunities.values.toSet()) {
-        val keys = mutableSetOf<V>()
+        val keys = mutableSetOf<Long>()
         for ((key, value1) in bestCommunities) {
             if (value1 == value)
                 keys.add(key)
@@ -48,7 +48,7 @@ fun <V, E> louvain(graph: Graph<V, E>): List<Set<V>> {
     return resultCommunities
 }
 
-private fun <V, E> calculateModularity(graph: Graph<V, E>, communities: Map<V, Int>): Double {
+private fun calculateModularity(graph: Graph, communities: Map<Long, Long>): Double {
     val adjList = toAdjacencyList(graph)
     val m = adjList.values.sumOf { it.size }.toDouble() / 2
     var q = 0.0

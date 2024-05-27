@@ -4,8 +4,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import graphs.primitives.Graph
 
-class GraphViewModel<V, E>(
-    val graph: Graph<V, E>
+class GraphViewModel(
+    val graph: Graph
 ) {
     private val _vertices = graph.vertices.associateWith { v ->
         VertexViewModel(0.dp, 0.dp, Color.Gray, v)
@@ -18,11 +18,11 @@ class GraphViewModel<V, E>(
         EdgeViewModel(fst, snd, e)
     }
 
-    val vertices: Collection<VertexViewModel<V>>
+    val vertices: Collection<VertexViewModel>
         get() = _vertices.values
 
-    val edges: Collection<EdgeViewModel<E, V>>
+    val edges: Collection<EdgeViewModel>
         get() = _edges.values
 
-    val pickedVertices = mutableSetOf<V>()
+    val pickedVertices = mutableSetOf<Long>()
 }

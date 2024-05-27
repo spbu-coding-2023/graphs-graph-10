@@ -2,7 +2,7 @@ package graphs.algo
 
 import graphs.primitives.Graph
 
-fun <V> findWeightEdge(graph: Graph<V, Long>, u : V, v: V) : Long? {
+fun findWeightEdge(graph: Graph, u : Long, v: Long) : Long? {
     val adjList = toAdjacencyList(graph)
     for ((vertex, weight) in adjList[u]  ?: emptyList()) {
         if (vertex == v)

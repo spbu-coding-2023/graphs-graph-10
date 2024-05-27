@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 import graphs.algo.Kruskal
 import viewmodel.graph.GraphViewModel
 
-fun <V, E> drawKruskalMST(graphViewModel: GraphViewModel<V, E>) {
+fun drawKruskalMST(graphViewModel: GraphViewModel) {
     val MST = Kruskal(graphViewModel.graph)
     MST.forEach {
         graphViewModel.edges.forEach { e ->
@@ -14,9 +14,7 @@ fun <V, E> drawKruskalMST(graphViewModel: GraphViewModel<V, E>) {
                 e.v.color = Color.Cyan
                 e.u.color = Color.Cyan
                 e.width = 4f
-
             }
-
         }
     }
 }

@@ -11,18 +11,18 @@ version = "1.0-SNAPSHOT"
 repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    maven("https://raw.github.com/gephi/gephi/mvn-thirdparty-repo/")
     google()
 }
 
 dependencies {
     implementation(compose.desktop.currentOs)
-    implementation(files("libs/gephi-toolkit-0.10.0-all.jar"))
+    implementation("org.gephi", "gephi-toolkit", "0.10.1", classifier = "all")
     implementation("org.neo4j.driver", "neo4j-java-driver", "5.6.0")
-
     implementation("com.darkrockstudios:mpfilepicker:3.1.0")
-    val voyagerVersion = "1.0.0"
-    implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
-    implementation("cafe.adriel.voyager:voyager-screenmodel:$voyagerVersion")
+    implementation("cafe.adriel.voyager:voyager-navigator:1.0.0")
+    implementation("cafe.adriel.voyager:voyager-screenmodel:1.0.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
 
 compose.desktop {
@@ -37,25 +37,6 @@ compose.desktop {
     }
 }
 
-tasks.register("downloadGephiToolkit") {
-    val path = "libs/gephi-toolkit-0.10.0-all.jar"
-    val sourceUrl = "https://github.com/gephi/gephi-toolkit/releases/download/v0.10.0/gephi-toolkit-0.10.0-all.jar"
-
-    val libsDirectory = File("libs")
-    val jarFile = File(path)
-
-    if (!libsDirectory.exists())
-        libsDirectory.mkdir()
-
-    if (!jarFile.exists())
-        download(sourceUrl, path)
-}
-
-tasks.build {
-    dependsOn("downloadGephiToolkit")
-}
-
-fun download(url: String, path: String) {
-    val destinationFile = File(path)
-    ant.invokeMethod("get", mapOf("src" to url, "dest" to destinationFile))
+tasks.test {
+    useJUnitPlatform()
 }

@@ -6,10 +6,10 @@ import graphs.primitives.Graph
 import java.util.*
 
 
-fun <V, E>searchMstPrim(graph: Graph<V, E>, startVertex: V): List<Pair<V, V>> {
-    val mst = mutableListOf<Pair<V, V>>()
-    val priorityQueue = PriorityQueue<Edge<E, V>>(compareBy { it.weight as Long})
-    val addedVertices = mutableSetOf<V>()
+fun searchMstPrim(graph: Graph, startVertex: Long): List<Pair<Long, Long>> {
+    val mst = mutableListOf<Pair<Long, Long>>()
+    val priorityQueue = PriorityQueue<Edge>(compareBy { it.weight as Long})
+    val addedVertices = mutableSetOf<Long>()
     addedVertices.add(startVertex)
 
     graph.edges.filter { it.vertices.first.element == startVertex ||

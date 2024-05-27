@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 import graphs.algo.findArticulationVerticesTarjan
 import viewmodel.graph.GraphViewModel
 
-fun <V, E>drawTarjan(graphViewModel: GraphViewModel<V, E>) {
+fun drawTarjan(graphViewModel: GraphViewModel) {
     val vertices = findArticulationVerticesTarjan(graphViewModel.graph)
     println(vertices)
     for (i in vertices) {

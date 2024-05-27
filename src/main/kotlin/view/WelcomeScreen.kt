@@ -1,6 +1,7 @@
 package view
 
 
+import GraphScreen
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -15,12 +16,16 @@ import viewmodel.MainScreenViewModel
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import graphs.types.DirectedGraph
 import graphs.types.UndirectedGraph
 import graphs.types.WeightedDirectedGraph
+import view.components.CoolButton
+import view.components.SmallBtn
 import view.graph.FileExplorer
 
-fun <V, E> createGraph(graphType: GraphType): Graph<V, E> {
+fun createGraph(graphType: GraphType): Graph {
     return when (graphType) {
         GraphType.WEIGHTED -> WeightedUndirectedGraph()
         GraphType.WEIGHTED_DIRECTED -> WeightedDirectedGraph()
@@ -36,7 +41,11 @@ fun Welcome() {
     var showTypeDialog by remember { mutableStateOf(false) }
     var showFilePicker by remember { mutableStateOf(false) }
     var textData by remember { mutableStateOf("") }
-    var graph by remember { mutableStateOf<Graph<String, Long>?>(null) }
+    var graph by remember { mutableStateOf<Graph?>(null) }
+    val displayLoadDialog = remember { mutableStateOf(false) }
+    val displayGraph = remember { mutableStateOf(false) }
+    val navigator = LocalNavigator.currentOrThrow
+
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -54,24 +63,25 @@ fun Welcome() {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Button(onClick = {
+                CoolButton(onClick = {
                     currentFileType = "csv"
                     showTypeDialog = true
-                }) {
+                }, SmallBtn) {
                     Text("CSV")
                 }
-
-                Button(onClick = {
+                Spacer(Modifier.width(4.dp))
+                CoolButton(onClick = {
                     currentFileType = "sqlite"
-                }) {
+                }, SmallBtn) {
                     Text("SQLite")
                 }
-
-                Button(onClick = {
-                    currentFileType = "neo4j"
-                }) {
-                    Text("Neo4j")
-                }
+                Spacer(Modifier.width(4.dp))
+                CoolButton(
+                    onClick = {
+                        currentFileType = "neo4j"
+                        displayLoadDialog.value = true
+                    }, SmallBtn
+                ) { Text("Neo4j") }
             }
             if (currentFileType == "csv") {
                 if (showTypeDialog) {
@@ -86,9 +96,8 @@ fun Welcome() {
 
                 if (showFilePicker) {
                     FileExplorer(fileType = "csv") { selectedFilePath ->
-
                         graphType?.let {
-                            graph = createGraph<String, Long>(it)
+                            graph = createGraph(it)
                             graph!!.reading(selectedFilePath)
                             // Now graph is available outside the if blocks
                         }
@@ -99,9 +108,20 @@ fun Welcome() {
             }
         }
 
-        if (graph != null) {
-            val mainScreenViewModel = MainScreenViewModel<String, Long>(graph!!)
-            MainScreen(mainScreenViewModel)
+        if (displayLoadDialog.value) {
+            val tempGraph: Graph = DirectedGraph()
+            val mainViewModel = MainScreenViewModel(tempGraph)
+            SaveToNeo4jDialog(onDismissRequest = {
+                displayLoadDialog.value = false
+            }, "load", mainViewModel, {
+                navigator.push(GraphScreen(mainViewModel))
+            })
+        }
+
+        if (graph != null && currentFileType == "csv") {
+            val mainScreenViewModel = MainScreenViewModel(graph!!)
+            mainScreenViewModel.runLayout = true
+            navigator.push(GraphScreen(mainScreenViewModel))
         }
     }
 

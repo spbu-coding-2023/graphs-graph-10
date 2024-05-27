@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import view.components.CoolButton
+import view.components.SmallBtn
 
 @Composable
 fun GetGraphType(
@@ -70,9 +72,9 @@ fun GetGraphType(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    Button(onClick = {
+                    CoolButton(onClick = {
                         onDismissRequest(selectedGraphType)
-                    }) {
+                    }, SmallBtn) {
                         Text("Ok")
                     }
                 }

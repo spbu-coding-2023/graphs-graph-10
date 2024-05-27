@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import graphs.algo.MinimalPathDijkstra
 import viewmodel.graph.GraphViewModel
 
-fun <V, E> drawPathOnGraph(graphViewModel: GraphViewModel<V, E>): String {
+fun drawPathOnGraph(graphViewModel: GraphViewModel): String {
     val pickedVertices = graphViewModel.pickedVertices
 
     if (pickedVertices.size != 2) {

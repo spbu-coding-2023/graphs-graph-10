@@ -15,14 +15,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import io.neo4j.Neo4jRepository
+import view.components.BigBtn
+import view.components.CoolButton
 import viewmodel.MainScreenViewModel
 
 
 @Composable
-fun <V, E> SaveToNeo4jDialog(
+fun SaveToNeo4jDialog(
     onDismissRequest: () -> Unit,
     actionType: String,
-    mainScreenViewModel: MainScreenViewModel<V, E>
+    mainScreenViewModel: MainScreenViewModel,
+    callback: () -> Unit = {},
 ) {
     var addressPort by remember { mutableStateOf("localhost:7687") }
     var loginPassword by remember { mutableStateOf("neo4j:password") }
@@ -43,28 +46,32 @@ fun <V, E> SaveToNeo4jDialog(
         val (login, password) = credentials
 
         val db = Neo4jRepository()
-        try { db.connect(uri, login, password) }
-        catch (e: Exception) {
+        try {
+            db.connect(uri, login, password)
+        } catch (e: Exception) {
             e.printStackTrace()
             actionStatus = "Wrong credentials or network error"
             return
         }
         when (actionType) {
             "save" -> {
-                try { db.writeData(mainScreenViewModel) }
-                catch (e: Exception) {
+                try {
+                    db.writeData(mainScreenViewModel)
+                    callback()
+                } catch (e: Exception) {
                     e.printStackTrace()
                     actionStatus = "Unexpected error while writing data"
                     return
                 }
                 actionStatus = "Graph successfully saved"
             }
+
             "load" -> {
                 try {
                     db.readData(mainScreenViewModel)
                     onDismissRequest()
-                }
-                catch (e: Exception) {
+                    callback()
+                } catch (e: Exception) {
                     e.printStackTrace()
                     actionStatus = "Unexpected error while reading data"
                     return
@@ -82,7 +89,7 @@ fun <V, E> SaveToNeo4jDialog(
                 .height(300.dp),
             shape = RoundedCornerShape(16.dp),
         ) {
-            Column (
+            Column(
                 modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -91,7 +98,7 @@ fun <V, E> SaveToNeo4jDialog(
                 Row {
                     TextField(
                         value = addressPort,
-                        onValueChange = { addressPort = it},
+                        onValueChange = { addressPort = it },
                         maxLines = 1,
                         placeholder = { Text("address:port") },
                         modifier = Modifier.height(50.dp).background(Color.White)
@@ -100,14 +107,15 @@ fun <V, E> SaveToNeo4jDialog(
                 Row {
                     TextField(
                         value = loginPassword,
-                        onValueChange = { loginPassword = it},
+                        onValueChange = { loginPassword = it },
                         maxLines = 1,
                         placeholder = { Text("login:password") },
                         modifier = Modifier.height(50.dp).background(Color.White)
                     )
                 }
-                Button(
-                    onClick = { makeAction() }
+                Spacer(modifier = Modifier.height(10.dp))
+                CoolButton(
+                    onClick = { makeAction() }, BigBtn
                 ) {
                     when (actionType) {
                         "save" -> Text("Connect & save")
