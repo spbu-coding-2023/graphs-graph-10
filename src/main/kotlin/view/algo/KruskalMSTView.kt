@@ -5,11 +5,12 @@ import androidx.compose.ui.graphics.Color
 import graphs.algo.Kruskal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import viewmodel.graph.GraphViewModel
 
-fun drawKruskalMST(graphViewModel: GraphViewModel) {
-    CoroutineScope(Dispatchers.Default).launch {
+fun drawKruskalMST(graphViewModel: GraphViewModel): Job {
+    return CoroutineScope(Dispatchers.Default).launch {
         val MST = Kruskal(graphViewModel.graph)
         MST.forEach {
             graphViewModel.edges.forEach { e ->

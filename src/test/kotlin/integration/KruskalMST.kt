@@ -43,10 +43,7 @@ class MSTKruskalIntegrationTest {
 
         mainViewModel.runLayoutAlgorithm(Pair(800, 600))
 
-        val job = launch(Dispatchers.Default) {
-            drawKruskalMST(mainViewModel.graphViewModel)
-        }
-        job.join()
+        drawKruskalMST(mainViewModel.graphViewModel).join()
 
         var countColoredEdges = 0
         mainViewModel.graphViewModel.edges.forEach { e ->
@@ -57,6 +54,8 @@ class MSTKruskalIntegrationTest {
         assertEquals(countColoredEdges, mainViewModel.graph.vertices.size - 1)
     }
 
+
+
     @Test
     fun checkingIdsOfColouredInMSTEdges() = runBlocking {
         val minimalSpanningTree = Kruskal(graph)
@@ -64,10 +63,7 @@ class MSTKruskalIntegrationTest {
 
         mainViewModel.runLayoutAlgorithm(Pair(800, 600))
 
-        val job = launch(Dispatchers.Default) {
-            drawKruskalMST(mainViewModel.graphViewModel)
-        }
-        job.join()
+        drawKruskalMST(mainViewModel.graphViewModel).join()
 
         var counterOfMatchedIds = 0
         mainViewModel.graphViewModel.edges.forEach { e ->
