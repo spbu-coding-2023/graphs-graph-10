@@ -28,6 +28,9 @@ import androidx.compose.ui.window.Dialog
 import graphs.algo.LeaderRank
 import graphs.primitives.Graph
 import io.neo4j.Neo4jRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import viewmodel.MainScreenViewModel
 import viewmodel.graph.GraphViewModel
 
@@ -37,6 +40,7 @@ fun LeaderRankDisplay(
     onResult: (Int?, Double?, Boolean) -> Unit,
     graph: Graph,
 ) {
+
     var textAmountOfKeyVertices by remember { mutableStateOf("") }
     var textGapToCheck by remember { mutableStateOf("") }
     var LeaderRankstart by remember { mutableStateOf(false) }
@@ -102,19 +106,20 @@ fun LeaderRankDisplay(
 
 @Composable
 fun LeaderRankView(graphViewModel: GraphViewModel, topKeys: Int? = 0, gap: Double? = null) {
-    var rankedList = LeaderRank(graphViewModel.graph, d = 0.15, epsilon = 0.008)
-    if (topKeys != null) {
-        rankedList = rankedList.take(topKeys)
-    }
-    else if (gap != null) {
-        rankedList = rankedList.filter{it.second > gap}
-    }
-    rankedList.forEach { topranked ->
-        graphViewModel.vertices.forEach {
-            if (topranked.first.element == it.v.element) {
-                it.color = Color.Red
+    CoroutineScope(Dispatchers.Default).launch {
+        var rankedList = LeaderRank(graphViewModel.graph, d = 0.15, epsilon = 0.008)
+        if (topKeys != null) {
+            rankedList = rankedList.take(topKeys)
+        } else if (gap != null) {
+            rankedList = rankedList.filter { it.second > gap }
+        }
+        rankedList.forEach { topranked ->
+            graphViewModel.vertices.forEach {
+                if (topranked.first.element == it.v.element) {
+                    it.color = Color.Red
+                }
             }
         }
     }
-}
 
+}

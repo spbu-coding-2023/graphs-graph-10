@@ -22,6 +22,8 @@ dependencies {
     implementation("com.darkrockstudios:mpfilepicker:3.1.0")
     implementation("cafe.adriel.voyager:voyager-navigator:1.0.0")
     implementation("cafe.adriel.voyager:voyager-screenmodel:1.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.8.1")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
 
