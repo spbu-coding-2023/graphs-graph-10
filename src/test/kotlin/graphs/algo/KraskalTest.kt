@@ -83,4 +83,32 @@ class KruskalTest {
         }
         assertEquals(listOfEdgeIds, listOf<Long>(4, 5, 1, 6, 8))
     }
+
+    @Test
+    fun NotСonnectedGraph() {
+        val graph = WeightedUndirectedGraph().apply() {
+            addVertex(0, "A")
+            addVertex(1, "B")
+            addVertex(2, "C")
+            addVertex(3, "D")
+            addVertex(4, "E")
+            addVertex(5, "F")
+            //first component(triangle)
+            addEdge(0, 1, 1, 1)
+            addEdge(1, 2, 2, 2)
+            addEdge(2, 0, 3, 3)
+            //second component(triangle)
+            addEdge(3, 4, 4, 4)
+            addEdge(4, 5, 5, 5)
+            addEdge(5, 3, 6, 6)
+        }
+
+        val minimalSpanningtree = Kruskal(graph)
+        assertEquals(minimalSpanningtree.size, 4)//checking that all vertices from both components are in list
+        val listOfEdgeIds = mutableListOf<Long?>()
+        minimalSpanningtree.forEach { it ->
+            listOfEdgeIds.add(it.element)
+        }
+        assertEquals(listOfEdgeIds, listOf<Long>(1, 2, 4, 5))
+    }
 }
