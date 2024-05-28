@@ -189,11 +189,19 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     Column {
                         CoolButton(
                             onClick = {
-                                scope.drawDijkstra(mainViewModel.graphViewModel) { result ->
+                                scope.drawDijkstra(mainViewModel.graphViewModel,"Dijkstra") { result ->
                                     textData = result
                                 }
                             }, BigBtn
                         ) { Text("Dijkstra") }
+                        Spacer(modifier = Modifier.height(10.dp))
+                        CoolButton(
+                            onClick = {
+                                scope.drawDijkstra(mainViewModel.graphViewModel,"Astar") { result ->
+                                    textData = result
+                                }
+                            }, BigBtn
+                        ) { Text("AStar") }
                         Spacer(modifier = Modifier.height(10.dp))
                         CoolButton(
                             onClick = {
@@ -204,7 +212,6 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
 
                         ) { Text("Ford-Bellman") }
                     }
-
                 }
 
 

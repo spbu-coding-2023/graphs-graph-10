@@ -3,11 +3,12 @@ package integration
 import androidx.compose.ui.graphics.Color
 import graphs.algo.findBridges
 import graphs.types.UndirectedGraph
-import kotlinx.coroutines.*
 import org.junit.jupiter.api.Test
 import view.algo.drawFindBridge
 import viewmodel.MainScreenViewModel
 import kotlin.test.assertEquals
+
+import kotlinx.coroutines.*
 
 class FindBridgeIntegrationTest {
     private val sampleGraph = UndirectedGraph().apply {
@@ -37,9 +38,9 @@ class FindBridgeIntegrationTest {
             mainViewModel.graphViewModel.edges.forEach { e ->
                 val u = e.u.v.element
                 val v = e.v.v.element
-                if ((Pair(u, v) == bridges[i]) || (Pair(v, u) == bridges[i]) )
+                if ((Pair(u, v) == bridges[i]) || (Pair(v, u) == bridges[i]))
                     if (e.color == Color.Cyan)
-                        countBridges ++
+                        countBridges++
             }
         }
         assertEquals(countBridges, bridges.size, "The count of extended edges does not match the count of real bridges")
