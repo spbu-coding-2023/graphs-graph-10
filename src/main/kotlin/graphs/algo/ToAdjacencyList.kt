@@ -7,7 +7,7 @@ import graphs.types.WeightedDirectedGraph
 /*
  * This method was originally written by Danil Usoltsev [https://github.com/Sibiri4ok]
  */
-fun  toAdjacencyList(graph: Graph):
+fun toAdjacencyList(graph: Graph):
         MutableMap<Long, MutableSet<Pair<Long, Long?>> > {
 
     val d = mutableMapOf<Long, MutableSet<Pair<Long, Long?>> >()

@@ -1,9 +1,7 @@
 package graphs.algo
 
-
 import graphs.primitives.Graph
 import graphs.primitives.Vertex
-
 
 fun findSCC(graph: Graph): List<List<Vertex>> {
     val stack = mutableListOf<Vertex>()

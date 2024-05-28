@@ -3,7 +3,7 @@ package graphs.algo
 import graphs.primitives.Graph
 import java.util.*
 
-fun MinimalPathDijkstra(graph: Graph, start: Long, target: Long): List<Long> {
+fun minimalPathDijkstra(graph: Graph, start: Long, target: Long): List<Long> {
     val priorityQueue = PriorityQueue<Pair<Long, Long>>(compareBy { it.second })
     val adjList = toAdjacencyList(graph)
     val previous = mutableMapOf<Long, Long>()

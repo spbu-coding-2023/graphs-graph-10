@@ -1,14 +1,12 @@
 package graphs.algo
 
-
 import graphs.primitives.Edge
 import graphs.primitives.Graph
 import java.util.*
 
-
 fun searchMstPrim(graph: Graph, startVertex: Long): List<Pair<Long, Long>> {
     val mst = mutableListOf<Pair<Long, Long>>()
-    val priorityQueue = PriorityQueue<Edge>(compareBy { it.weight as Long})
+    val priorityQueue = PriorityQueue<Edge>(compareBy { it.weight as Long })
     val addedVertices = mutableSetOf<Long>()
     addedVertices.add(startVertex)
 
@@ -25,7 +23,6 @@ fun searchMstPrim(graph: Graph, startVertex: Long): List<Pair<Long, Long>> {
             mst.add(Pair(edge.vertices.first.element, edge.vertices.second.element))
 
             addedVertices.add(newVertex)
-
 
             graph.edges.filter { (it.vertices.first.element == newVertex ||
                     it.vertices.second.element == newVertex) &&

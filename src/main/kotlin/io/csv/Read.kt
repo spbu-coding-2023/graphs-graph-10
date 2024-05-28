@@ -1,4 +1,4 @@
-package io
+package io.csv
 
 import graphs.primitives.Graph
 import graphs.types.DirectedGraph

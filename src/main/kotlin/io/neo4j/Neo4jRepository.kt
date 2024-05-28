@@ -40,9 +40,9 @@ class Neo4jRepository {
                 "CREATE (v${it.v.element}:Vertex {element: ${it.v.element}, x: ${it.x.value}, y: ${it.y.value}, color: '${it.color.value}'}) \n"
             )
         }
-        session.executeWrite { tx ->  tx.run(buffer.toString())}
+        session.executeWrite { tx -> tx.run(buffer.toString()) }
 
-        session.executeWrite{ tx->
+        session.executeWrite { tx ->
             val scale = mainScreenViewModel.scale.value
             val offsetX = mainScreenViewModel.offset.value.x.value
             val offsetY = mainScreenViewModel.offset.value.y.value
@@ -50,11 +50,11 @@ class Neo4jRepository {
             val graphType = mainScreenViewModel.graph::class.simpleName
             tx.run(
                 "CREATE (:GraphInfo {" +
-                        "scale: ${scale}, " +
-                        "offsetX: ${offsetX}, " +
-                        "offsetY: ${offsetY}, " +
-                        "displayWeight: ${displayWeight}, " +
-                        "graphType: '${graphType}'" +
+                        "scale: $scale, " +
+                        "offsetX: $offsetX, " +
+                        "offsetY: $offsetY, " +
+                        "displayWeight: $displayWeight, " +
+                        "graphType: '$graphType'" +
                 "})"
             )
         }
@@ -63,7 +63,7 @@ class Neo4jRepository {
             val query =
                 "MATCH (u:Vertex) WHERE u.element = ${it.u.v.element} \n" +
                 "MATCH (v:Vertex) WHERE v.element = ${it.v.v.element} \n" +
-                "CREATE (u)-[:Edge {weight: ${it.e.weight as Long?}, u: ${it.u.v.element}, " +
+                "CREATE (u)-[:Edge {weight: ${it.e.weight}, u: ${it.u.v.element}, " +
                         "v: ${it.v.v.element}, e: ${it.e.element}, color: '${it.color.value}', width: ${it.width}}]->(v) \n"
             session.executeWrite { tx ->
                 tx.run(query)
@@ -128,7 +128,6 @@ class Neo4jRepository {
                 edgeMap[it["e"].toString()] = Pair(Color(it["color"].asString().toULong()), it["width"].asFloat())
             }
 
-
             mainScreenViewModel.graphViewModel = GraphViewModel(graph)
 
             mainScreenViewModel.graphViewModel.vertices.forEach {
@@ -149,7 +148,7 @@ class Neo4jRepository {
         println("Graph was loaded")
     }
 
-    fun clearDB() {
+    private fun clearDB() {
         session.executeWrite { tx ->
             tx.run("match (a) -[r] -> () delete a, r")
             tx.run("match (a) delete a")

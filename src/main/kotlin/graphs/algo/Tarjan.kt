@@ -1,8 +1,6 @@
 package graphs.algo
 
-
 import graphs.primitives.Graph
-
 
 fun findArticulationVerticesTarjan(graph: Graph): List<Long> {
     val visited = mutableSetOf<Long>()

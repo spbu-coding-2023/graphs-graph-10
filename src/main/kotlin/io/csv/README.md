@@ -4,7 +4,7 @@ ___
 # How to write?
 Creating a **graph** and adding the necessary vertices to it
 ```kotlin
-val sampleGraph: Graph<String, Long> = UndirectedGraph<String, Long>().apply {
+val sampleGraph: Graph = UndirectedGraph().apply {
     addVertex("A")
     addVertex("B")
     addVertex("C")
@@ -19,6 +19,7 @@ val sampleGraph: Graph<String, Long> = UndirectedGraph<String, Long>().apply {
     addVertex("L")
     addVertex("M")
     addVertex("N")
+}
 ```
 We create the **edges** of the **graph** and assign a unique key to each
 ``` kotlin
@@ -88,12 +89,12 @@ A value of **`1`** indicates that there is a path between the vertices, and **`0
 
 Before io.reading, you need to create an object of **`class Graph`**
 ```kotlin
-val graph: Graph<String, Long> = UndirectedGraph()
+val graph: Graph = UndirectedGraph()
 ```
 
 Next, you need to call the **`.io.reading("path to the file")`** method and specify the path to the file
 ```kotlin
-graph.io.reading("graph.csv")
+graph.reading("graph.csv")
 ```
 When io.reading the graph, all vertices (even those that do not have edges) will be written to the  field **`.vertices`** 
 
@@ -119,5 +120,4 @@ G;0;0;0;0;0;0;0
     [UndirectedVertex(element=A), UndirectedVertex(element=B), UndirectedVertex(element=C), UndirectedVertex(element=D), UndirectedVertex(element=E), UndirectedVertex(element=F), UndirectedVertex(element=G)]
 
 Process finished with exit code 0
-
 ```

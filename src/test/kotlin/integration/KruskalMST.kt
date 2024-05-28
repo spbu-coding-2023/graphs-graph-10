@@ -2,18 +2,12 @@
 
 import androidx.compose.ui.graphics.Color
 import graphs.algo.Kruskal
-import graphs.algo.MinimalPathDijkstra
-import graphs.types.UndirectedGraph
 import graphs.types.WeightedUndirectedGraph
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import view.algo.drawKruskalMST
 import viewmodel.MainScreenViewModel
 import kotlin.test.assertEquals
-
-
 
 class MSTKruskalIntegrationTest {
 
@@ -53,8 +47,6 @@ class MSTKruskalIntegrationTest {
         }
         assertEquals(countColoredEdges, mainViewModel.graph.vertices.size - 1)
     }
-
-
 
     @Test
     fun checkingIdsOfColouredInMSTEdges() = runBlocking {
