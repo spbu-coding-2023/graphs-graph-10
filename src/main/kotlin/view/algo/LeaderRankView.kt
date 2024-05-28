@@ -40,72 +40,73 @@ fun LeaderRankDisplay(
     onResult: (Int?, Double?, Boolean) -> Unit,
     graph: Graph,
 ) {
-    CoroutineScope(Dispatchers.Default).launch {
-        var textAmountOfKeyVertices by remember { mutableStateOf("") }
-        var textGapToCheck by remember { mutableStateOf("") }
-        var LeaderRankstart by remember { mutableStateOf(false) }
 
-        Dialog(
-            onDismissRequest = { onDismissRequest() }
+    var textAmountOfKeyVertices by remember { mutableStateOf("") }
+    var textGapToCheck by remember { mutableStateOf("") }
+    var LeaderRankstart by remember { mutableStateOf(false) }
+
+    Dialog(
+        onDismissRequest = { onDismissRequest() }
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp),
+            shape = RoundedCornerShape(16.dp),
         ) {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp),
-                shape = RoundedCornerShape(16.dp),
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        "Your graph contains ${graph.vertices.size} vertices",
-                        modifier = Modifier.padding(10.dp),
-                        fontSize = 18.sp
-                    )
+                Text(
+                    "Your graph contains ${graph.vertices.size} vertices",
+                    modifier = Modifier.padding(10.dp),
+                    fontSize = 18.sp
+                )
 
 
-                    TextField(
-                        value = textAmountOfKeyVertices,
-                        onValueChange = { textAmountOfKeyVertices = it },
-                        maxLines = 1,
-                        placeholder = { Text("Amount of key vertices:") },
-                        modifier = Modifier.height(50.dp).background(Color.White)
-                    )
-                    Text("Or")
-                    TextField(
-                        value = textGapToCheck,
-                        onValueChange = { textGapToCheck = it },
-                        maxLines = 1,
-                        placeholder = { Text("Vertices with rank higher than:") },
-                        modifier = Modifier.height(50.dp).background(Color.White)
-                    )
+                TextField(
+                    value = textAmountOfKeyVertices,
+                    onValueChange = { textAmountOfKeyVertices = it },
+                    maxLines = 1,
+                    placeholder = { Text("Amount of key vertices:") },
+                    modifier = Modifier.height(50.dp).background(Color.White)
+                )
+                Text("Or")
+                TextField(
+                    value = textGapToCheck,
+                    onValueChange = { textGapToCheck = it },
+                    maxLines = 1,
+                    placeholder = { Text("Vertices with rank higher than:") },
+                    modifier = Modifier.height(50.dp).background(Color.White)
+                )
 
-                    if (textAmountOfKeyVertices.isNotEmpty() && textGapToCheck.isNotEmpty()) {
-                        Text("Please enter only one parameter.")
-                    }
+                if (textAmountOfKeyVertices.isNotEmpty() && textGapToCheck.isNotEmpty()) {
+                    Text("Please enter only one parameter.")
+                }
 
-                    if (textAmountOfKeyVertices.isNotEmpty() && textGapToCheck.isEmpty() || textAmountOfKeyVertices.isEmpty() && textGapToCheck.isNotEmpty()) {
-                        Button(
-                            onClick = {
-                                LeaderRankstart = true
-                                val amountOfKeyVertices = textAmountOfKeyVertices.toIntOrNull()
-                                val gapToCheck = textGapToCheck.toDoubleOrNull()
-                                onResult(amountOfKeyVertices, gapToCheck, LeaderRankstart)
-                                onDismissRequest()
-                            }
-                        ) {
-                            Text("Ok")
+                if (textAmountOfKeyVertices.isNotEmpty() && textGapToCheck.isEmpty() || textAmountOfKeyVertices.isEmpty() && textGapToCheck.isNotEmpty()) {
+                    Button(
+                        onClick = {
+                            LeaderRankstart = true
+                            val amountOfKeyVertices = textAmountOfKeyVertices.toIntOrNull()
+                            val gapToCheck = textGapToCheck.toDoubleOrNull()
+                            onResult(amountOfKeyVertices, gapToCheck, LeaderRankstart)
+                            onDismissRequest()
                         }
+                    ) {
+                        Text("Ok")
                     }
                 }
             }
         }
     }
+}
 
-    @Composable
-    fun LeaderRankView(graphViewModel: GraphViewModel, topKeys: Int? = 0, gap: Double? = null) {
+@Composable
+fun LeaderRankView(graphViewModel: GraphViewModel, topKeys: Int? = 0, gap: Double? = null) {
+    CoroutineScope(Dispatchers.Default).launch {
         var rankedList = LeaderRank(graphViewModel.graph, d = 0.15, epsilon = 0.008)
         if (topKeys != null) {
             rankedList = rankedList.take(topKeys)

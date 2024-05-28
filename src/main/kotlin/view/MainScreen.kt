@@ -39,7 +39,7 @@ import kotlin.math.sign
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainScreen(mainViewModel: MainScreenViewModel) {
-    var resolution by remember{ mutableStateOf(Pair(0, 0)) }
+    var resolution by remember { mutableStateOf(Pair(0, 0)) }
     val displayGraph = remember { mutableStateOf(false) }
     var scale by mainViewModel.scale
     fun scaleBox(delta: Int) {
@@ -56,7 +56,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
     var n by remember { mutableStateOf<Int?>(null) }
     var gap by remember { mutableStateOf<Double?>(null) }
     var leaderRankStart by remember { mutableStateOf(false) }
-
+    val scope = rememberCoroutineScope()
     val navigator = LocalNavigator.currentOrThrow
 
     if (displayGraph.value && mainViewModel.runLayout) {
@@ -137,7 +137,9 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     Row {
                         CoolButton(
                             onClick = {
-                                textData = drawCycleOnGraph(mainViewModel.graphViewModel)
+                                scope.drawFordBellman(mainViewModel.graphViewModel) { result ->
+                                    textData = result
+                                }
                             }, SmallBtn
                         ) { Text("Cycles") }
                         Spacer(modifier = Modifier.width(20.dp))
@@ -187,14 +189,19 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     Column {
                         CoolButton(
                             onClick = {
-                                textData = drawPathOnGraph(mainViewModel.graphViewModel)
+                                scope.drawDijkstra(mainViewModel.graphViewModel) { result ->
+                                    textData = result
+                                }
                             }, BigBtn
                         ) { Text("Dijkstra") }
                         Spacer(modifier = Modifier.height(10.dp))
                         CoolButton(
                             onClick = {
-                                textData = drawFordBellman(mainViewModel.graphViewModel)
+                                scope.drawFordBellman(mainViewModel.graphViewModel) { result ->
+                                    textData = result
+                                }
                             }, BigBtn
+
                         ) { Text("Ford-Bellman") }
                     }
 

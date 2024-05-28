@@ -2,7 +2,21 @@ package view.algo
 
 import androidx.compose.ui.graphics.Color
 import graphs.algo.MinimalPathDijkstra
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import viewmodel.graph.GraphViewModel
+
+fun CoroutineScope.drawDijkstra(graphViewModel: GraphViewModel, onComplete: (String) -> Unit) {
+    launch(Dispatchers.Default) {
+        println("drawPathOnGraph ${Thread.currentThread().name}")
+        val result = drawPathOnGraph(graphViewModel)
+        withContext(Dispatchers.Main) {
+            onComplete(result)
+        }
+    }
+}
 
 fun drawPathOnGraph(graphViewModel: GraphViewModel): String {
     val pickedVertices = graphViewModel.pickedVertices
