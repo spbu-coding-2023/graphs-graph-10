@@ -116,7 +116,9 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     Column {
                         CoolButton(
                             onClick = {
-                                textData = drawCycleOnGraph(mainViewModel.graphViewModel)
+                                scope.drawCycles(mainViewModel.graphViewModel) { result ->
+                                    textData = result
+                                }
                             }, BigBtn
                         ) { Text("Cycles") }
                         Spacer(modifier = Modifier.height(10.dp))
@@ -130,7 +132,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     Row {
                         CoolButton(
                             onClick = {
-                                scope.drawFordBellman(mainViewModel.graphViewModel) { result ->
+                                scope.drawCycles(mainViewModel.graphViewModel) { result ->
                                     textData = result
                                 }
                             }, SmallBtn
