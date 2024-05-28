@@ -29,7 +29,6 @@ data class GraphScreen(val mainViewModel: MainScreenViewModel) : Screen {
 @Composable
 @Preview
 fun App() {
-    val database = GraphDatabase("AppStateDB.db")
     Navigator(WelcomeScreen)
 }
 

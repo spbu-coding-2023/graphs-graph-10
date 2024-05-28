@@ -72,6 +72,7 @@ fun Welcome() {
                 Spacer(Modifier.width(4.dp))
                 CoolButton(onClick = {
                     currentFileType = "sqlite"
+                    displayLoadDialog.value = true
                 }, SmallBtn) {
                     Text("SQLite")
                 }
@@ -108,12 +109,22 @@ fun Welcome() {
             }
         }
 
-        if (displayLoadDialog.value) {
+        if (displayLoadDialog.value && currentFileType == "neo4j") {
             val tempGraph: Graph = DirectedGraph()
             val mainViewModel = MainScreenViewModel(tempGraph)
             SaveToNeo4jDialog(onDismissRequest = {
                 displayLoadDialog.value = false
             }, "load", mainViewModel, {
+                navigator.push(GraphScreen(mainViewModel))
+            })
+        }
+
+        if (displayLoadDialog.value && currentFileType == "sqlite") {
+            val tempGraph: Graph = DirectedGraph()
+            val mainViewModel = MainScreenViewModel(tempGraph)
+            loadFromSQLite(onDismissRequest = {
+                displayLoadDialog.value = false
+            }, mainViewModel, {
                 navigator.push(GraphScreen(mainViewModel))
             })
         }
@@ -124,5 +135,4 @@ fun Welcome() {
             navigator.push(GraphScreen(mainScreenViewModel))
         }
     }
-
 }

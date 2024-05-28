@@ -93,5 +93,4 @@ fun installGraph(mainScreenViewModel: MainScreenViewModel, graphDB: GraphDBForma
     mainScreenViewModel.scale.value = graphDB.scale
     mainScreenViewModel.offset.value = DpOffset(graphDB.offsetX.dp, graphDB.offsetY.dp)
     mainScreenViewModel.displayWeight.value = graphDB.displayWeight == 1
-
 }

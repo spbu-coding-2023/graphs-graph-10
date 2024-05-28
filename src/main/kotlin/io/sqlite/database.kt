@@ -14,13 +14,24 @@ class GraphDatabase(private val databaseUrl: String) {
 
     init {
         connect()
+        createGraphListTable()
     }
 
     private fun connect() {
         connection = DriverManager.getConnection("jdbc:sqlite:$databaseUrl")
     }
 
+    private fun createGraphListTable() {
+        connection?.createStatement()?.use { statement: Statement ->
+            statement.execute(
+                "CREATE TABLE IF NOT EXISTS graphs (name TEXT);"
+            )
+        }
+    }
+
     private fun createGraphLayoutIfNotExists(name: String) {
+        connection?.createStatement()?.use { statement: Statement ->
+            statement.execute("INSERT INTO graphs (name) VALUES (${name});")}
         connection?.createStatement()?.use { statement: Statement ->
             statement.execute(
                 "CREATE TABLE IF NOT EXISTS ${name}/graph " +
@@ -41,7 +52,7 @@ class GraphDatabase(private val databaseUrl: String) {
         }
     }
 
-    private fun clearGraphData(graphName: String) {
+    fun clearGraphData(graphName: String) {
         connection?.createStatement()?.use { statement: Statement ->
             statement.execute(
                     "DELETE FROM ${graphName}/vertices;" +
@@ -151,5 +162,18 @@ class GraphDatabase(private val databaseUrl: String) {
             }
         }
         return graph
+    }
+
+    fun graphsList(): List<String> {
+        val result = mutableListOf<String>()
+        val statement: Statement? = connection?.createStatement()
+        val graphsSet = statement?.executeQuery("SELECT * FROM graphs")
+        if (graphsSet != null) {
+            while (graphsSet.next()) {
+                val name = graphsSet.getString("name")
+                result.add(name)
+            }
+        }
+        return result
     }
 }
