@@ -63,7 +63,6 @@ fun remove(G: Graph, vertex: Vertex) {
         }
     }
     edgesToRemove.forEach { edge ->
-
         (G.edges as MutableCollection<Edge>).remove(edge)
     }
     (G.vertices as MutableCollection<Vertex>).remove(vertex)
