@@ -23,14 +23,14 @@ class GraphDatabase(private val databaseUrl: String) {
     private fun createGraphLayoutIfNotExists(name: String) {
         connection?.createStatement()?.use { statement: Statement ->
             statement.execute(
-                "CREATE TABLE IF NOT EXISTS ${name}/vertexes (element TEXT," +
+                "CREATE TABLE IF NOT EXISTS ${name}/vertices (element INTEGER," +
                         " color INTEGER, posX REAL, posY REAL);"
             )
         }
         connection?.createStatement()?.use { statement: Statement ->
             statement.execute(
                 "CREATE TABLE IF NOT EXISTS ${name}/edges (element INTEGER," +
-                        " weight INTEGER, color INTEGER, firstVertex TEXT, secondVertex TEXT);"
+                        " weight INTEGER, color INTEGER, firstVertex INTEGER, secondVertex INTEGER);"
             )
         }
     }
@@ -38,7 +38,7 @@ class GraphDatabase(private val databaseUrl: String) {
     private fun clearGraphData(graphName: String) {
         connection?.createStatement()?.use { statement: Statement ->
             statement.execute(
-                "DELETE FROM ${graphName}/vertexes;" +
+                "DELETE FROM ${graphName}/vertices;" +
                         "DELETE FROM ${graphName}/edges;"
             )
         }
@@ -48,19 +48,19 @@ class GraphDatabase(private val databaseUrl: String) {
         createGraphLayoutIfNotExists(graphName)
     }
 
-    fun saveGraph(graphName: String, graph: GraphDBFormat<String, Long>) {
+    fun saveGraph(graphName: String, graph: GraphDBFormat) {
         clearGraphData(graphName)
-        val vertexes = graph.vertexes
+        val vertices = graph.vertices
         val edges = graph.edges
-        if (vertexes != null) {
-            for (vertex in vertexes) {
+        if (vertices != null) {
+            for (vertex in vertices) {
                 val element = vertex.element
                 val color = vertex.color
                 val x = vertex.posX
                 val y = vertex.posY
                 connection?.createStatement()?.use { statement: Statement ->
                     statement.execute(
-                        "INSERT INTO ${graphName}/vertexes (element, color, posX, posY) VALUES" +
+                        "INSERT INTO ${graphName}/vertices (element, color, posX, posY) VALUES" +
                                 "(${element}, ${color}, ${x}, ${y});"
                     )
                 }
@@ -75,7 +75,7 @@ class GraphDatabase(private val databaseUrl: String) {
                 val secondVertex = edge.secondVertex
                 connection?.createStatement()?.use { statement: Statement ->
                     statement.execute(
-                        "INSERT INTO ${graphName}/vertexes (element, weight, color, firstVertex, secondVertex) VALUES" +
+                        "INSERT INTO ${graphName}/edges (element, weight, color, firstVertex, secondVertex) VALUES" +
                                 "(${element}, ${weight}, ${color}, ${firstVertex}, ${secondVertex});"
                     )
                 }
@@ -83,10 +83,10 @@ class GraphDatabase(private val databaseUrl: String) {
         }
     }
 
-    fun loadGraph(graphName: String): GraphDBFormat<String, Long> {
+    fun loadGraph(graphName: String): GraphDBFormat {
         val vertexes: Collection<VertexViewModel<String>>;
         val edges: Collection<EdgeViewModel<Long, String>>;
-        val graph = GraphDBFormat<String, Long>()
+        val graph = GraphDBFormat()
         val statement: Statement? = connection?.createStatement()
         val edgeSet = statement?.executeQuery("SELECT * FROM ${graphName}/edges")
         if (edgeSet != null) {
@@ -94,15 +94,15 @@ class GraphDatabase(private val databaseUrl: String) {
                 val element = edgeSet.getLong("element")
                 val weight = edgeSet.getLong("weight")
                 val color = edgeSet.getLong("color").toULong()
-                val firstVertex = edgeSet.getString("firstVertex")
-                val secondVertex = edgeSet.getString("secondVertex")
+                val firstVertex = edgeSet.getLong("firstVertex")
+                val secondVertex = edgeSet.getLong("secondVertex")
                 graph.addEdge(element, weight, color, firstVertex, secondVertex)
             }
         }
         val vertexSet = statement?.executeQuery("SELECT * FROM ${graphName}/vertexes")
         if (vertexSet != null) {
             while (vertexSet.next()) {
-                val element = vertexSet.getString("element")
+                val element = vertexSet.getLong("element")
                 val color = vertexSet.getLong("color").toULong()
                 val posX = vertexSet.getFloat("posX")
                 val posY = vertexSet.getFloat("posY")

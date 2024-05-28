@@ -1,14 +1,14 @@
 package io.sqlite.connectedEntity
 
 
-class GraphDBFormat<V, E>() {
-    val vertexes: MutableList<VertexDBFormat<V>>? = null
-    val edges: MutableList<EdgeDBFormat<E, V>>? = null
+class GraphDBFormat() {
+    val vertices: MutableList<VertexDBFormat>? = null
+    val edges: MutableList<EdgeDBFormat>? = null
 
-    fun addVertex(element: V, color: ULong, posX: Float, posY: Float) {
-        vertexes?.add(VertexDBFormat(element, color, posX, posY))
+    fun addVertex(element: Long, color: ULong, posX: Float, posY: Float) {
+        vertices?.add(VertexDBFormat(element, color, posX, posY))
     }
-    fun addEdge(element: E, weight: E, color: ULong, firstVertex: V, secondVertex: V) {
+    fun addEdge(element: Long, weight: Long, color: ULong, firstVertex: Long, secondVertex: Long) {
         edges?.add(EdgeDBFormat(element, weight, color, firstVertex, secondVertex))
     }
 }

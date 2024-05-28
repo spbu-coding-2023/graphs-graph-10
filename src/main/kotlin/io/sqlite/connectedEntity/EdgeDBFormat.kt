@@ -1,4 +1,4 @@
 package io.sqlite.connectedEntity
 
-class EdgeDBFormat<E, V>(val element: E, val weight: E, val color: ULong,
-                           val firstVertex: V, val secondVertex: V)
+class EdgeDBFormat(val element: Long, val weight: Long, val color: ULong,
+                           val firstVertex: Long, val secondVertex: Long)
