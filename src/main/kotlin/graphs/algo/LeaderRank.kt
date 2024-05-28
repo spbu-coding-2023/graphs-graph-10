@@ -49,12 +49,3 @@ fun buildOutDegreeMatrix(adjacencyList: Map<Long, Set<Pair<Long, Long?>>>): Map<
 
     return deg
 }
-
-fun <V> printAdjacencyMatrix(adjacencyMatrix: Map<Vertex, Map<Vertex, Long?>>) {
-    for ((vertex, neighbors) in adjacencyMatrix) {
-        println("Vertex ${vertex.element}:")
-        for ((neighbor, edge) in neighbors) {
-            println("  Neighbor: ${neighbor.element}, Edge weight: ${edge}")
-        }
-    }
-}
