@@ -27,7 +27,7 @@ class KruskalTest {
             addVertex(5, "F")
         }
         val minimalSpanningtree = Kruskal(graph)
-        assertEquals(minimalSpanningtree.size, 6)
+        assertEquals(minimalSpanningtree.size, 5)
     }
 
     @Test
