@@ -3,29 +3,42 @@ package graphs.algo
 import graphs.primitives.Edge
 import graphs.primitives.Graph
 import graphs.primitives.Vertex
-import graphs.types.DirectedGraph
-import graphs.types.WeightedDirectedGraph
+
 import kotlin.math.abs
+
 
 fun LeaderRank(G: Graph, d: Double, epsilon: Double): List<Pair<Vertex, Double>> {
     val adjacencyList = toAdjacencyList(G)
     val n = G.vertices.size
-    var R = mutableMapOf<Vertex, Double>()
-    G.vertices.forEach { vertex -> R[vertex] = 1.0 / n }
+    val s = G.addVertex(-1L)
+    G.vertices.forEach { vertex ->
+        if (vertex.element != s.element) {
+            G.addEdge(s.element, vertex.element, -1L, 1L)
+            G.addEdge(vertex.element, s.element, -1L, 1L)
+        }
+    }
 
-    val deg = buildOutDegreeMatrix(adjacencyList)
+    var R = mutableMapOf<Vertex, Double>()
+    G.vertices.forEach { vertex -> R[vertex] = 1.0 / (n + 1) }
+
+    val deg = mutableMapOf<Long, Int>()
+    adjacencyList.forEach { (vertex, neighbors) ->
+        deg[vertex] = neighbors.size
+    }
 
     var diff = Double.MAX_VALUE
     while (diff >= epsilon) {
         val R_new = mutableMapOf<Vertex, Double>()
         G.vertices.forEach { v ->
             var sum = 0.0
-            G.vertices.forEach { u ->
-                val neighbors = adjacencyList[u.element] ?: mutableSetOf()
-                val weight = neighbors.find { it.first == v.element }?.second?.toDouble() ?: 0.0
-                sum += (d * weight / (deg[u.element]?.toDouble() ?: 1.0)) * (R[u] ?: 0.0)
+            adjacencyList.forEach { (u, neighbors) ->
+                if (neighbors.any { it.first == v.element }) {
+                    val weight = neighbors.find { it.first == v.element }?.second?.toDouble() ?: 0.0
+                    sum += (d * weight / (deg[u]?.toDouble() ?: 1.0)) * (R[G.vertices.find { it.element == u } ?: s]
+                        ?: 0.0)
+                }
             }
-            R_new[v] = (1 - d) / n + sum
+            R_new[v] = (1 - d) / (n + 1) + sum
         }
 
         diff = 0.0
@@ -35,26 +48,22 @@ fun LeaderRank(G: Graph, d: Double, epsilon: Double): List<Pair<Vertex, Double>>
 
         R = R_new
     }
+    remove(G, s)
+    R.remove(s)
 
     val sortedRatings = R.toList().sortedByDescending { it.second }
     return sortedRatings
 }
 
-fun buildOutDegreeMatrix(adjacencyList: Map<Long, Set<Pair<Long, Long?>>>): Map<Long, Int> {
-    val deg = mutableMapOf<Long, Int>()
-
-    for ((v, neighbors) in adjacencyList) {
-        deg[v] = neighbors.size
-    }
-
-    return deg
-}
-
-fun <V> printAdjacencyMatrix(adjacencyMatrix: Map<Vertex, Map<Vertex, Long?>>) {
-    for ((vertex, neighbors) in adjacencyMatrix) {
-        println("Vertex ${vertex.element}:")
-        for ((neighbor, edge) in neighbors) {
-            println("  Neighbor: ${neighbor.element}, Edge weight: ${edge}")
+fun remove(G: Graph, vertex: Vertex) {
+    val edgesToRemove = mutableListOf<Edge>()
+    G.edges.forEach { edge ->
+        if (edge.vertices.first == vertex || edge.vertices.second == vertex) {
+            edgesToRemove.add(edge)
         }
     }
+    edgesToRemove.forEach { edge ->
+        (G.edges as MutableCollection<Edge>).remove(edge)
+    }
+    (G.vertices as MutableCollection<Vertex>).remove(vertex)
 }

@@ -34,7 +34,7 @@ fun App() {
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        state = WindowState(width = 1150.dp, height = 700.dp),
+        state = WindowState(width = 1200.dp, height = 800.dp),
         title = "Graphs 10"
     ) {
         App()

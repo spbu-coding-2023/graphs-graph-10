@@ -52,7 +52,7 @@ class MinimalPathDijkstraIntegration {
         // find path and draw it
         val path = MinimalPathDijkstra(graph, 1, 3)
         assertNotEquals(0, path.size)
-        drawPathOnGraph(mainViewModel.graphViewModel)
+        drawPathOnGraph(mainViewModel.graphViewModel, "Dijkstra")
 
         // check if path was drawn correctly
         var countColoredVertexes = 0

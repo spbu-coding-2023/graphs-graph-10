@@ -2,8 +2,21 @@ package view.algo
 
 import androidx.compose.ui.graphics.Color
 import graphs.algo.findCycle
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import viewmodel.graph.GraphViewModel
 
+fun CoroutineScope.drawCycles(graphViewModel: GraphViewModel, onComplete: (String) -> Unit) {
+    launch(Dispatchers.Default) {
+        println("drawCycles ${Thread.currentThread().name}")
+        val result = drawCycleOnGraph(graphViewModel)
+        withContext(Dispatchers.Main) {
+            onComplete(result)
+        }
+    }
+}
 fun drawCycleOnGraph(graphViewModel: GraphViewModel): String {
     val t = graphViewModel.pickedVertices
     if (t.size != 1) {
@@ -27,5 +40,5 @@ fun drawCycleOnGraph(graphViewModel: GraphViewModel): String {
         }
     }
     graphViewModel.pickedVertices.clear()
-    return ""
+    return "Cycle on display"
 }
