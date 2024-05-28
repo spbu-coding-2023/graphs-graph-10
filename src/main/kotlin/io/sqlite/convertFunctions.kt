@@ -3,7 +3,7 @@ package io.sqlite
 import io.sqlite.connectedEntity.GraphDBFormat
 import viewmodel.graph.GraphViewModel
 
-fun convertToDBFormat(existedGraph: GraphViewModel<Long, Long>): GraphDBFormat {
+fun convertToDBFormat(existedGraph: GraphViewModel): GraphDBFormat {
     val newGraph = GraphDBFormat()
     val vertexes = existedGraph.vertices
     val edges = existedGraph.edges

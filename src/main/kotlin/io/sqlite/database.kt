@@ -84,8 +84,8 @@ class GraphDatabase(private val databaseUrl: String) {
     }
 
     fun loadGraph(graphName: String): GraphDBFormat {
-        val vertexes: Collection<VertexViewModel<String>>;
-        val edges: Collection<EdgeViewModel<Long, String>>;
+        val vertexes: Collection<VertexViewModel>;
+        val edges: Collection<EdgeViewModel>;
         val graph = GraphDBFormat()
         val statement: Statement? = connection?.createStatement()
         val edgeSet = statement?.executeQuery("SELECT * FROM ${graphName}/edges")
