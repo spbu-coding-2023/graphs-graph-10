@@ -76,21 +76,30 @@ fun installGraph(mainScreenViewModel: MainScreenViewModel, graphDB: GraphDBForma
     }
 
     mainScreenViewModel.graphViewModel = GraphViewModel(graph)
+    println(vertexMap.size)
+    println(mainScreenViewModel.graphViewModel.vertices.size)
+
 
     mainScreenViewModel.graphViewModel.vertices.forEach {
-        val element = vertexMap[it.v.element] ?: return@forEach
+        if (it.v.element in vertexMap.keys)
+            println("!!!!")
+        else
+            println("----")
+        println(it.v.element)
+        val element = vertexMap[it.v.element]!!
+        println(element)
         it.x = element.x.dp
         it.y = element.y.dp
         it.color = element.color
     }
 
-    mainScreenViewModel.graphViewModel.edges.forEach {
-        val (color, width) = edgeMap[it.e.element] ?: return@forEach
-        it.color = color
-        it.width = width
-    }
+//    mainScreenViewModel.graphViewModel.edges.forEach {
+//        val (color, width) = edgeMap[it.e.element] ?: return@forEach
+//        it.color = color
+//        it.width = width
+//    }
 
-    mainScreenViewModel.scale.value = graphDB.scale
-    mainScreenViewModel.offset.value = DpOffset(graphDB.offsetX.dp, graphDB.offsetY.dp)
-    mainScreenViewModel.displayWeight.value = graphDB.displayWeight == 1
+//    mainScreenViewModel.scale.value = graphDB.scale
+//    mainScreenViewModel.offset.value = DpOffset(graphDB.offsetX.dp, graphDB.offsetY.dp)
+//    mainScreenViewModel.displayWeight.value = graphDB.displayWeight == 1
 }

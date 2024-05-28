@@ -17,7 +17,6 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
-    implementation(files("libs/gephi-toolkit-0.10.0-all.jar"))
     implementation("org.xerial:sqlite-jdbc:3.41.2.2")
     implementation("org.gephi", "gephi-toolkit", "0.10.1", classifier = "all")
     implementation("org.neo4j.driver", "neo4j-java-driver", "5.6.0")

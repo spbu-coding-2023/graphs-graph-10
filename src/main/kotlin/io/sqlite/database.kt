@@ -24,40 +24,45 @@ class GraphDatabase(private val databaseUrl: String) {
     private fun createGraphListTable() {
         connection?.createStatement()?.use { statement: Statement ->
             statement.execute(
-                "CREATE TABLE IF NOT EXISTS graphs (name TEXT);"
+                "CREATE TABLE IF NOT EXISTS graphs (gname TEXT);"
             )
         }
     }
 
     private fun createGraphLayoutIfNotExists(name: String) {
         connection?.createStatement()?.use { statement: Statement ->
-            statement.execute("INSERT INTO graphs (name) VALUES (${name});")}
+            statement.execute("INSERT INTO graphs (gname) VALUES ('${name}');")}
+
         connection?.createStatement()?.use { statement: Statement ->
             statement.execute(
-                "CREATE TABLE IF NOT EXISTS ${name}/graph " +
+                "CREATE TABLE IF NOT EXISTS '${name}.graph' " +
                         "(scale REAL, offsetX REAL, offsetY REAL, displayWeight INTEGER, graphType TEXT);"
             )
         }
         connection?.createStatement()?.use { statement: Statement ->
             statement.execute(
-                "CREATE TABLE IF NOT EXISTS ${name}/vertices" +
+                "CREATE TABLE IF NOT EXISTS '${name}.vertices' " +
                         "(element INTEGER, color INTEGER, posX REAL, posY REAL);"
             )
         }
         connection?.createStatement()?.use { statement: Statement ->
             statement.execute(
-                "CREATE TABLE IF NOT EXISTS ${name}/edges (element INTEGER," +
+                "CREATE TABLE IF NOT EXISTS '${name}.edges' (element INTEGER," +
                         " weight INTEGER, color INTEGER, firstVertex INTEGER, secondVertex INTEGER, width REAL);"
             )
         }
     }
 
-    fun clearGraphData(graphName: String) {
+    fun close() {
+        connection?.close()
+    }
+
+    private fun clearGraphData(graphName: String) {
         connection?.createStatement()?.use { statement: Statement ->
             statement.execute(
-                    "DELETE FROM ${graphName}/vertices;" +
-                        "DELETE FROM ${graphName}/edges;" +
-                        "DELETE FROM ${graphName}/graph;"
+                    "DELETE FROM '${graphName}.vertices';" +
+                        "DELETE FROM '${graphName}.edges';" +
+                        "DELETE FROM '${graphName}.graph';"
             )
         }
     }
@@ -79,8 +84,8 @@ class GraphDatabase(private val databaseUrl: String) {
 
         connection?.createStatement()?.use { statement: Statement ->
             statement.execute(
-                "INSERT INTO ${graphName}/graph (scale, offsetX, offsetY, displayWeight, graphType) VALUES" +
-                        "(${scale}, ${offsetX}, ${offsetY}, ${displayWeight}, ${graphType});"
+                "INSERT INTO '${graphName}.graph' (scale, offsetX, offsetY, displayWeight, graphType) VALUES" +
+                        "('${scale}', '${offsetX}', '${offsetY}', '${displayWeight}', '${graphType}');"
             )
 
             if (vertices != null) {
@@ -91,8 +96,8 @@ class GraphDatabase(private val databaseUrl: String) {
                     val y = vertex.posY
                     connection?.createStatement()?.use { statement: Statement ->
                         statement.execute(
-                            "INSERT INTO ${graphName}/vertices (element, color, posX, posY) VALUES" +
-                                    "(${element}, ${color}, ${x}, ${y});"
+                            "INSERT INTO '${graphName}.vertices' (element, color, posX, posY) VALUES" +
+                                    "('${element}', '${color}', '${x}', '${y}');"
                         )
                     }
                 }
@@ -107,9 +112,10 @@ class GraphDatabase(private val databaseUrl: String) {
                     val width = edge.width
                     connection?.createStatement()?.use { statement: Statement ->
                         statement.execute(
-                            "INSERT INTO ${graphName}/edges (element, weight," +
+                            "INSERT INTO '${graphName}.edges' (element, weight," +
                                     " color, firstVertex, secondVertex, width) VALUES" +
-                                    "(${element}, ${weight}, ${color}, ${firstVertex}, ${secondVertex}, ${width});"
+                                    "('${element}', '${weight}', '${color}', '${firstVertex}'," +
+                                    " '${secondVertex}', '${width}');"
                         )
                     }
                 }
@@ -121,7 +127,7 @@ class GraphDatabase(private val databaseUrl: String) {
         val graph = GraphDBFormat()
         val statement: Statement? = connection?.createStatement()
 
-        val graphSet = statement?.executeQuery("SELECT * FROM ${graphName}/graph")
+        val graphSet = statement?.executeQuery("SELECT * FROM '${graphName}.graph';")
         if (graphSet != null) {
             while (graphSet.next()) {
                 val scale = graphSet.getFloat("scale")
@@ -138,7 +144,7 @@ class GraphDatabase(private val databaseUrl: String) {
             }
         }
 
-        val edgeSet = statement?.executeQuery("SELECT * FROM ${graphName}/edges")
+        val edgeSet = statement?.executeQuery("SELECT * FROM '${graphName}.edges';")
         if (edgeSet != null) {
             while (edgeSet.next()) {
                 val element = edgeSet.getLong("element")
@@ -151,7 +157,7 @@ class GraphDatabase(private val databaseUrl: String) {
             }
         }
 
-        val vertexSet = statement?.executeQuery("SELECT * FROM ${graphName}/vertexes")
+        val vertexSet = statement?.executeQuery("SELECT * FROM '${graphName}.vertices';")
         if (vertexSet != null) {
             while (vertexSet.next()) {
                 val element = vertexSet.getLong("element")
@@ -170,7 +176,7 @@ class GraphDatabase(private val databaseUrl: String) {
         val graphsSet = statement?.executeQuery("SELECT * FROM graphs")
         if (graphsSet != null) {
             while (graphsSet.next()) {
-                val name = graphsSet.getString("name")
+                val name = graphsSet.getString("gname")
                 result.add(name)
             }
         }
