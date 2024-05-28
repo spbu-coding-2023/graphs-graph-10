@@ -28,6 +28,9 @@ import androidx.compose.ui.window.Dialog
 import graphs.algo.LeaderRank
 import graphs.primitives.Graph
 import io.neo4j.Neo4jRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import viewmodel.MainScreenViewModel
 import viewmodel.graph.GraphViewModel
 
@@ -37,84 +40,85 @@ fun LeaderRankDisplay(
     onResult: (Int?, Double?, Boolean) -> Unit,
     graph: Graph,
 ) {
-    var textAmountOfKeyVertices by remember { mutableStateOf("") }
-    var textGapToCheck by remember { mutableStateOf("") }
-    var LeaderRankstart by remember { mutableStateOf(false) }
+    CoroutineScope(Dispatchers.Default).launch {
+        var textAmountOfKeyVertices by remember { mutableStateOf("") }
+        var textGapToCheck by remember { mutableStateOf("") }
+        var LeaderRankstart by remember { mutableStateOf(false) }
 
-    Dialog(
-        onDismissRequest = { onDismissRequest() }
-    ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp),
-            shape = RoundedCornerShape(16.dp),
+        Dialog(
+            onDismissRequest = { onDismissRequest() }
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp),
+                shape = RoundedCornerShape(16.dp),
             ) {
-                Text(
-                    "Your graph contains ${graph.vertices.size} vertices",
-                    modifier = Modifier.padding(10.dp),
-                    fontSize = 18.sp
-                )
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        "Your graph contains ${graph.vertices.size} vertices",
+                        modifier = Modifier.padding(10.dp),
+                        fontSize = 18.sp
+                    )
 
 
-                TextField(
-                    value = textAmountOfKeyVertices,
-                    onValueChange = { textAmountOfKeyVertices = it },
-                    maxLines = 1,
-                    placeholder = { Text("Amount of key vertices:") },
-                    modifier = Modifier.height(50.dp).background(Color.White)
-                )
-                Text("Or")
-                TextField(
-                    value = textGapToCheck,
-                    onValueChange = { textGapToCheck = it },
-                    maxLines = 1,
-                    placeholder = { Text("Vertices with rank higher than:") },
-                    modifier = Modifier.height(50.dp).background(Color.White)
-                )
+                    TextField(
+                        value = textAmountOfKeyVertices,
+                        onValueChange = { textAmountOfKeyVertices = it },
+                        maxLines = 1,
+                        placeholder = { Text("Amount of key vertices:") },
+                        modifier = Modifier.height(50.dp).background(Color.White)
+                    )
+                    Text("Or")
+                    TextField(
+                        value = textGapToCheck,
+                        onValueChange = { textGapToCheck = it },
+                        maxLines = 1,
+                        placeholder = { Text("Vertices with rank higher than:") },
+                        modifier = Modifier.height(50.dp).background(Color.White)
+                    )
 
-                if (textAmountOfKeyVertices.isNotEmpty() && textGapToCheck.isNotEmpty()) {
-                    Text("Please enter only one parameter.")
-                }
+                    if (textAmountOfKeyVertices.isNotEmpty() && textGapToCheck.isNotEmpty()) {
+                        Text("Please enter only one parameter.")
+                    }
 
-                if (textAmountOfKeyVertices.isNotEmpty() && textGapToCheck.isEmpty() || textAmountOfKeyVertices.isEmpty() && textGapToCheck.isNotEmpty()) {
-                    Button(
-                        onClick = {
-                            LeaderRankstart = true
-                            val amountOfKeyVertices = textAmountOfKeyVertices.toIntOrNull()
-                            val gapToCheck = textGapToCheck.toDoubleOrNull()
-                            onResult(amountOfKeyVertices, gapToCheck, LeaderRankstart)
-                            onDismissRequest()
+                    if (textAmountOfKeyVertices.isNotEmpty() && textGapToCheck.isEmpty() || textAmountOfKeyVertices.isEmpty() && textGapToCheck.isNotEmpty()) {
+                        Button(
+                            onClick = {
+                                LeaderRankstart = true
+                                val amountOfKeyVertices = textAmountOfKeyVertices.toIntOrNull()
+                                val gapToCheck = textGapToCheck.toDoubleOrNull()
+                                onResult(amountOfKeyVertices, gapToCheck, LeaderRankstart)
+                                onDismissRequest()
+                            }
+                        ) {
+                            Text("Ok")
                         }
-                    ) {
-                        Text("Ok")
                     }
                 }
             }
         }
     }
-}
 
-@Composable
-fun LeaderRankView(graphViewModel: GraphViewModel, topKeys: Int? = 0, gap: Double? = null) {
-    var rankedList = LeaderRank(graphViewModel.graph, d = 0.15, epsilon = 0.008)
-    if (topKeys != null) {
-        rankedList = rankedList.take(topKeys)
-    }
-    else if (gap != null) {
-        rankedList = rankedList.filter{it.second > gap}
-    }
-    rankedList.forEach { topranked ->
-        graphViewModel.vertices.forEach {
-            if (topranked.first.element == it.v.element) {
-                it.color = Color.Red
+    @Composable
+    fun LeaderRankView(graphViewModel: GraphViewModel, topKeys: Int? = 0, gap: Double? = null) {
+        var rankedList = LeaderRank(graphViewModel.graph, d = 0.15, epsilon = 0.008)
+        if (topKeys != null) {
+            rankedList = rankedList.take(topKeys)
+        } else if (gap != null) {
+            rankedList = rankedList.filter { it.second > gap }
+        }
+        rankedList.forEach { topranked ->
+            graphViewModel.vertices.forEach {
+                if (topranked.first.element == it.v.element) {
+                    it.color = Color.Red
+                }
             }
         }
     }
-}
 
+}
