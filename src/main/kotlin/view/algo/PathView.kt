@@ -3,6 +3,7 @@ package view.algo
 import AStar
 import androidx.compose.ui.graphics.Color
 import graphs.algo.MinimalPathDijkstra
+import graphs.algo.fordBellman
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,16 +27,15 @@ fun drawPathOnGraph(graphViewModel: GraphViewModel, Algo: String): String {
         println("Count of picked vertices != 2")
         return "Count of picked vertices != 2"
     }
-    val path :List<Long>
+    val path: List<Long>
     if (Algo == "AStar") {
         path = AStar(
             graphViewModel.graph,
             pickedVertices.first(),
             pickedVertices.last()
         )
-    }
-    else{
-        path = AStar(
+    } else {
+        path = MinimalPathDijkstra(
             graphViewModel.graph,
             pickedVertices.first(),
             pickedVertices.last()
