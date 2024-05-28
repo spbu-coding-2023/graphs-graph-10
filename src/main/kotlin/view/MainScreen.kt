@@ -145,7 +145,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                         Spacer(modifier = Modifier.width(20.dp))
                         CoolButton(
                             onClick = {
-                                //drawCommunities(mainViewModel.graphViewModel)
+                                drawSCC(mainViewModel.graphViewModel)
                             }, SmallBtn
                         ) { Text("SCC") }
                     }
