@@ -1,10 +1,9 @@
 package graphs.primitives
 
-interface Graph<V, E> {
-    val vertices: Collection<Vertex<V>>
-    val edges: Collection<Edge<E, V>>
+interface Graph {
+    val vertices: Collection<Vertex>
+    val edges: Collection<Edge>
 
-    fun addVertex(v: V): Vertex<V>
-    fun addEdge(u: V, v: V, e: E, weight: E? = null)
-    fun findCycle(v: V): List<V>
+    fun addVertex(v: Long, data: String?=""): Vertex
+    fun addEdge(u: Long, v: Long, e: Long, weight: Long? = null)
 }

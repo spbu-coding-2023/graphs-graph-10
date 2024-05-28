@@ -1,39 +1,42 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import io.sqlite.GraphDatabase
-import graphs.primitives.Graph
-import graphs.types.WeightedDirectedGraph
-import io.reading
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.Navigator
 import view.MainScreen
+
+import view.Welcome
 import viewmodel.MainScreenViewModel
 
-/*
-    DirectedGraph
-    UndirectedGraph
-    WeightedDirectedGraph
-    WeightedUndirectedGraph
-*/
-val sampleGraph: Graph<String, Long> = WeightedDirectedGraph()
+object WelcomeScreen : Screen {
+    @Composable
+    override fun Content() {
+        Welcome()
+    }
+}
+
+data class GraphScreen(val mainViewModel: MainScreenViewModel) : Screen {
+    @Composable
+    override fun Content() {
+        MainScreen(mainViewModel)
+    }
+}
 
 @Composable
 @Preview
 fun App() {
-    sampleGraph.reading("examples/weighted_undirected.csv")
     val database = GraphDatabase("AppStateDB.db")
-    MaterialTheme {
-        MainScreen(MainScreenViewModel(sampleGraph))
-    }
+    Navigator(WelcomeScreen)
 }
 
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        state = WindowState(width = 1150.dp, height = 700.dp),
+        state = WindowState(width = 1200.dp, height = 800.dp),
         title = "Graphs 10"
     ) {
         App()

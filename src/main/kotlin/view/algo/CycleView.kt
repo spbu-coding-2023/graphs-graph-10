@@ -1,15 +1,29 @@
 package view.algo
 
 import androidx.compose.ui.graphics.Color
+import graphs.algo.findCycle
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import viewmodel.graph.GraphViewModel
 
-fun <V, E> drawCycleOnGraph(graphViewModel: GraphViewModel<V, E>): String {
+fun CoroutineScope.drawCycles(graphViewModel: GraphViewModel, onComplete: (String) -> Unit) {
+    launch(Dispatchers.Default) {
+        println("drawCycles ${Thread.currentThread().name}")
+        val result = drawCycleOnGraph(graphViewModel)
+        withContext(Dispatchers.Main) {
+            onComplete(result)
+        }
+    }
+}
+fun drawCycleOnGraph(graphViewModel: GraphViewModel): String {
     val t = graphViewModel.pickedVertices
     if (t.size != 1) {
         println("You can pick only one vertex")
         return "You can pick only one vertex"
     }
-    val cycle = graphViewModel.graph.findCycle(t.first())
+    val cycle = findCycle(graphViewModel.graph, t.first())
     if (cycle.isEmpty()) {
         return "No cycles for given vertex"
     }
@@ -26,5 +40,5 @@ fun <V, E> drawCycleOnGraph(graphViewModel: GraphViewModel<V, E>): String {
         }
     }
     graphViewModel.pickedVertices.clear()
-    return ""
+    return "Cycle on display"
 }

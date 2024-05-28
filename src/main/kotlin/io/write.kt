@@ -4,15 +4,15 @@ import graphs.primitives.Graph
 import java.io.File
 import java.io.PrintWriter
 
-fun Graph<String, Long>.writing(fileName: String){
+fun Graph.writing(fileName: String){
     val writer = PrintWriter(File(fileName))
     val countVertex = this.vertices.size
-    var table = Array(countVertex){ ByteArray(countVertex) }
-    var edgesIndex = HashMap<Int, String>()
+    val table = Array(countVertex){ ByteArray(countVertex) }
+    val edgesIndex = HashMap<Int, String>()
 
     this.vertices.forEach {
         val index = this.vertices.indexOf(it)
-        edgesIndex[index] = it.element
+        edgesIndex[index] = it.element.toString()
     }
     this.edges.forEach {
         val first = it.vertices.first.element
@@ -21,8 +21,8 @@ fun Graph<String, Long>.writing(fileName: String){
         val indexFirst = this.vertices.indexOf(it.vertices.first)
         val indexSecond = this.vertices.indexOf(it.vertices.second)
 
-        edgesIndex[indexFirst] = first
-        edgesIndex[indexSecond] = second
+        edgesIndex[indexFirst] = first.toString()
+        edgesIndex[indexSecond] = second.toString()
 
         table[indexFirst][indexSecond] = 1
         table[indexSecond][indexFirst] = 1
@@ -32,10 +32,10 @@ fun Graph<String, Long>.writing(fileName: String){
 
     this.vertices.forEach {
         if (it == this.vertices.last()) {
-            writer.print(it.element)
+            writer.print(it.element.toString())
         }
         else
-            writer.print(it.element + ';')
+            writer.print(it.element.toString() + ';')
     }
 
     writer.println()

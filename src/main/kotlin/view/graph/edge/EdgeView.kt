@@ -9,8 +9,8 @@ import androidx.compose.ui.geometry.Offset
 import viewmodel.graph.EdgeViewModel
 
 @Composable
-fun <E, V> EdgeView(
-    edgeViewModel: EdgeViewModel<E, V>,
+fun EdgeView(
+    edgeViewModel: EdgeViewModel,
     displayWeight: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {

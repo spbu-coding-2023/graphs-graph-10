@@ -17,11 +17,10 @@ import view.graph.edge.EdgeView
 import viewmodel.graph.GraphViewModel
 
 @Composable
-fun <V, E> GraphView(
-    graphViewModel: GraphViewModel<V, E>,
+fun GraphView(
+    graphViewModel: GraphViewModel,
     displayGraph: MutableState<Boolean>,
     displayWeight: MutableState<Boolean>,
-    state: TransformableState,
     scale: Float,
     offset: DpOffset
 ) {
@@ -32,7 +31,6 @@ fun <V, E> GraphView(
             scaleX = scale,
             scaleY = scale
         )
-        .transformable(state = state)
         .offset(offset.x, offset.y)
     ) {
         if (displayGraph.value) {
