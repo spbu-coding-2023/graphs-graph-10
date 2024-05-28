@@ -22,6 +22,8 @@ import graphs.types.WeightedUndirectedGraph
 import view.algo.*
 import view.graph.GraphView
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.ui.unit.Dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -33,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import view.components.*
 
 import viewmodel.MainScreenViewModel
+import viewmodel.animateDpOffsetAsState
 import kotlin.math.exp
 import kotlin.math.sign
 
@@ -47,6 +50,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
     }
 
     var offset by mainViewModel.offset
+    val animateOffset by animateDpOffsetAsState(offset, tween(200, 0, LinearOutSlowInEasing))
     var textData by remember { mutableStateOf("Graph loaded successfully") }
     val displayWeight = mainViewModel.displayWeight
     val displaySaveDialog = remember { mutableStateOf(false) }
@@ -345,7 +349,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                 displayGraph,
                 displayWeight,
                 scale,
-                offset
+                animateOffset
             )
         }
 
