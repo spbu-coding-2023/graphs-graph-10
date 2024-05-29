@@ -27,6 +27,7 @@ import graphs.types.UndirectedGraph
 import androidx.compose.ui.text.font.FontWeight
 import view.components.*
 import view.utils.SaveToNeo4jDialog
+import view.utils.saveToSQLite
 
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
@@ -46,6 +47,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
     var textData by remember { mutableStateOf("Graph loaded successfully") }
     val displayWeight = mainViewModel.displayWeight
     val displaySaveDialog = remember { mutableStateOf(false) }
+    val displaySaveDialogSQLite = remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(true) }
     val backToWelcome = remember { mutableStateOf(false) }
     val leaderRankDialog = remember { mutableStateOf(false) }
@@ -246,6 +248,11 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                         displaySaveDialog.value = false
                     }, "save", mainViewModel)
                 }
+                if (displaySaveDialogSQLite.value) {
+                    saveToSQLite(onDismissRequest = {
+                        displaySaveDialogSQLite.value = false
+                    }, mainViewModel)
+                }
                 Box(
                     contentAlignment = Alignment.BottomCenter,
                     modifier = Modifier.weight(1f)
@@ -272,7 +279,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
 
                             CoolButton(
                                 onClick = {
-                                    displaySaveDialog.value = true
+                                    displaySaveDialogSQLite.value = true
                                 }, SmallBtn
 
                             ) {
