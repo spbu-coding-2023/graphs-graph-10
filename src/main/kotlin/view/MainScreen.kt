@@ -51,7 +51,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
     }
 
     var offset by mainViewModel.offset
-    val animateOffset by animateDpOffsetAsState(offset, tween(200, 0, LinearOutSlowInEasing))
+    val animateOffset by animateDpOffsetAsState(offset, tween(300, 0, LinearOutSlowInEasing))
     var textData by remember { mutableStateOf("Graph loaded successfully") }
     val displayWeight = mainViewModel.displayWeight
     val displaySaveDialog = remember { mutableStateOf(false) }
