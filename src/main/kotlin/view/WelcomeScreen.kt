@@ -45,6 +45,7 @@ fun Welcome() {
     var textData by remember { mutableStateOf("") }
     var graph by remember { mutableStateOf<Graph?>(null) }
     val displayLoadDialog = remember { mutableStateOf(false) }
+    val displaySaveDialogSQLite = remember { mutableStateOf(false) }
     val displayGraph = remember { mutableStateOf(false) }
     val navigator = LocalNavigator.currentOrThrow
 
@@ -73,7 +74,7 @@ fun Welcome() {
                 Spacer(Modifier.width(4.dp))
                 CoolButton(onClick = {
                     currentFileType = "sqlite"
-                    displayLoadDialog.value = true
+                    displaySaveDialogSQLite.value = true
                 }, SmallBtn) {
                     Text("SQLite")
                 }
@@ -119,11 +120,11 @@ fun Welcome() {
             })
         }
 
-        if (displayLoadDialog.value && currentFileType == "sqlite") {
+        if (displaySaveDialogSQLite.value && currentFileType == "sqlite") {
             val tempGraph: Graph = DirectedGraph()
             val mainViewModel = MainScreenViewModel(tempGraph)
             loadFromSQLite(onDismissRequest = {
-                displayLoadDialog.value = false
+                displaySaveDialogSQLite.value = false
             }, mainViewModel, {
                 navigator.push(GraphScreen(mainViewModel))
             })

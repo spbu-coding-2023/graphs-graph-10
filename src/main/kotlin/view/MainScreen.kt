@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import view.components.*
 import view.utils.SaveToNeo4jDialog
+import view.utils.saveToSQLite
 
 import viewmodel.MainScreenViewModel
 import viewmodel.animateDpOffsetAsState
@@ -55,6 +56,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
     var textData by remember { mutableStateOf("Graph loaded successfully") }
     val displayWeight = mainViewModel.displayWeight
     val displaySaveDialog = remember { mutableStateOf(false) }
+    val displaySaveDialogSQLite = remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(true) }
     val backToWelcome = remember { mutableStateOf(false) }
     var LeaderRankDialog = remember { mutableStateOf(false) }
@@ -288,7 +290,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
 
                             CoolButton(
                                 onClick = {
-                                    displaySaveDialog.value = true
+                                    displaySaveDialogSQLite.value = true
                                 }, SmallBtn
 
                             ) {
@@ -354,5 +356,10 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
             )
         }
 
+        if (displaySaveDialogSQLite.value) {
+            saveToSQLite(onDismissRequest = {
+                displaySaveDialogSQLite.value = false
+            }, mainViewModel)
+        }
     }
 }
