@@ -12,10 +12,10 @@ class GraphDBFormat() {
     val edges = mutableListOf<EdgeDBFormat>()
 
 
-    fun addVertex(element: Long, color: ULong, posX: Float, posY: Float) {
+    fun addVertex(element: Long, color: String, posX: Float, posY: Float) {
         vertices.add(VertexDBFormat(element, color, posX, posY))
     }
-    fun addEdge(element: Long, weight: Long, color: ULong, firstVertex: Long, secondVertex: Long, width: Float) {
+    fun addEdge(element: Long, weight: Long, color: String, firstVertex: Long, secondVertex: Long, width: Float) {
         edges.add(EdgeDBFormat(element, weight, color, firstVertex, secondVertex, width))
     }
 }

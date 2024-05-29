@@ -28,15 +28,21 @@ fun convertToDBFormat(existedModel: MainScreenViewModel): GraphDBFormat {
     val edges = existedModel.graphViewModel.edges
     for (vertex in vertices) {
         val element = vertex.v.element
-        val color = vertex.color.value
+        val r = vertex.color.red
+        val g = vertex.color.green
+        val b = vertex.color.blue
+        val color = "${r}e${g}e${b}"
         val x = vertex.x.value
         val y = vertex.y.value
         newGraph.addVertex(element, color, x, y)
     }
     for (edge in edges) {
         val element = edge.e.element
-        val weight = edge.e.weight!!
-        val color = edge.color.value
+        val weight = edge.e.weight?: 0
+        val r = edge.color.red
+        val g = edge.color.green
+        val b = edge.color.blue
+        val color = "${r}e${g}e${b}"
         val firstVertex = edge.u.v.element
         val secondVertex = edge.v.v.element
         val width = edge.width
@@ -63,43 +69,36 @@ fun installGraph(mainScreenViewModel: MainScreenViewModel, graphDB: GraphDBForma
 
     for (vertex in graphDB.vertices) {
         graph.addVertex(vertex.element)
+        val color = vertex.color.split("e")
         vertexMap[vertex.element] =
             VertexData(
                 vertex.posX,
                 vertex.posY,
-                Color(vertex.color)
+                Color(color[0].toFloat(), color[1].toFloat(), color[2].toFloat())
             )
     }
     for (edge in graphDB.edges) {
-        graph.addEdge(edge.firstVertex, edge.secondVertex, edge.element, edge.weight)
-        edgeMap[edge.element] = Pair(Color(edge.color), edge.width)
+        graph.addEdge(edge.firstVertex, edge.secondVertex, edge.element, if (edge.weight == 0L) null else edge.weight)
+        val color = edge.color.split("e")
+        edgeMap[edge.element] = Pair(Color(color[0].toFloat(), color[1].toFloat(), color[2].toFloat()), edge.width)
     }
 
     mainScreenViewModel.graphViewModel = GraphViewModel(graph)
-    println(vertexMap.size)
-    println(mainScreenViewModel.graphViewModel.vertices.size)
-
 
     mainScreenViewModel.graphViewModel.vertices.forEach {
-        if (it.v.element in vertexMap.keys)
-            println("!!!!")
-        else
-            println("----")
-        println(it.v.element)
-        val element = vertexMap[it.v.element]!!
-        println(element)
+        val element = vertexMap[it.v.element] ?: return@forEach
         it.x = element.x.dp
         it.y = element.y.dp
         it.color = element.color
     }
 
-//    mainScreenViewModel.graphViewModel.edges.forEach {
-//        val (color, width) = edgeMap[it.e.element] ?: return@forEach
-//        it.color = color
-//        it.width = width
-//    }
+    mainScreenViewModel.graphViewModel.edges.forEach {
+        val (color, width) = edgeMap[it.e.element] ?: return@forEach
+        it.color = color
+        it.width = width
+    }
 
-//    mainScreenViewModel.scale.value = graphDB.scale
-//    mainScreenViewModel.offset.value = DpOffset(graphDB.offsetX.dp, graphDB.offsetY.dp)
-//    mainScreenViewModel.displayWeight.value = graphDB.displayWeight == 1
+    mainScreenViewModel.scale.value = graphDB.scale
+    mainScreenViewModel.offset.value = DpOffset(graphDB.offsetX.dp, graphDB.offsetY.dp)
+    mainScreenViewModel.displayWeight.value = graphDB.displayWeight == 1
 }

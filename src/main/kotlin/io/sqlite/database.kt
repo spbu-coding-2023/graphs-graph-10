@@ -42,13 +42,13 @@ class GraphDatabase(private val databaseUrl: String) {
         connection?.createStatement()?.use { statement: Statement ->
             statement.execute(
                 "CREATE TABLE IF NOT EXISTS '${name}.vertices' " +
-                        "(element INTEGER, color INTEGER, posX REAL, posY REAL);"
+                        "(element INTEGER, color TEXT, posX REAL, posY REAL);"
             )
         }
         connection?.createStatement()?.use { statement: Statement ->
             statement.execute(
                 "CREATE TABLE IF NOT EXISTS '${name}.edges' (element INTEGER," +
-                        " weight INTEGER, color INTEGER, firstVertex INTEGER, secondVertex INTEGER, width REAL);"
+                        " weight INTEGER, color TEXT, firstVertex INTEGER, secondVertex INTEGER, width REAL);"
             )
         }
     }
@@ -149,7 +149,7 @@ class GraphDatabase(private val databaseUrl: String) {
             while (edgeSet.next()) {
                 val element = edgeSet.getLong("element")
                 val weight = edgeSet.getLong("weight")
-                val color = edgeSet.getLong("color").toULong()
+                val color = edgeSet.getString("color")
                 val firstVertex = edgeSet.getLong("firstVertex")
                 val secondVertex = edgeSet.getLong("secondVertex")
                 val width = edgeSet.getFloat("width")
@@ -161,7 +161,7 @@ class GraphDatabase(private val databaseUrl: String) {
         if (vertexSet != null) {
             while (vertexSet.next()) {
                 val element = vertexSet.getLong("element")
-                val color = vertexSet.getLong("color").toULong()
+                val color = vertexSet.getString("color")
                 val posX = vertexSet.getFloat("posX")
                 val posY = vertexSet.getFloat("posY")
                 graph.addVertex(element, color, posX, posY)
