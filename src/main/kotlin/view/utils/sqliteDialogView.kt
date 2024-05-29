@@ -1,4 +1,4 @@
-package view
+package view.utils
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
