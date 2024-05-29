@@ -4,6 +4,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 libs/*
+AppStateDB.db
 
 ### IntelliJ IDEA ###
 .idea
