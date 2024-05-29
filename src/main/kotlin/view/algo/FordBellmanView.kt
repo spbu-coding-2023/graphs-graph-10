@@ -1,46 +1,40 @@
 package view.algo
 
-import AStar
 import androidx.compose.ui.graphics.Color
-import graphs.algo.minimalPathDijkstra
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import graphs.algo.fordBellman
 import viewmodel.graph.GraphViewModel
 
-fun CoroutineScope.drawDijkstra(graphViewModel: GraphViewModel,Algo: String, onComplete: (String) -> Unit) {
+import kotlinx.coroutines.*
+
+fun CoroutineScope.drawFordBellman(graphViewModel: GraphViewModel, onComplete: (String) -> Unit) {
     launch(Dispatchers.Default) {
-        println("drawPathOnGraph ${Thread.currentThread().name}")
-        val result = drawPathOnGraph(graphViewModel, Algo)
+        println("drawFordBellman ${Thread.currentThread().name}")
+        val result = fordBellman(graphViewModel)
         withContext(Dispatchers.Main) {
             onComplete(result)
         }
     }
 }
 
-fun drawPathOnGraph(graphViewModel: GraphViewModel, Algo: String): String {
+fun fordBellman(graphViewModel: GraphViewModel): String {
     val pickedVertices = graphViewModel.pickedVertices
 
     if (pickedVertices.size != 2) {
         println("Count of picked vertices != 2")
         return "Count of picked vertices != 2"
     }
-    val path: List<Long>
-    if (Algo == "AStar") {
-        path = AStar(
-            graphViewModel.graph,
-            pickedVertices.first(),
-            pickedVertices.last()
-        )
-    } else {
-        path = minimalPathDijkstra(
-            graphViewModel.graph,
-            pickedVertices.first(),
-            pickedVertices.last()
-        )
+
+    val path = fordBellman(
+        graphViewModel.graph,
+        pickedVertices.first(),
+        pickedVertices.last()
+    )?.first
+
+    if (path == null || path.isEmpty()) {
+        return "Can't find path for given vertices."
     }
-    for (i in 0..<path.size - 1) {
+
+    for (i in 0 until path.size - 1) {
         graphViewModel.edges.forEach { e ->
             val f = e.v.v.element
             val s = e.u.v.element
@@ -52,9 +46,12 @@ fun drawPathOnGraph(graphViewModel: GraphViewModel, Algo: String): String {
             }
         }
     }
+
     graphViewModel.pickedVertices.clear()
 
-    if (path.isEmpty())
+    if (path.isEmpty()) {
         return "Can't find path for given vertices."
+    }
+
     return "Path on display"
 }

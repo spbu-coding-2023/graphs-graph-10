@@ -1,6 +1,5 @@
 package view.algo
 
-
 import androidx.compose.ui.graphics.Color
 import kotlin.random.Random
 

@@ -1,6 +1,5 @@
 package graphs.algo
 
-
 import graphs.types.WeightedUndirectedGraph
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -106,7 +105,7 @@ class KruskalTest {
         val minimalSpanningtree = Kruskal(graph)
         assertEquals(minimalSpanningtree.size, 4)//checking that all vertices from both components are in list
         val listOfEdgeIds = mutableListOf<Long?>()
-        minimalSpanningtree.forEach { it ->
+        minimalSpanningtree.forEach {
             listOfEdgeIds.add(it.element)
         }
         assertEquals(listOfEdgeIds, listOf<Long>(1, 2, 4, 5))

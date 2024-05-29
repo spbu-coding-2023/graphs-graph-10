@@ -1,6 +1,5 @@
-package algoTest
+package graphs.algo
 
-import graphs.algo.fordBellman
 import graphs.primitives.Graph
 import graphs.types.WeightedDirectedGraph
 import org.junit.jupiter.api.Test
@@ -20,14 +19,11 @@ class fordBellmanTest {
             addEdge(4, 5, 5, 5)
             addEdge(1, 5, 6, 4)
             addEdge(2, 5, 7, 3)
-
         }
-
 
         assertNull(fordBellman(sampleGraph, 1, 3) , "Negative cycle should return null")
         assertEquals(fordBellman(sampleGraph, 1, 2)?.second, -1, "Path from '1' to '2' was be -1")
         assertEquals(fordBellman(sampleGraph, 3, 5)?.second, 1, "Path from '1' to '2' was be -1")
-
     }
     @Test
     fun `only negative graph should return null`() {
@@ -40,7 +36,6 @@ class fordBellmanTest {
             addEdge(4, 5, 5, -5)
             addEdge(1, 5, 6, -4)
             addEdge(2, 5, 7, -3)
-
         }
         for (u in sampleGraph.vertices) {
             for (v in sampleGraph.vertices) {
@@ -60,7 +55,6 @@ class fordBellmanTest {
             addEdge(4, 5, 5, -5)
             addEdge(1, 5, 6, -4)
             addEdge(2, 5, 7, -3)
-
         }
     }
 }

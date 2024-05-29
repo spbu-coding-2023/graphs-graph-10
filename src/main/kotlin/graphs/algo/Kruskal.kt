@@ -3,7 +3,6 @@ package graphs.algo
 import graphs.primitives.Edge
 import graphs.primitives.Graph
 
-
 fun Kruskal(graph: Graph): List<Edge> {
     val edgeList = mutableListOf<Edge>()
     val sccmap = HashMap<Long, Long>()

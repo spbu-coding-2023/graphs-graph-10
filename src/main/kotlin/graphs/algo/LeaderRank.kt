@@ -6,7 +6,6 @@ import graphs.primitives.Vertex
 
 import kotlin.math.abs
 
-
 fun LeaderRank(G: Graph, d: Double, epsilon: Double): List<Pair<Vertex, Double>> {
     val adjacencyList = toAdjacencyList(G)
     val n = G.vertices.size

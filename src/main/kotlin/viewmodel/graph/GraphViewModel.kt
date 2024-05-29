@@ -10,7 +10,7 @@ class GraphViewModel(
     private val _vertices = graph.vertices.associateWith { v ->
         VertexViewModel(0.dp, 0.dp, Color.Gray, v)
     }
-     val _edges = graph.edges.associateWith { e ->
+    private val _edges = graph.edges.associateWith { e ->
         val fst = _vertices[e.vertices.first]
             ?: throw IllegalStateException("VertexView for ${e.vertices.first} not found")
         val snd = _vertices[e.vertices.second]

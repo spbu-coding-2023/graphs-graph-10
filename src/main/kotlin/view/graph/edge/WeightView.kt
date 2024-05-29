@@ -17,7 +17,6 @@ fun WeightView(
 ) {
     val weightToDraw = edgeViewModel.e.weight.toString()
 
-
     Text(
         modifier = Modifier
             .offset(

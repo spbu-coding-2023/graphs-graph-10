@@ -1,9 +1,7 @@
 package view
 
-
 import GraphScreen
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -11,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import graphs.primitives.Graph
 import graphs.types.WeightedUndirectedGraph
-import io.reading
+import io.csv.reading
 import viewmodel.MainScreenViewModel
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +21,10 @@ import graphs.types.UndirectedGraph
 import graphs.types.WeightedDirectedGraph
 import view.components.CoolButton
 import view.components.SmallBtn
-import view.graph.FileExplorer
+import view.components.FileExplorer
+import view.utils.GetGraphType
+import view.utils.GraphType
+import view.utils.SaveToNeo4jDialog
 
 fun createGraph(graphType: GraphType): Graph {
     return when (graphType) {
@@ -45,7 +46,6 @@ fun Welcome() {
     val displayLoadDialog = remember { mutableStateOf(false) }
     val displayGraph = remember { mutableStateOf(false) }
     val navigator = LocalNavigator.currentOrThrow
-
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -102,7 +102,6 @@ fun Welcome() {
                             graph!!.reading(selectedFilePath)
                             // Now graph is available outside the if blocks
                         }
-
                     }
                     showFilePicker = false
                 }

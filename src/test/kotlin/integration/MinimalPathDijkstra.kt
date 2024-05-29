@@ -1,7 +1,7 @@
 package integration
 
 import androidx.compose.ui.graphics.Color
-import graphs.algo.MinimalPathDijkstra
+import graphs.algo.minimalPathDijkstra
 import graphs.types.UndirectedGraph
 import org.junit.jupiter.api.Test
 import view.algo.drawPathOnGraph
@@ -50,7 +50,7 @@ class MinimalPathDijkstraIntegration {
         mainViewModel.graphViewModel.pickedVertices.add(3)
 
         // find path and draw it
-        val path = MinimalPathDijkstra(graph, 1, 3)
+        val path = minimalPathDijkstra(graph, 1, 3)
         assertNotEquals(0, path.size)
         drawPathOnGraph(mainViewModel.graphViewModel, "Dijkstra")
 

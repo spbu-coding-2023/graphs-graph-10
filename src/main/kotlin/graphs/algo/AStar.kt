@@ -1,10 +1,8 @@
 import graphs.algo.toAdjacencyList
 import graphs.primitives.Graph
-import graphs.primitives.Vertex
 import java.util.*
 
 fun AStar(graph: Graph, start: Long, goal: Long): List<Long> {
-
     val openSetContents = mutableSetOf<Long>()
     val cameFrom = mutableMapOf<Long, Long>()
     val gScore = mutableMapOf<Long, Long>().withDefault { Long.MAX_VALUE }

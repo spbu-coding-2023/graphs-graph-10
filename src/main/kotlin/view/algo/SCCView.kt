@@ -17,4 +17,3 @@ fun drawSCC(graphViewModel: GraphViewModel) {
         }
     }
 }
-

@@ -1,4 +1,4 @@
-package view.graph
+package view.components
 
 import androidx.compose.runtime.*
 import com.darkrockstudios.libraries.mpfilepicker.FilePicker
