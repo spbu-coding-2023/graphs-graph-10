@@ -53,7 +53,7 @@ git clone https://github.com/spbu-coding-2023/graphs-graph-10.git
 
 ![2024-05-28-15-41-39](https://github.com/spbu-coding-2023/graphs-graph-10/assets/117384050/9968e370-9719-4fc1-a070-d56822f2942d)
 ## Find Cycle
-It takes the `graph` itself and the `vertex` for which we want to **`find cycle`**  and `return` an `list of vertices`
+You need to select **one** `vertex` and the app will draw all the `cycles` passing through this `vertex`
 
 ![2024-05-28-16-23-14](https://github.com/spbu-coding-2023/graphs-graph-10/assets/117384050/c8a562f8-cbf9-4c12-aa07-7d81e98f4f1c)
 
@@ -65,3 +65,23 @@ To implement the functionality, the [**Tarjan**](https://en.wikipedia.org/wiki/T
 In order to identify the most important or influential `vertices` in the `graph`, used `Leader Rank` function, which accepts 2 parameters of the `Double` type
 
 ![2024-05-28-17-34-46](https://github.com/spbu-coding-2023/graphs-graph-10/assets/117384050/8f6b3276-9526-45db-a0bd-0994ea54746d)
+## Path Finding
+In our app, you can find the **`path`** between two vertices using `3 algorithms`
+
+All 3 algorithms identify the **minimum path** between two `vertices`
+
+An example would be [**Dijkstra**](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) algorithm
+
+![2024-05-29-10-47-26-_online-video-cutter com_](https://github.com/spbu-coding-2023/graphs-graph-10/assets/117384050/7453e26b-b059-45a7-a18d-3d01e875af71)
+
+## Draw [**MST**](https://ru.wikipedia.org/wiki/MST)
+
+The application supports 2 algorithms: [**Kruskal**](https://en.wikipedia.org/wiki/Kruskal%27s_algorithm) and [**Prim**](https://en.wikipedia.org/wiki/Prim%27s_algorithm)
+
+![2024-05-29-11-08-45](https://github.com/spbu-coding-2023/graphs-graph-10/assets/117384050/f4774cc5-55c2-4c23-b293-2edc9213b302)
+
+
+
+
+
+
