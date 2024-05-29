@@ -4,11 +4,12 @@ import androidx.compose.ui.graphics.Color
 import graphs.algo.searchMstPrim
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import viewmodel.graph.GraphViewModel
 
-fun drawMst(graphViewModel: GraphViewModel) {
-    CoroutineScope(Dispatchers.Default).launch {
+fun drawMst(graphViewModel: GraphViewModel): Job {
+    return CoroutineScope(Dispatchers.Default).launch {
         val mst = searchMstPrim(graphViewModel.graph, graphViewModel.vertices.elementAt(0).v.element)
         for (i in mst) {
             graphViewModel.edges.forEach { e ->
