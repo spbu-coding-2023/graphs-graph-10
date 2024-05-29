@@ -74,8 +74,8 @@ class YifanHuPlacementStrategy : RepresentationStrategy {
 
         for (vertex in originalGraph.vertices) {
             val n: Node = graph.getNode(vertex.v.element.toString())
-            val x = ((width/2 + n.x() * 3))
-            val y = ((height/2 + n.y() * 3))
+            val x = ((width / 2 + n.x() * 3))
+            val y = ((height / 2 + n.y() * 3))
             vertex.x = x.dp
             vertex.y = y.dp
 

@@ -1,7 +1,6 @@
 package view
 
 import WelcomeScreen
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
@@ -22,15 +21,12 @@ import graphs.types.WeightedUndirectedGraph
 import view.algo.*
 import view.graph.GraphView
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.ui.unit.Dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import graphs.algo.LeaderRank
 import graphs.types.UndirectedGraph
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import view.components.*
+import view.utils.SaveToNeo4jDialog
 
 import viewmodel.MainScreenViewModel
 import kotlin.math.exp
@@ -52,7 +48,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
     val displaySaveDialog = remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(true) }
     val backToWelcome = remember { mutableStateOf(false) }
-    var LeaderRankDialog = remember { mutableStateOf(false) }
+    val leaderRankDialog = remember { mutableStateOf(false) }
     var n by remember { mutableStateOf<Int?>(null) }
     var gap by remember { mutableStateOf<Double?>(null) }
     var leaderRankStart by remember { mutableStateOf(false) }
@@ -73,8 +69,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
             .background(Color(0xfa, 0xfa, 0xfa))
             .fillMaxSize()
     ) {
-        AnimatedVisibility(visible = isExpanded)
-        {
+        AnimatedVisibility(visible = isExpanded) {
             Column(
                 modifier = Modifier
                     .width(230.dp)
@@ -101,7 +96,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                 Spacer(modifier = Modifier.height(10.dp))
                 CoolButton(
                     onClick = {
-                        LeaderRankDialog.value = true
+                        leaderRankDialog.value = true
                     }, BigBtn
                 ) { Text("Find key vertices") }
 
@@ -114,7 +109,6 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                 ) { Text("Articulated vertices") }
 
                 Spacer(modifier = Modifier.height(10.dp))
-
 
                 if (mainViewModel.graph is UndirectedGraph ||
                     mainViewModel.graph is WeightedUndirectedGraph
@@ -133,7 +127,6 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                                 drawCommunities(mainViewModel.graphViewModel)
                             }, BigBtn
                         ) { Text("Communities") }
-
                     }
                 } else {
                     Row {
@@ -191,7 +184,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     Column {
                         CoolButton(
                             onClick = {
-                                scope.drawDijkstra(mainViewModel.graphViewModel,"Dijkstra") { result ->
+                                scope.drawDijkstra(mainViewModel.graphViewModel, "Dijkstra") { result ->
                                     textData = result
                                 }
                             }, BigBtn
@@ -199,7 +192,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                         Spacer(modifier = Modifier.height(10.dp))
                         CoolButton(
                             onClick = {
-                                scope.drawDijkstra(mainViewModel.graphViewModel,"Astar") { result ->
+                                scope.drawDijkstra(mainViewModel.graphViewModel, "Astar") { result ->
                                     textData = result
                                 }
                             }, BigBtn
@@ -216,8 +209,6 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     }
                 }
 
-
-
                 if (mainViewModel.graph is WeightedDirectedGraph ||
                     mainViewModel.graph is WeightedUndirectedGraph
                 ) {
@@ -233,10 +224,10 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                         )
                     }
                 }
-                if (LeaderRankDialog.value) {
+                if (leaderRankDialog.value) {
 
                     LeaderRankDisplay(
-                        onDismissRequest = { LeaderRankDialog.value = false },
+                        onDismissRequest = { leaderRankDialog.value = false },
                         onResult = { amountOfKeyVertices, gapToCheck, StartAlgo ->
                             n = amountOfKeyVertices
                             gap = gapToCheck
@@ -244,8 +235,6 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                         },
                         mainViewModel.graph
                     )
-
-
                 }
                 if ((n != null || gap != null) && leaderRankStart) {
 
@@ -296,8 +285,6 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
             if (backToWelcome.value) {
                 navigator.push(WelcomeScreen)
             }
-
-
         }
 
         Box(
@@ -348,6 +335,5 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                 offset
             )
         }
-
     }
 }

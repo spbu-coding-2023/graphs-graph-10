@@ -1,6 +1,5 @@
 package view.algo
 
-
 import androidx.compose.ui.graphics.Color
 import graphs.algo.findArticulationVerticesTarjan
 import kotlinx.coroutines.CoroutineScope
@@ -19,5 +18,4 @@ fun drawTarjan(graphViewModel: GraphViewModel) {
             }
         }
     }
-
 }

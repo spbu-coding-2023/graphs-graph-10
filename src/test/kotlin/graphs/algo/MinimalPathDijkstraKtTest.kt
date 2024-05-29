@@ -25,7 +25,7 @@ class MinimalPathDijkstraKtTest {
             addEdge(2, 3, 2)
         }
 
-        val pathList = MinimalPathDijkstra(graph, 1, 3)
+        val pathList = minimalPathDijkstra(graph, 1, 3)
         assertEquals(3, pathList.size)
         assertEquals(listOf<Long>(1, 2, 3), pathList)
     }
@@ -45,7 +45,7 @@ class MinimalPathDijkstraKtTest {
             addEdge(3, 4, 2)
         }
 
-        val pathList = MinimalPathDijkstra(graph, 1, 4)
+        val pathList = minimalPathDijkstra(graph, 1, 4)
         assertEquals(0, pathList.size)
     }
 
@@ -63,7 +63,7 @@ class MinimalPathDijkstraKtTest {
             addEdge(2, 3, 2)
         }
 
-        val pathList = MinimalPathDijkstra(graph, 1, 3)
+        val pathList = minimalPathDijkstra(graph, 1, 3)
         assertEquals(3, pathList.size)
         assertEquals(listOf<Long>(1, 2, 3), pathList)
     }
@@ -84,7 +84,7 @@ class MinimalPathDijkstraKtTest {
             addEdge(4, 3, 3)
         }
 
-        val pathList = MinimalPathDijkstra(graph, 1, 4)
+        val pathList = minimalPathDijkstra(graph, 1, 4)
         assertEquals(0, pathList.size)
     }
     @Test
@@ -99,7 +99,7 @@ class MinimalPathDijkstraKtTest {
             addEdge(1, 4, 3, 1)
             addEdge(4, 3, 4, 1)
         }
-        val pathList = MinimalPathDijkstra(graph, 1, 3)
+        val pathList = minimalPathDijkstra(graph, 1, 3)
         assertEquals(3, pathList.size)
         assertEquals(listOf<Long>(1, 4, 3), pathList)
     }

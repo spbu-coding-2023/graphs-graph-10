@@ -9,7 +9,6 @@ abstract class WeightedGraph : Graph {
     override val edges: Collection<Edge>
         get() = _edges.values
 
-
     override val vertices: Collection<Vertex>
         get() = _vertices.values
 
