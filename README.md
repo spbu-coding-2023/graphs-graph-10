@@ -83,5 +83,8 @@ The application supports 2 algorithms: [**Kruskal**](https://en.wikipedia.org/wi
 
 
 
+# LICENSE
+Sea [**LICENSE**](https://github.com/spbu-coding-2023/graphs-graph-10/blob/main/LICENSE)
+
 
 
