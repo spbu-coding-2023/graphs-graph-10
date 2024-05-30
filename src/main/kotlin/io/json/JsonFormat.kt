@@ -5,12 +5,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import graphs.primitives.Graph
 import graphs.types.DirectedGraph
 import graphs.types.UndirectedGraph
 import graphs.types.WeightedDirectedGraph
 import graphs.types.WeightedUndirectedGraph
-import java.util.*
 import viewmodel.MainScreenViewModel
 import viewmodel.graph.GraphViewModel
 import java.io.File
@@ -54,8 +52,8 @@ private data class GraphRepresentation(
 
 fun writeInJsonGraph(mainScreenViewModel: MainScreenViewModel) {
     val jsow = jacksonObjectMapper().writer().withDefaultPrettyPrinter()
-    var DisplayVertices = mutableMapOf<Long, VertexInfo>()
-    var DisplayEdges = mutableMapOf<Long, EdgeInfo>()
+    val DisplayVertices = mutableMapOf<Long, VertexInfo>()
+    val DisplayEdges = mutableMapOf<Long, EdgeInfo>()
     mainScreenViewModel.graphViewModel.edges.forEach {
         val vertex1 = VertexInfo(
             element = it.v.v.element,
@@ -67,7 +65,7 @@ fun writeInJsonGraph(mainScreenViewModel: MainScreenViewModel) {
             element = it.u.v.element,
             x = it.u.x,
             y = it.u.y,
-            color = it.u.color,  // исправлено на it.u.color для vertex2
+            color = it.u.color,
         )
         val edge = EdgeInfo(
             from = vertex2.element,
@@ -83,7 +81,7 @@ fun writeInJsonGraph(mainScreenViewModel: MainScreenViewModel) {
     }
 
 
-    var display = Display(
+    val display = Display(
         scale = mainScreenViewModel.scale.value,
         offsetX = mainScreenViewModel.offset.value.x,
         offsetY = mainScreenViewModel.offset.value.y,
@@ -94,7 +92,7 @@ fun writeInJsonGraph(mainScreenViewModel: MainScreenViewModel) {
     )
     val jsonGraph = jsow.writeValueAsString(display)
     val file =
-        File("jsonGraph.json")  // укажите желаемый путь к файлу
+        File("jsonGraph.json")
     file.writeText(jsonGraph)
     println("Graph has been written to ${file.absolutePath}")
 }
@@ -117,12 +115,10 @@ fun readFromJsonGraph(mainScreenViewModel: MainScreenViewModel, path: String): M
     println(graph is WeightedUndirectedGraph)
     println(graph::class.simpleName)
 
-    // Добавляем вершины в граф
     graphRepresentation.vertices.forEach { (_, vertexInfo) ->
         graph.addVertex(vertexInfo.element)
     }
 
-    // Добавляем рёбра в граф
     graphRepresentation.edges.forEach { (key, edgeInfo) ->
         graph.addEdge(edgeInfo.from, edgeInfo.to, key, edgeInfo.weight)
     }
@@ -132,7 +128,7 @@ fun readFromJsonGraph(mainScreenViewModel: MainScreenViewModel, path: String): M
     println(mainScreenViewModel.graph::class.simpleName)
     mainScreenViewModel.graph = graph
 
-    // Обновляем свойства вершин в представлении
+
     mainScreenViewModel.graphViewModel.vertices.forEach {
         val element = graphRepresentation.vertices[it.v.element] ?: return@forEach
         it.x = element.x
@@ -140,11 +136,11 @@ fun readFromJsonGraph(mainScreenViewModel: MainScreenViewModel, path: String): M
         it.color = element.color
     }
 
-    // Обновляем свойства рёбер в представлении
+
     mainScreenViewModel.graphViewModel.edges.forEach {
         val edgeInfo = graphRepresentation.edges[it.e.element] ?: return@forEach
         it.color = edgeInfo.color
-        it.width = edgeInfo.width // Пример преобразования веса в ширину ребра
+        it.width = edgeInfo.width
     }
 
     mainScreenViewModel.scale.value = graphRepresentation.scale

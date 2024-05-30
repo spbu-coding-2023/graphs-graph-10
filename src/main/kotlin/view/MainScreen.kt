@@ -281,33 +281,35 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Column {
-                                CoolButton(
-                                    onClick = {
-                                        displaySaveDialog.value = true
-                                    }, SmallBtn
-                                ) {
-                                    Text("Neo4j")
-                                }
+                                Row {
+                                    CoolButton(
+                                        onClick = {
+                                            displaySaveDialog.value = true
+                                        }, SmallBtn
+                                    ) {
+                                        Text("Neo4j")
+                                    }
 
+                                    Spacer(modifier = Modifier.width(20.dp))
+
+                                    CoolButton(
+                                        onClick = {
+                                            displaySaveDialogSQLite.value = true
+                                        }, SmallBtn
+
+                                    ) {
+                                        Text("SQLite")
+                                    }
+                                }
                                 Spacer(modifier = Modifier.height(10.dp))
-
                                 CoolButton(
                                     onClick = {
-                                        displaySaveDialogSQLite.value = true
-                                    }, SmallBtn
+                                        writeInJsonGraph(mainViewModel)
+                                    }, BigBtn
 
                                 ) {
-                                    Text("SQLite")
+                                    Text("JSON")
                                 }
-                            }
-                            Spacer(modifier = Modifier.width(20.dp))
-                            CoolButton(
-                                onClick = {
-                                    writeInJsonGraph(mainViewModel)
-                                }, SmallBtn
-
-                            ) {
-                                Text("JSON")
                             }
                         }
                     }

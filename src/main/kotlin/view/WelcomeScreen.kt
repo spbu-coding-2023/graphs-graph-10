@@ -43,13 +43,10 @@ fun Welcome() {
     var graphType by remember { mutableStateOf<GraphType?>(null) }
     var showTypeDialog by remember { mutableStateOf(false) }
     var showFilePicker by remember { mutableStateOf(false) }
-    var textData by remember { mutableStateOf("") }
     var graph by remember { mutableStateOf<Graph?>(null) }
     val displayLoadDialog = remember { mutableStateOf(false) }
     val displaySaveDialogSQLite = remember { mutableStateOf(false) }
-    val displayGraph = remember { mutableStateOf(false) }
     val navigator = LocalNavigator.currentOrThrow
-    var path by remember { mutableStateOf("") }
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -90,44 +87,42 @@ fun Welcome() {
                 CoolButton(
                     onClick = {
                         currentFileType = "JSON"
-                        displayLoadDialog.value = true
+
                     }, SmallBtn
                 ) { Text("JSON") }
             }
-            if (currentFileType == "csv") {
-                if (showTypeDialog) {
-                    GetGraphType(onDismissRequest = { selectedGraphType ->
-                        showTypeDialog = false
-                        selectedGraphType?.let {
-                            graphType = it
-                            showFilePicker = true
-                        }
-                    })
-                }
-
-                if (showFilePicker) {
-                    FileExplorer(fileType = "csv") { selectedFilePath ->
-                        graphType?.let {
-                            graph = createGraph(it)
-                            graph!!.reading(selectedFilePath)
-                            // Now graph is available outside the if blocks
-                        }
+        }
+        if (currentFileType == "csv") {
+            if (showTypeDialog) {
+                GetGraphType(onDismissRequest = { selectedGraphType ->
+                    showTypeDialog = false
+                    selectedGraphType?.let {
+                        graphType = it
+                        showFilePicker = true
                     }
-                    showFilePicker = false
+                })
+            }
+            if (showFilePicker) {
+                FileExplorer(fileType = "csv") { selectedFilePath ->
+                    graphType?.let {
+                        graph = createGraph(it)
+                        graph!!.reading(selectedFilePath)
+                    }
                 }
+                showFilePicker = false
             }
         }
         if (currentFileType == "JSON") {
+            showFilePicker = true
+            currentFileType = ""
             val tempGraph: Graph = DirectedGraph()
             val mainViewModel = MainScreenViewModel(tempGraph)
-            var flag = false
-            showFilePicker = true
             if (showFilePicker) {
                 FileExplorer(fileType = "json") { selectedFilePath ->
                     val updatedMainViewModel = readFromJsonGraph(mainViewModel, selectedFilePath)
-                    showFilePicker = false
                     navigator.push(GraphScreen(updatedMainViewModel))
                 }
+                showFilePicker = false
             }
         }
 
