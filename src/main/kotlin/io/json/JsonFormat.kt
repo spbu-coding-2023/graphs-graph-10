@@ -94,7 +94,7 @@ fun writeInJsonGraph(mainScreenViewModel: MainScreenViewModel) {
     )
     val jsonGraph = jsow.writeValueAsString(display)
     val file =
-        File("C:\\Users\\dabze\\OneDrive\\Рабочий стол\\я говножуй\\jsonGraph.json")  // укажите желаемый путь к файлу
+        File("jsonGraph.json")  // укажите желаемый путь к файлу
     file.writeText(jsonGraph)
     println("Graph has been written to ${file.absolutePath}")
 }
