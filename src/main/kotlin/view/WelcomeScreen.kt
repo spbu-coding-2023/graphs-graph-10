@@ -19,6 +19,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import graphs.types.DirectedGraph
 import graphs.types.UndirectedGraph
 import graphs.types.WeightedDirectedGraph
+import io.json.readFromJsonGraph
 import view.components.CoolButton
 import view.components.SmallBtn
 import view.components.FileExplorer
@@ -42,13 +43,10 @@ fun Welcome() {
     var graphType by remember { mutableStateOf<GraphType?>(null) }
     var showTypeDialog by remember { mutableStateOf(false) }
     var showFilePicker by remember { mutableStateOf(false) }
-    var textData by remember { mutableStateOf("") }
     var graph by remember { mutableStateOf<Graph?>(null) }
     val displayLoadDialog = remember { mutableStateOf(false) }
     val displaySaveDialogSQLite = remember { mutableStateOf(false) }
-    val displayGraph = remember { mutableStateOf(false) }
     val navigator = LocalNavigator.currentOrThrow
-
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -85,28 +83,46 @@ fun Welcome() {
                         displayLoadDialog.value = true
                     }, SmallBtn
                 ) { Text("Neo4j") }
-            }
-            if (currentFileType == "csv") {
-                if (showTypeDialog) {
-                    GetGraphType(onDismissRequest = { selectedGraphType ->
-                        showTypeDialog = false
-                        selectedGraphType?.let {
-                            graphType = it
-                            showFilePicker = true
-                        }
-                    })
-                }
+                Spacer(Modifier.width(4.dp))
+                CoolButton(
+                    onClick = {
+                        currentFileType = "JSON"
 
-                if (showFilePicker) {
-                    FileExplorer(fileType = "csv") { selectedFilePath ->
-                        graphType?.let {
-                            graph = createGraph(it)
-                            graph!!.reading(selectedFilePath)
-                            // Now graph is available outside the if blocks
-                        }
+                    }, SmallBtn
+                ) { Text("JSON") }
+            }
+        }
+        if (currentFileType == "csv") {
+            if (showTypeDialog) {
+                GetGraphType(onDismissRequest = { selectedGraphType ->
+                    showTypeDialog = false
+                    selectedGraphType?.let {
+                        graphType = it
+                        showFilePicker = true
                     }
-                    showFilePicker = false
+                })
+            }
+            if (showFilePicker) {
+                FileExplorer(fileType = "csv") { selectedFilePath ->
+                    graphType?.let {
+                        graph = createGraph(it)
+                        graph!!.reading(selectedFilePath)
+                    }
                 }
+                showFilePicker = false
+            }
+        }
+        if (currentFileType == "JSON") {
+            showFilePicker = true
+            currentFileType = ""
+            val tempGraph: Graph = DirectedGraph()
+            val mainViewModel = MainScreenViewModel(tempGraph)
+            if (showFilePicker) {
+                FileExplorer(fileType = "json") { selectedFilePath ->
+                    val updatedMainViewModel = readFromJsonGraph(mainViewModel, selectedFilePath)
+                    navigator.push(GraphScreen(updatedMainViewModel))
+                }
+                showFilePicker = false
             }
         }
 
