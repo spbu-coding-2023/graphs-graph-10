@@ -34,7 +34,7 @@ ___
 # Input/Output operations
 - Load **any** graph into this app if it's represents CSV with [adjacency matrix](https://en.wikipedia.org/wiki/Adjacency_matrix).
 - Find some graph files in csv format in **examples** directory.
-- Store current app state into [Neo4J](https://en.wikipedia.org/wiki/Neo4j) or [SQLite](https://en.wikipedia.org/wiki/SQLite) databases.
+- Store current app state into [Neo4J](https://en.wikipedia.org/wiki/Neo4j) or [SQLite](https://en.wikipedia.org/wiki/SQLite) or [JSON](https://en.wikipedia.org/wiki/JSON) databases.
 
 # Installation and launch
 - **Installation**
@@ -80,11 +80,7 @@ The application supports 2 algorithms: [**Kruskal**](https://en.wikipedia.org/wi
 
 ![2024-05-29-11-08-45](https://github.com/spbu-coding-2023/graphs-graph-10/assets/117384050/f4774cc5-55c2-4c23-b293-2edc9213b302)
 
-
-
-
-# LICENSE
-Sea [**LICENSE**](https://github.com/spbu-coding-2023/graphs-graph-10/blob/main/LICENSE)
+[**LICENSE**](https://github.com/spbu-coding-2023/graphs-graph-10/blob/main/LICENSE)
 
 
 
