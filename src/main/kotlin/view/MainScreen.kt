@@ -32,6 +32,8 @@ import graphs.types.UndirectedGraph
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import io.json.writeInJsonGraph
+
 import view.components.*
 import view.utils.SaveToNeo4jDialog
 import view.utils.saveToSQLite
@@ -198,7 +200,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     Column {
                         CoolButton(
                             onClick = {
-                                scope.drawDijkstra(mainViewModel.graphViewModel,"Dijkstra") { result ->
+                                scope.drawDijkstra(mainViewModel.graphViewModel, "Dijkstra") { result ->
                                     textData = result
                                 }
                             }, BigBtn
@@ -206,7 +208,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                         Spacer(modifier = Modifier.height(10.dp))
                         CoolButton(
                             onClick = {
-                                scope.drawDijkstra(mainViewModel.graphViewModel,"Astar") { result ->
+                                scope.drawDijkstra(mainViewModel.graphViewModel, "Astar") { result ->
                                     textData = result
                                 }
                             }, BigBtn
@@ -278,23 +280,34 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                         Row(
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            CoolButton(
-                                onClick = {
-                                    displaySaveDialog.value = true
-                                }, SmallBtn
-                            ) {
-                                Text("Neo4j")
+                            Column {
+                                CoolButton(
+                                    onClick = {
+                                        displaySaveDialog.value = true
+                                    }, SmallBtn
+                                ) {
+                                    Text("Neo4j")
+                                }
+
+                                Spacer(modifier = Modifier.height(10.dp))
+
+                                CoolButton(
+                                    onClick = {
+                                        displaySaveDialogSQLite.value = true
+                                    }, SmallBtn
+
+                                ) {
+                                    Text("SQLite")
+                                }
                             }
-
                             Spacer(modifier = Modifier.width(20.dp))
-
                             CoolButton(
                                 onClick = {
-                                    displaySaveDialogSQLite.value = true
+                                    writeInJsonGraph(mainViewModel)
                                 }, SmallBtn
 
                             ) {
-                                Text("SQLite")
+                                Text("JSON")
                             }
                         }
                     }

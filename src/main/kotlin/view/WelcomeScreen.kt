@@ -19,6 +19,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import graphs.types.DirectedGraph
 import graphs.types.UndirectedGraph
 import graphs.types.WeightedDirectedGraph
+import io.json.readFromJsonGraph
 import view.components.CoolButton
 import view.components.SmallBtn
 import view.components.FileExplorer
@@ -48,7 +49,7 @@ fun Welcome() {
     val displaySaveDialogSQLite = remember { mutableStateOf(false) }
     val displayGraph = remember { mutableStateOf(false) }
     val navigator = LocalNavigator.currentOrThrow
-
+    var path by remember { mutableStateOf("") }
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -85,6 +86,13 @@ fun Welcome() {
                         displayLoadDialog.value = true
                     }, SmallBtn
                 ) { Text("Neo4j") }
+                Spacer(Modifier.width(4.dp))
+                CoolButton(
+                    onClick = {
+                        currentFileType = "JSON"
+                        displayLoadDialog.value = true
+                    }, SmallBtn
+                ) { Text("JSON") }
             }
             if (currentFileType == "csv") {
                 if (showTypeDialog) {
@@ -106,6 +114,19 @@ fun Welcome() {
                         }
                     }
                     showFilePicker = false
+                }
+            }
+        }
+        if (currentFileType == "JSON") {
+            val tempGraph: Graph = DirectedGraph()
+            val mainViewModel = MainScreenViewModel(tempGraph)
+            var flag = false
+            showFilePicker = true
+            if (showFilePicker) {
+                FileExplorer(fileType = "json") { selectedFilePath ->
+                    val updatedMainViewModel = readFromJsonGraph(mainViewModel, selectedFilePath)
+                    showFilePicker = false
+                    navigator.push(GraphScreen(updatedMainViewModel))
                 }
             }
         }
