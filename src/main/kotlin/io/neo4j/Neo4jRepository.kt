@@ -48,6 +48,7 @@ class Neo4jRepository {
             val offsetY = mainScreenViewModel.offset.value.y.value
             val displayWeight = mainScreenViewModel.displayWeight.value
             val graphType = mainScreenViewModel.graph::class.simpleName
+            println(graphType)
             tx.run(
                 "CREATE (:GraphInfo {" +
                         "scale: $scale, " +
@@ -144,6 +145,7 @@ class Neo4jRepository {
             mainScreenViewModel.scale.value = scale
             mainScreenViewModel.offset.value = DpOffset(offsetX.dp, offsetY.dp)
             mainScreenViewModel.displayWeight.value = displayWeight
+            mainScreenViewModel.graph = graph
         }
         println("Graph was loaded")
     }
