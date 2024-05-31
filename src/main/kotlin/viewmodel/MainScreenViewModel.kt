@@ -34,7 +34,6 @@ class MainScreenViewModel(var graph: Graph) {
     var graphViewModel = GraphViewModel(graph)
     var scale = mutableStateOf(1f)
     var offset = mutableStateOf(DpOffset.Zero)
-//    var offset = animateDpOffsetAsState(DpOffset.Zero, tween(200, 0, LinearOutSlowInEasing))
     var displayWeight = mutableStateOf(false)
     var runLayout = false
 
@@ -49,6 +48,7 @@ class MainScreenViewModel(var graph: Graph) {
     }
 
     fun restoreGraphState() {
+        offset.value = DpOffset.Zero
         graphViewModel.edges.forEach { e ->
             e.color = Color.Black
             e.width = 1f
