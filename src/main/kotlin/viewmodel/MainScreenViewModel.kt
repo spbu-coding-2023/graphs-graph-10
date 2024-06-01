@@ -32,6 +32,7 @@ class MainScreenViewModel(var graph: Graph) {
     var scale = mutableStateOf(1f)
     var offset = mutableStateOf(DpOffset.Zero)
     var displayWeight = mutableStateOf(false)
+    var displayKey = mutableStateOf(false)
     var runLayout = false
 
 

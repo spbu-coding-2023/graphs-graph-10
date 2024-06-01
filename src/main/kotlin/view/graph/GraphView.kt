@@ -20,6 +20,7 @@ fun graphView(
     graphViewModel: GraphViewModel,
     displayGraph: MutableState<Boolean>,
     displayWeight: MutableState<Boolean>,
+    displayKey: MutableState<Boolean>,
     scale: Float,
     offset: DpOffset
 ) {
@@ -44,7 +45,7 @@ fun graphView(
                 }
             }
             graphViewModel.vertices.forEach { v ->
-                vertexView(v, Modifier, graphViewModel)
+                vertexView(v, Modifier, displayKey,graphViewModel)
             }
         }
     }

@@ -62,7 +62,7 @@ fun mainScreen(mainViewModel: MainScreenViewModel) {
     var leaderRankStart by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val navigator = LocalNavigator.currentOrThrow
-
+    val displayKey = mainViewModel.displayKey
     if (displayGraph.value && mainViewModel.runLayout) {
         mainViewModel.runLayoutAlgorithm(resolution)
         mainViewModel.runLayout = false
@@ -221,7 +221,16 @@ fun mainScreen(mainViewModel: MainScreenViewModel) {
                 }
 
 
-
+                Row(verticalAlignment = Alignment.CenterVertically)
+                {
+                    Text("Display keys:")
+                    Checkbox(
+                        checked = displayKey.value,
+                        onCheckedChange = {
+                            displayKey.value = it
+                        }
+                    )
+                }
                 if (mainViewModel.graph is WeightedDirectedGraph ||
                     mainViewModel.graph is WeightedUndirectedGraph
                 ) {
@@ -360,6 +369,7 @@ fun mainScreen(mainViewModel: MainScreenViewModel) {
                 mainViewModel.graphViewModel,
                 displayGraph,
                 displayWeight,
+                displayKey,
                 animateScale,
                 animateOffset
             )
