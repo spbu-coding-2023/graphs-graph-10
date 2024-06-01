@@ -12,7 +12,7 @@ class LeaderRankTest {
         val graph = WeightedDirectedGraph()
         val v1 = graph.addVertex(1)
 
-        val result = LeaderRank(graph, 0.85, 0.001)
+        val result = leaderRank(graph, 0.85, 0.001)
 
         assertEquals(1, result.size)
         assertEquals(v1, result[0].first)
@@ -26,7 +26,7 @@ class LeaderRankTest {
         val v2 = graph.addVertex(2)
         val v3 = graph.addVertex(3)
 
-        val result = LeaderRank(graph, 0.15, 0.001)
+        val result = leaderRank(graph, 0.15, 0.001)
 
         assertEquals(3, result.size)
         assertEquals(v1, result[0].first)
@@ -40,15 +40,15 @@ class LeaderRankTest {
     @Test
     fun testLeaderRankFullyConnectedGraph() {
         val graph = WeightedDirectedGraph()
-        val v1 = graph.addVertex(1)
-        val v2 = graph.addVertex(2)
-        val v3 = graph.addVertex(3)
+        graph.addVertex(1)
+        graph.addVertex(2)
+        graph.addVertex(3)
 
         graph.addEdge(1, 2, 1, 1L)
         graph.addEdge(1, 3, 2, 1L)
         graph.addEdge(2, 3, 3, 1L)
 
-        val result = LeaderRank(graph, 0.85, 0.001)
+        val result = leaderRank(graph, 0.85, 0.001)
 
         assertEquals(3, result.size)
         assertTrue(result[0].second > result[1].second)
@@ -61,9 +61,9 @@ class RemoveTest {
     @Test
     fun testRemoveVertexWithEdges() {
         val graph = WeightedUndirectedGraph()
-        val v1 = graph.addVertex(1)
+        graph.addVertex(1)
         val v2 = graph.addVertex(2)
-        val v3 = graph.addVertex(3)
+        graph.addVertex(3)
         graph.addEdge(1, 2, 1)
         graph.addEdge(2, 3, 2)
         graph.addEdge(3, 1, 3)

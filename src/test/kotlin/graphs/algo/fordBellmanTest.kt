@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-class fordBellmanTest {
+class FordBellmanTest {
     private lateinit var sampleGraph: Graph
     @Test
     fun `positive and negative graph`() {

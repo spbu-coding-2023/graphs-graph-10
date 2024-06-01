@@ -45,6 +45,7 @@ class MainScreenViewModel(var graph: Graph) {
     }
 
     fun restoreGraphState() {
+        offset.value = DpOffset.Zero
         graphViewModel.edges.forEach { e ->
             e.color = Color.Black
             e.width = 1f

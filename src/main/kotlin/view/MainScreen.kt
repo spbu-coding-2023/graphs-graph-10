@@ -22,6 +22,7 @@ import view.algo.*
 import view.graph.graphView
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -42,6 +43,7 @@ fun mainScreen(mainViewModel: MainScreenViewModel) {
     var resolution by remember { mutableStateOf(Pair(0, 0)) }
     val displayGraph = remember { mutableStateOf(false) }
     var scale by mainViewModel.scale
+    val animateScale by animateFloatAsState(scale, tween(300, 0, LinearOutSlowInEasing))
     fun scaleBox(delta: Int) {
         scale = (scale * exp(delta * 0.1f)).coerceIn(0.05f, 4.0f)
     }
@@ -358,7 +360,7 @@ fun mainScreen(mainViewModel: MainScreenViewModel) {
                 mainViewModel.graphViewModel,
                 displayGraph,
                 displayWeight,
-                scale,
+                animateScale,
                 animateOffset
             )
         }
