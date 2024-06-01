@@ -20,9 +20,9 @@ fun Graph.reading(fileName: String) {
         if (vertex != "") {
             edgesIndex[countVertex] = vertex
             countVertex++
+            this.addVertex(vertex.toLong())
         }
     }
-
     var element: Long = 1
 
     for (i in 1..countVertex) {
@@ -31,11 +31,6 @@ fun Graph.reading(fileName: String) {
             val secondVert = edgesIndex[j - 1]
 
             val isEdge = data[i][j].toLong()
-            if (firstVert != null)
-                this.addVertex(firstVert.toLong())
-            if (secondVert != null)
-                this.addVertex(secondVert.toLong())
-
             if (isEdge >= 1 && firstVert != null && secondVert != null) {
                 this.addEdge(firstVert.toLong(), secondVert.toLong(), element, isEdge)
                 element++
@@ -62,4 +57,5 @@ fun Graph.reading(fileName: String) {
             }
         }
     }
+    println(this.vertices.size)
 }
