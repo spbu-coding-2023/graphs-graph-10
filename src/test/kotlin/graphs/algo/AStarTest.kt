@@ -1,6 +1,5 @@
 package graphs.algo
 
-import AStar
 import graphs.types.WeightedDirectedGraph
 import graphs.types.WeightedUndirectedGraph
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -17,7 +16,7 @@ class AStarTest {
             addEdge(2, 3, 2)
         }
 
-        val pathList = AStar(graph, 1, 3)
+        val pathList = aStar(graph, 1, 3)
         assertEquals(3, pathList.size)
         assertEquals(listOf<Long>(1, 2, 3), pathList)
     }
@@ -34,7 +33,7 @@ class AStarTest {
             addEdge(1, 4, 3, 1)
             addEdge(4, 3, 4, 1)
         }
-        val pathList = AStar(graph, 1, 3)
+        val pathList = aStar(graph, 1, 3)
         assertEquals(3, pathList.size)
         assertEquals(listOf<Long>(1, 4, 3), pathList)
     }

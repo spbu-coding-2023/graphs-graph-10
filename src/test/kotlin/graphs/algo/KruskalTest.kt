@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test
 class KruskalTest {
 
     @Test
-    fun SizeOfMST() {
-        val graph = WeightedUndirectedGraph().apply() {
+    fun sizeOfMST() {
+        val graph = WeightedUndirectedGraph().apply {
             addEdge(0, 1, 1, 7)
             addEdge(0, 2, 2, 8)
             addEdge(1, 2, 3, 11)
@@ -25,13 +25,13 @@ class KruskalTest {
             addVertex(4, "E")
             addVertex(5, "F")
         }
-        val minimalSpanningtree = Kruskal(graph)
+        val minimalSpanningtree = kruskal(graph)
         assertEquals(minimalSpanningtree.size, 5)
     }
 
     @Test
-    fun SumOfWeightsInMST() {
-        val graph = WeightedUndirectedGraph().apply() {
+    fun sumOfWeightsInMST() {
+        val graph = WeightedUndirectedGraph().apply {
             addEdge(0, 1, 1, 7)
             addEdge(0, 2, 2, 8)
             addEdge(1, 2, 3, 11)
@@ -48,17 +48,17 @@ class KruskalTest {
             addVertex(4, "E")
             addVertex(5, "F")
         }
-        val minimalSpanningtree = Kruskal(graph)
+        val minimalSpanningtree = kruskal(graph)
         var sum: Long = 0
-        minimalSpanningtree.forEach { it ->
+        minimalSpanningtree.forEach {
             sum += it.weight ?: 0L
         }
         assertEquals(33, sum)
     }
 
     @Test
-    fun PickedEdgesInMst() {
-        val graph = WeightedUndirectedGraph().apply() {
+    fun pickedEdgesInMst() {
+        val graph = WeightedUndirectedGraph().apply {
             addEdge(0, 1, 1, 7)
             addEdge(0, 2, 2, 8)
             addEdge(1, 2, 3, 11)
@@ -75,17 +75,17 @@ class KruskalTest {
             addVertex(4, "E")
             addVertex(5, "F")
         }
-        val minimalSpanningtree = Kruskal(graph)
+        val minimalSpanningtree = kruskal(graph)
         val listOfEdgeIds = mutableListOf<Long?>()
-        minimalSpanningtree.forEach { it ->
+        minimalSpanningtree.forEach {
             listOfEdgeIds.add(it.element)
         }
         assertEquals(listOfEdgeIds, listOf<Long>(4, 5, 1, 6, 8))
     }
 
     @Test
-    fun NotСonnectedGraph() {
-        val graph = WeightedUndirectedGraph().apply() {
+    fun notConnectedGraph() {
+        val graph = WeightedUndirectedGraph().apply {
             addVertex(0, "A")
             addVertex(1, "B")
             addVertex(2, "C")
@@ -102,7 +102,7 @@ class KruskalTest {
             addEdge(5, 3, 6, 6)
         }
 
-        val minimalSpanningtree = Kruskal(graph)
+        val minimalSpanningtree = kruskal(graph)
         assertEquals(minimalSpanningtree.size, 4)//checking that all vertices from both components are in list
         val listOfEdgeIds = mutableListOf<Long?>()
         minimalSpanningtree.forEach {
