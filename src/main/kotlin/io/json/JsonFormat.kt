@@ -43,6 +43,17 @@ fun writeInJsonGraph(mainScreenViewModel: MainScreenViewModel) {
     val jsow = jacksonObjectMapper().writer().withDefaultPrettyPrinter()
     val displayVertices = mutableMapOf<Long, VertexInfo>()
     val displayEdges = mutableMapOf<Long, EdgeInfo>()
+    mainScreenViewModel.graphViewModel.vertices.forEach {
+        val vertex = VertexInfo(
+            element = it.v.element,
+            x = it.x,
+            y = it.y,
+            color = it.color,
+        )
+
+        displayVertices[it.v.element] = vertex
+
+    }
     mainScreenViewModel.graphViewModel.edges.forEach {
         val vertex1 = VertexInfo(
             element = it.v.v.element,
@@ -63,9 +74,6 @@ fun writeInJsonGraph(mainScreenViewModel: MainScreenViewModel) {
             weight = it.e.weight,
             width = it.width
         )
-
-        displayVertices[it.v.v.element] = vertex1
-        displayVertices[it.u.v.element] = vertex2
         displayEdges[it.e.element] = edge
     }
 
@@ -99,10 +107,6 @@ fun readFromJsonGraph(mainScreenViewModel: MainScreenViewModel, path: String): M
         "WeightedUndirectedGraph" -> WeightedUndirectedGraph()
         else -> throw Exception("Incorrect graph type.")
     }
-
-    println(graphRepresentation.graphType)
-    println(graph is WeightedUndirectedGraph)
-    println(graph::class.simpleName)
 
     graphRepresentation.vertices.forEach { (_, vertexInfo) ->
         graph.addVertex(vertexInfo.element)

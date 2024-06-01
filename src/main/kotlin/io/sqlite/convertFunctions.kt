@@ -84,7 +84,7 @@ fun installGraph(mainScreenViewModel: MainScreenViewModel, graphDB: GraphDBForma
     }
 
     mainScreenViewModel.graphViewModel = GraphViewModel(graph)
-
+    mainScreenViewModel.graph = graph
     mainScreenViewModel.graphViewModel.vertices.forEach {
         val element = vertexMap[it.v.element] ?: return@forEach
         it.x = element.x.dp
