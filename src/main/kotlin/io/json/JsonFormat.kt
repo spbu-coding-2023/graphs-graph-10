@@ -95,11 +95,21 @@ fun writeInJsonGraph(mainScreenViewModel: MainScreenViewModel) {
 }
 
 fun readFromJsonGraph(mainScreenViewModel: MainScreenViewModel, path: String): MainScreenViewModel {
+
     val mapper = jacksonObjectMapper()
     val file = File(path)
     val jsonGraph = file.readText()
-    val graphRepresentation = mapper.readValue<Display>(jsonGraph)
+    //val graphRepresentation = mapper.readValue<Display>(jsonGraph)
 
+
+    val graphRepresentation: Display
+    try {
+        graphRepresentation = mapper.readValue(jsonGraph)
+    } catch (e: Exception) {
+        println("Wrong file type")
+
+        return mainScreenViewModel
+    }
     val graph = when (graphRepresentation.graphType) {
         "DirectedGraph" -> DirectedGraph()
         "UndirectedGraph" -> UndirectedGraph()
