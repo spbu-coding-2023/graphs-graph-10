@@ -11,14 +11,15 @@ import viewmodel.graph.GraphViewModel
 fun drawMst(graphViewModel: GraphViewModel): Job {
     return CoroutineScope(Dispatchers.Default).launch {
         val mst = searchMstPrim(graphViewModel.graph, graphViewModel.vertices.elementAt(0).v.element)
+        for (v in graphViewModel.vertices) {
+            v.color = Color.Cyan
+        }
         for (i in mst) {
             graphViewModel.edges.forEach { e ->
                 val f = e.v.v.element
                 val s = e.u.v.element
                 if ((s == i.first && f == i.second) || (f == i.first && s == i.second)) {
                     e.color = Color.Cyan
-                    e.v.color = Color.Cyan
-                    e.u.color = Color.Cyan
                     e.width = 4f
                 }
             }
