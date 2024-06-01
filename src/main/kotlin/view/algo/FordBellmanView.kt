@@ -30,7 +30,7 @@ fun fordBellman(graphViewModel: GraphViewModel): String {
         pickedVertices.last()
     )?.first
 
-    if (path == null || path.isEmpty()) {
+    if (path.isNullOrEmpty()) {
         return "Can't find path for given vertices."
     }
 

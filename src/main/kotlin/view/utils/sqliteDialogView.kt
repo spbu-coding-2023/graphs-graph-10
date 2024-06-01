@@ -17,7 +17,7 @@ import io.sqlite.GraphDatabase
 import io.sqlite.convertToDBFormat
 import io.sqlite.installGraph
 import view.components.BigBtn
-import view.components.CoolButton
+import view.components.coolButton
 import viewmodel.MainScreenViewModel
 
 
@@ -72,7 +72,7 @@ fun loadFromSQLite(
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                CoolButton(
+                coolButton(
                     onClick = { load() }, BigBtn
                 ) { Text("Load") }
                 Text(actionStatus)
@@ -130,7 +130,7 @@ fun saveToSQLite(
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                CoolButton(
+                coolButton(
                     onClick = { save() }, BigBtn
                 ) { Text("Save") }
                 Text(actionStatus)

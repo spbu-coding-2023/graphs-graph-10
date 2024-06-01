@@ -18,7 +18,7 @@ import viewmodel.graph.GraphViewModel
 import viewmodel.graph.VertexViewModel
 
 @Composable
-fun VertexView(
+fun vertexView(
     vertexViewModel: VertexViewModel,
     modifier: Modifier = Modifier,
     graphViewModel: GraphViewModel

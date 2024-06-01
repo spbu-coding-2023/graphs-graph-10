@@ -1,7 +1,6 @@
 package view
 
 import WelcomeScreen
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
@@ -20,24 +19,18 @@ import androidx.compose.ui.unit.dp
 import graphs.types.WeightedDirectedGraph
 import graphs.types.WeightedUndirectedGraph
 import view.algo.*
-import view.graph.GraphView
+import view.graph.graphView
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.ui.unit.Dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import graphs.algo.LeaderRank
 import graphs.types.UndirectedGraph
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import io.json.writeInJsonGraph
-
 import view.components.*
-import view.utils.SaveToNeo4jDialog
+import view.utils.saveToNeo4jDialog
 import view.utils.saveToSQLite
-
 import viewmodel.MainScreenViewModel
 import viewmodel.animateDpOffsetAsState
 import kotlin.math.exp
@@ -45,7 +38,7 @@ import kotlin.math.sign
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun MainScreen(mainViewModel: MainScreenViewModel) {
+fun mainScreen(mainViewModel: MainScreenViewModel) {
     var resolution by remember { mutableStateOf(Pair(0, 0)) }
     val displayGraph = remember { mutableStateOf(false) }
     var scale by mainViewModel.scale
@@ -61,7 +54,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
     val displaySaveDialogSQLite = remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(true) }
     val backToWelcome = remember { mutableStateOf(false) }
-    var LeaderRankDialog = remember { mutableStateOf(false) }
+    val leaderRankDialog = remember { mutableStateOf(false) }
     var n by remember { mutableStateOf<Int?>(null) }
     var gap by remember { mutableStateOf<Double?>(null) }
     var leaderRankStart by remember { mutableStateOf(false) }
@@ -92,7 +85,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                 verticalArrangement = Arrangement.Top
             ) {
                 Row {
-                    CoolButton(
+                    coolButton(
                         onClick = {
                             mainViewModel.restoreGraphState()
                             mainViewModel.runLayoutAlgorithm(resolution)
@@ -101,22 +94,22 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                         }, LargeBtn
                     ) { Text("Reload view") }
                     Spacer(modifier = Modifier.width(20.dp))
-                    CoolButton(
+                    coolButton(
                         onClick = {
                             backToWelcome.value = true
                         }, LargeBtn
                     ) { Text("Back to menu") }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                CoolButton(
+                coolButton(
                     onClick = {
-                        LeaderRankDialog.value = true
+                        leaderRankDialog.value = true
                     }, BigBtn
                 ) { Text("Find key vertices") }
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                CoolButton(
+                coolButton(
                     onClick = {
                         drawTarjan(mainViewModel.graphViewModel)
                     }, BigBtn
@@ -129,7 +122,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     mainViewModel.graph is WeightedUndirectedGraph
                 ) {
                     Column {
-                        CoolButton(
+                        coolButton(
                             onClick = {
                                 scope.drawCycles(mainViewModel.graphViewModel) { result ->
                                     textData = result
@@ -137,7 +130,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                             }, BigBtn
                         ) { Text("Cycles") }
                         Spacer(modifier = Modifier.height(10.dp))
-                        CoolButton(
+                        coolButton(
                             onClick = {
                                 drawCommunities(mainViewModel.graphViewModel)
                             }, BigBtn
@@ -146,7 +139,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     }
                 } else {
                     Row {
-                        CoolButton(
+                        coolButton(
                             onClick = {
                                 scope.drawCycles(mainViewModel.graphViewModel) { result ->
                                     textData = result
@@ -154,7 +147,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                             }, SmallBtn
                         ) { Text("Cycles") }
                         Spacer(modifier = Modifier.width(20.dp))
-                        CoolButton(
+                        coolButton(
                             onClick = {
                                 drawSCC(mainViewModel.graphViewModel)
                             }, SmallBtn
@@ -162,7 +155,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                CoolButton(
+                coolButton(
                     onClick = {
                         drawFindBridge(mainViewModel.graphViewModel)
                     }, BigBtn
@@ -175,13 +168,13 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     )
                     Box {
                         Row {
-                            CoolButton(
+                            coolButton(
                                 onClick = {
                                     drawMst(mainViewModel.graphViewModel)
                                 }, SmallBtn
                             ) { Text("Prim") }
                             Spacer(modifier = Modifier.width(20.dp))
-                            CoolButton(
+                            coolButton(
                                 onClick = {
                                     drawKruskalMST(mainViewModel.graphViewModel)
                                 }, SmallBtn
@@ -198,7 +191,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                         fontWeight = FontWeight.Bold
                     )
                     Column {
-                        CoolButton(
+                        coolButton(
                             onClick = {
                                 scope.drawDijkstra(mainViewModel.graphViewModel, "Dijkstra") { result ->
                                     textData = result
@@ -206,7 +199,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                             }, BigBtn
                         ) { Text("Dijkstra") }
                         Spacer(modifier = Modifier.height(10.dp))
-                        CoolButton(
+                        coolButton(
                             onClick = {
                                 scope.drawDijkstra(mainViewModel.graphViewModel, "Astar") { result ->
                                     textData = result
@@ -214,7 +207,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                             }, BigBtn
                         ) { Text("AStar") }
                         Spacer(modifier = Modifier.height(10.dp))
-                        CoolButton(
+                        coolButton(
                             onClick = {
                                 scope.drawFordBellman(mainViewModel.graphViewModel) { result ->
                                     textData = result
@@ -242,14 +235,13 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                         )
                     }
                 }
-                if (LeaderRankDialog.value) {
-
-                    LeaderRankDisplay(
-                        onDismissRequest = { LeaderRankDialog.value = false },
-                        onResult = { amountOfKeyVertices, gapToCheck, StartAlgo ->
+                if (leaderRankDialog.value) {
+                    leaderRankDisplay(
+                        onDismissRequest = { leaderRankDialog.value = false },
+                        onResult = { amountOfKeyVertices, gapToCheck, startAlgo ->
                             n = amountOfKeyVertices
                             gap = gapToCheck
-                            leaderRankStart = StartAlgo
+                            leaderRankStart = startAlgo
                         },
                         mainViewModel.graph
                     )
@@ -258,11 +250,11 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                 }
                 if ((n != null || gap != null) && leaderRankStart) {
 
-                    LeaderRankView(mainViewModel.graphViewModel, n, gap)
+                    leaderRankView(mainViewModel.graphViewModel, n, gap)
                     leaderRankStart = false
                 }
                 if (displaySaveDialog.value) {
-                    SaveToNeo4jDialog(onDismissRequest = {
+                    saveToNeo4jDialog(onDismissRequest = {
                         displaySaveDialog.value = false
                     }, "save", mainViewModel)
                 }
@@ -275,14 +267,14 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                             horizontalArrangement = Arrangement.Center,
                             modifier = Modifier.padding(vertical = 10.dp)
                         ) {
-                            InformationBox(textData)
+                            informationBox(textData)
                         }
                         Row(
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Column {
                                 Row {
-                                    CoolButton(
+                                    coolButton(
                                         onClick = {
                                             displaySaveDialog.value = true
                                         }, SmallBtn
@@ -292,7 +284,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
 
                                     Spacer(modifier = Modifier.width(20.dp))
 
-                                    CoolButton(
+                                    coolButton(
                                         onClick = {
                                             displaySaveDialogSQLite.value = true
                                         }, SmallBtn
@@ -302,7 +294,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                                     }
                                 }
                                 Spacer(modifier = Modifier.height(10.dp))
-                                CoolButton(
+                                coolButton(
                                     onClick = {
                                         writeInJsonGraph(mainViewModel)
                                     }, BigBtn
@@ -362,7 +354,7 @@ fun MainScreen(mainViewModel: MainScreenViewModel) {
                     }
                 }
         ) {
-            GraphView(
+            graphView(
                 mainViewModel.graphViewModel,
                 displayGraph,
                 displayWeight,

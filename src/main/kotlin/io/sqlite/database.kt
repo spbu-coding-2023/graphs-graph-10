@@ -2,8 +2,6 @@ package io.sqlite
 
 
 import io.sqlite.connectedEntity.GraphDBFormat
-import viewmodel.graph.EdgeViewModel
-import viewmodel.graph.VertexViewModel
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.Statement

@@ -1,12 +1,9 @@
 package viewmodel
 
 import androidx.compose.animation.core.*
-import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import layouts.YifanHuPlacementStrategy
@@ -34,7 +31,6 @@ class MainScreenViewModel(var graph: Graph) {
     var graphViewModel = GraphViewModel(graph)
     var scale = mutableStateOf(1f)
     var offset = mutableStateOf(DpOffset.Zero)
-//    var offset = animateDpOffsetAsState(DpOffset.Zero, tween(200, 0, LinearOutSlowInEasing))
     var displayWeight = mutableStateOf(false)
     var runLayout = false
 

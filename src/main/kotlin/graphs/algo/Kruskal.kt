@@ -3,10 +3,10 @@ package graphs.algo
 import graphs.primitives.Edge
 import graphs.primitives.Graph
 
-fun Kruskal(graph: Graph): List<Edge> {
+fun kruskal(graph: Graph): List<Edge> {
     val edgeList = mutableListOf<Edge>()
     val sccmap = HashMap<Long, Long>()
-    val MST = mutableListOf<Edge>()
+    val mst = mutableListOf<Edge>()
 
     graph.edges.forEach { edgeList.add(it) }
     graph.vertices.forEach { sccmap[it.element] = it.element }
@@ -25,10 +25,10 @@ fun Kruskal(graph: Graph): List<Edge> {
         val toComponent = sccmap[edge.vertices.second.element]
 
         if (fromComponent != toComponent) {
-            MST.add(edge)
+            mst.add(edge)
             repaintTheMap(fromComponent!!, toComponent!!, sccmap)
         }
     }
 
-    return MST
+    return mst
 }

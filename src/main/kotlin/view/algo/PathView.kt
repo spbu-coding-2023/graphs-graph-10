@@ -1,7 +1,8 @@
 package view.algo
 
-import AStar
+
 import androidx.compose.ui.graphics.Color
+import graphs.algo.aStar
 import graphs.algo.minimalPathDijkstra
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -9,32 +10,31 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import viewmodel.graph.GraphViewModel
 
-fun CoroutineScope.drawDijkstra(graphViewModel: GraphViewModel,Algo: String, onComplete: (String) -> Unit) {
+fun CoroutineScope.drawDijkstra(graphViewModel: GraphViewModel,algo: String, onComplete: (String) -> Unit) {
     launch(Dispatchers.Default) {
         println("drawPathOnGraph ${Thread.currentThread().name}")
-        val result = drawPathOnGraph(graphViewModel, Algo)
+        val result = drawPathOnGraph(graphViewModel, algo)
         withContext(Dispatchers.Main) {
             onComplete(result)
         }
     }
 }
 
-fun drawPathOnGraph(graphViewModel: GraphViewModel, Algo: String): String {
+fun drawPathOnGraph(graphViewModel: GraphViewModel, algo: String): String {
     val pickedVertices = graphViewModel.pickedVertices
 
     if (pickedVertices.size != 2) {
         println("Count of picked vertices != 2")
         return "Count of picked vertices != 2"
     }
-    val path: List<Long>
-    if (Algo == "AStar") {
-        path = AStar(
+    val path: List<Long> = if (algo == "AStar") {
+        aStar(
             graphViewModel.graph,
             pickedVertices.first(),
             pickedVertices.last()
         )
     } else {
-        path = minimalPathDijkstra(
+        minimalPathDijkstra(
             graphViewModel.graph,
             pickedVertices.first(),
             pickedVertices.last()

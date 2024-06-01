@@ -19,7 +19,7 @@ fun minimalPathDijkstra(graph: Graph, start: Long, target: Long): List<Long> {
         if (currentVertex == target) break
 
         for ((neighbor, weight) in neighbors) {
-            val dist = currentDistance + ((weight ?: 1L) as Long)
+            val dist = currentDistance + ((weight ?: 1L))
             if (dist < distances[neighbor]!!) {
                 distances[neighbor] = dist
                 previous[neighbor] = currentVertex

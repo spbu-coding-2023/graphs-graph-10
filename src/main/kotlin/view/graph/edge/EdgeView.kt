@@ -9,7 +9,7 @@ import androidx.compose.ui.geometry.Offset
 import viewmodel.graph.EdgeViewModel
 
 @Composable
-fun EdgeView(
+fun edgeView(
     edgeViewModel: EdgeViewModel,
     displayWeight: MutableState<Boolean>,
     modifier: Modifier = Modifier,
@@ -30,5 +30,5 @@ fun EdgeView(
     }
 
     if (displayWeight.value)
-        WeightView(edgeViewModel, Modifier)
+        weightView(edgeViewModel)
 }
