@@ -15,16 +15,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import viewmodel.graph.GraphViewModel
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Text
+import androidx.compose.ui.Alignment
 import viewmodel.graph.VertexViewModel
 
 @Composable
 fun vertexView(
     vertexViewModel: VertexViewModel,
     modifier: Modifier = Modifier,
-    graphViewModel: GraphViewModel
+    displayKey: MutableState<Boolean>,
+    graphViewModel: GraphViewModel,
 ) {
-    var savedVertexColor by remember{ mutableStateOf(vertexViewModel.color) }
-    var borderColor by remember{ mutableStateOf(Color.Gray) }
+    var savedVertexColor by remember { mutableStateOf(vertexViewModel.color) }
+    var borderColor by remember { mutableStateOf(Color.Gray) }
 
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
@@ -50,7 +56,7 @@ fun vertexView(
             }
         }
         .pointerInput(Unit) {
-            detectTapGestures (
+            detectTapGestures(
                 onTap = {
                     // picking vertex
                     if (!graphViewModel.pickedVertices.contains(vertexViewModel.v.element)) {
@@ -66,5 +72,14 @@ fun vertexView(
             )
         }
         .hoverable(interactionSource = interactionSource)
-    )
+    ) {
+        if (displayKey.value) {
+            Text(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .offset(0.dp, 0.dp),
+                text = vertexViewModel.v.element.toString(),
+            )
+        }
+    }
 }
