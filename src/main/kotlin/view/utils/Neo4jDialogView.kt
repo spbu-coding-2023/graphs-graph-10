@@ -15,12 +15,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import io.neo4j.Neo4jRepository
 import view.components.BigBtn
-import view.components.CoolButton
+import view.components.coolButton
 import viewmodel.MainScreenViewModel
 
 
 @Composable
-fun SaveToNeo4jDialog(
+fun saveToNeo4jDialog(
     onDismissRequest: () -> Unit,
     actionType: String,
     mainScreenViewModel: MainScreenViewModel,
@@ -113,7 +113,7 @@ fun SaveToNeo4jDialog(
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                CoolButton(
+                coolButton(
                     onClick = { makeAction() }, BigBtn
                 ) {
                     when (actionType) {

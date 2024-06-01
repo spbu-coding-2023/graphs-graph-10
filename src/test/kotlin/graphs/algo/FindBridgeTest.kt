@@ -58,7 +58,7 @@ class FindBridgeTest {
         }
         val expectedBridges = listOf(Pair(0L , 3L), Pair(3L, 4L))
         val bridges = findBridges(sampleGraph)
-        assertTrue(expectedBridges.size == bridges.size , "The number of bridges does not match the expected number")
+        assertEquals(expectedBridges.size, bridges.size, "The number of bridges does not match the expected number")
         for ((u, v) in bridges) {
             assertTrue((Pair(u, v) in expectedBridges || Pair(v, u) in expectedBridges), "($u, $v) not bridge")
         }
@@ -78,7 +78,7 @@ class FindBridgeTest {
 
         val expectedBridges = listOf(Pair(1L, 6L))
         val bridges = findBridges(sampleGraph)
-        assertTrue(expectedBridges.size == bridges.size, "The number of bridges does not match the expected number")
+        assertEquals(expectedBridges.size, bridges.size, "The number of bridges does not match the expected number")
         for ((u, v) in bridges) {
             assertTrue((Pair(u, v) in expectedBridges || Pair(v, u) in expectedBridges), "($u, $v) not bridge")
         }
@@ -95,7 +95,7 @@ class FindBridgeTest {
         }
         val expectedBridges = listOf(Pair(0L, 1L), Pair(1L, 2L), Pair(2L, 3L), Pair(3L, 4L), Pair(4L, 5L))
         val bridges = findBridges(sampleGraph)
-        assertTrue(expectedBridges.size == bridges.size, "The number of bridges does not match the expected number")
+        assertEquals(expectedBridges.size, bridges.size, "The number of bridges does not match the expected number")
         for ((u, v) in bridges) {
             assertTrue((Pair(u, v) in expectedBridges || Pair(v, u) in expectedBridges), "($u, $v) not bridge")
         }

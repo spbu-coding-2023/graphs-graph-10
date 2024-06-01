@@ -1,12 +1,9 @@
 package viewmodel
 
 import androidx.compose.animation.core.*
-import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import layouts.YifanHuPlacementStrategy

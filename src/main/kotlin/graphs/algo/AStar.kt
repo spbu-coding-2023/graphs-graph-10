@@ -1,8 +1,10 @@
-import graphs.algo.toAdjacencyList
+package graphs.algo
+
 import graphs.primitives.Graph
 import java.util.*
+import kotlin.math.abs
 
-fun AStar(graph: Graph, start: Long, goal: Long): List<Long> {
+fun aStar(graph: Graph, start: Long, goal: Long): List<Long> {
     val openSetContents = mutableSetOf<Long>()
     val cameFrom = mutableMapOf<Long, Long>()
     val gScore = mutableMapOf<Long, Long>().withDefault { Long.MAX_VALUE }
@@ -56,5 +58,5 @@ fun calculateHeuristic(vertex: Long, goal: Long, graph: Graph): Long {
     val adjacencyList = toAdjacencyList(graph)
     val vertexNeighborsCount = adjacencyList[vertex]?.size ?: 0
     val goalNeighborsCount = adjacencyList[goal]?.size ?: 0
-    return Math.abs(vertexNeighborsCount - goalNeighborsCount).toLong()
+    return abs(vertexNeighborsCount - goalNeighborsCount).toLong()
 }

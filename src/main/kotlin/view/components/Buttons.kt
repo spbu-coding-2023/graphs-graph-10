@@ -34,7 +34,7 @@ object LargeBtn: BtnSize {
 }
 
 @Composable
-fun CoolButton(
+fun coolButton(
     onClick: () -> Unit,
     size: BtnSize,
     content: @Composable RowScope.() -> Unit,

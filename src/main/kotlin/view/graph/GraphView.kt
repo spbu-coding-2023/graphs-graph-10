@@ -11,12 +11,12 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.DpOffset
 import graphs.types.DirectedGraph
 import graphs.types.WeightedDirectedGraph
-import view.graph.edge.DirectedEdgeView
-import view.graph.edge.EdgeView
+import view.graph.edge.directedEdgeView
+import view.graph.edge.edgeView
 import viewmodel.graph.GraphViewModel
 
 @Composable
-fun GraphView(
+fun graphView(
     graphViewModel: GraphViewModel,
     displayGraph: MutableState<Boolean>,
     displayWeight: MutableState<Boolean>,
@@ -36,15 +36,15 @@ fun GraphView(
             if (graphViewModel.graph is DirectedGraph
                 || graphViewModel.graph is WeightedDirectedGraph) {
                 graphViewModel.edges.forEach { e ->
-                    DirectedEdgeView(e, displayWeight, Modifier)
+                    directedEdgeView(e, displayWeight, Modifier)
                 }
             } else {
                 graphViewModel.edges.forEach { e ->
-                    EdgeView(e, displayWeight, Modifier)
+                    edgeView(e, displayWeight, Modifier)
                 }
             }
             graphViewModel.vertices.forEach { v ->
-                VertexView(v, Modifier, graphViewModel)
+                vertexView(v, Modifier, graphViewModel)
             }
         }
     }

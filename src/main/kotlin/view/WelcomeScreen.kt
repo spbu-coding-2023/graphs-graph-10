@@ -20,12 +20,12 @@ import graphs.types.DirectedGraph
 import graphs.types.UndirectedGraph
 import graphs.types.WeightedDirectedGraph
 import io.json.readFromJsonGraph
-import view.components.CoolButton
+import view.components.coolButton
 import view.components.SmallBtn
-import view.components.FileExplorer
-import view.utils.GetGraphType
+import view.components.fileExplorer
+import view.utils.getGraphType
 import view.utils.GraphType
-import view.utils.SaveToNeo4jDialog
+import view.utils.saveToNeo4jDialog
 import view.utils.loadFromSQLite
 
 fun createGraph(graphType: GraphType): Graph {
@@ -38,7 +38,7 @@ fun createGraph(graphType: GraphType): Graph {
 }
 
 @Composable
-fun Welcome() {
+fun welcome() {
     var currentFileType by remember { mutableStateOf<String?>(null) }
     var graphType by remember { mutableStateOf<GraphType?>(null) }
     var showTypeDialog by remember { mutableStateOf(false) }
@@ -63,28 +63,28 @@ fun Welcome() {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                CoolButton(onClick = {
+                coolButton(onClick = {
                     currentFileType = "csv"
                     showTypeDialog = true
                 }, SmallBtn) {
                     Text("CSV")
                 }
                 Spacer(Modifier.width(4.dp))
-                CoolButton(onClick = {
+                coolButton(onClick = {
                     currentFileType = "sqlite"
                     displaySaveDialogSQLite.value = true
                 }, SmallBtn) {
                     Text("SQLite")
                 }
                 Spacer(Modifier.width(4.dp))
-                CoolButton(
+                coolButton(
                     onClick = {
                         currentFileType = "neo4j"
                         displayLoadDialog.value = true
                     }, SmallBtn
                 ) { Text("Neo4j") }
                 Spacer(Modifier.width(4.dp))
-                CoolButton(
+                coolButton(
                     onClick = {
                         currentFileType = "JSON"
 
@@ -94,7 +94,7 @@ fun Welcome() {
         }
         if (currentFileType == "csv") {
             if (showTypeDialog) {
-                GetGraphType(onDismissRequest = { selectedGraphType ->
+                getGraphType(onDismissRequest = { selectedGraphType ->
                     showTypeDialog = false
                     selectedGraphType?.let {
                         graphType = it
@@ -103,7 +103,7 @@ fun Welcome() {
                 })
             }
             if (showFilePicker) {
-                FileExplorer(fileType = "csv") { selectedFilePath ->
+                fileExplorer(fileType = "csv") { selectedFilePath ->
                     graphType?.let {
                         graph = createGraph(it)
                         graph!!.reading(selectedFilePath)
@@ -118,7 +118,7 @@ fun Welcome() {
             val tempGraph: Graph = DirectedGraph()
             val mainViewModel = MainScreenViewModel(tempGraph)
             if (showFilePicker) {
-                FileExplorer(fileType = "json") { selectedFilePath ->
+                fileExplorer(fileType = "json") { selectedFilePath ->
                     val updatedMainViewModel = readFromJsonGraph(mainViewModel, selectedFilePath)
                     navigator.push(GraphScreen(updatedMainViewModel))
                 }
@@ -129,7 +129,7 @@ fun Welcome() {
         if (displayLoadDialog.value && currentFileType == "neo4j") {
             val tempGraph: Graph = DirectedGraph()
             val mainViewModel = MainScreenViewModel(tempGraph)
-            SaveToNeo4jDialog(onDismissRequest = {
+            saveToNeo4jDialog(onDismissRequest = {
                 displayLoadDialog.value = false
             }, "load", mainViewModel, {
                 navigator.push(GraphScreen(mainViewModel))

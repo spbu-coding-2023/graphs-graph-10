@@ -1,7 +1,7 @@
-
+package integration
 
 import androidx.compose.ui.graphics.Color
-import graphs.algo.Kruskal
+import graphs.algo.kruskal
 import graphs.types.WeightedUndirectedGraph
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
@@ -28,11 +28,11 @@ class MSTKruskalIntegrationTest {
         addVertex(4, "E")
         addVertex(5, "F")
     }
-    val mainViewModel = MainScreenViewModel(graph)
+    private val mainViewModel = MainScreenViewModel(graph)
 
     @Test
     fun checkingAmountOfColouredInMSTEdges() = runBlocking {
-        val minimalSpanningTree = Kruskal(graph)
+        val minimalSpanningTree = kruskal(graph)
         assertEquals(5, minimalSpanningTree.size)
 
         mainViewModel.runLayoutAlgorithm(Pair(800, 600))
@@ -50,7 +50,7 @@ class MSTKruskalIntegrationTest {
 
     @Test
     fun checkingIdsOfColouredInMSTEdges() = runBlocking {
-        val minimalSpanningTree = Kruskal(graph)
+        val minimalSpanningTree = kruskal(graph)
         assertEquals(5, minimalSpanningTree.size)
 
         mainViewModel.runLayoutAlgorithm(Pair(800, 600))

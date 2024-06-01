@@ -39,21 +39,10 @@ data class Display(
 )
 
 
-data class GraphItself(
-    val vertices: MutableMap<Long, VertexInfo>,
-    val edges: MutableMap<Long, EdgeInfo>,
-
-    )
-
-private data class GraphRepresentation(
-    val graph: GraphItself,
-    val display: Display,
-)
-
 fun writeInJsonGraph(mainScreenViewModel: MainScreenViewModel) {
     val jsow = jacksonObjectMapper().writer().withDefaultPrettyPrinter()
-    val DisplayVertices = mutableMapOf<Long, VertexInfo>()
-    val DisplayEdges = mutableMapOf<Long, EdgeInfo>()
+    val displayVertices = mutableMapOf<Long, VertexInfo>()
+    val displayEdges = mutableMapOf<Long, EdgeInfo>()
     mainScreenViewModel.graphViewModel.edges.forEach {
         val vertex1 = VertexInfo(
             element = it.v.v.element,
@@ -75,9 +64,9 @@ fun writeInJsonGraph(mainScreenViewModel: MainScreenViewModel) {
             width = it.width
         )
 
-        DisplayVertices.put(it.v.v.element, vertex1)
-        DisplayVertices.put(it.u.v.element, vertex2)
-        DisplayEdges.put(it.e.element, edge)
+        displayVertices[it.v.v.element] = vertex1
+        displayVertices[it.u.v.element] = vertex2
+        displayEdges[it.e.element] = edge
     }
 
 
@@ -87,8 +76,8 @@ fun writeInJsonGraph(mainScreenViewModel: MainScreenViewModel) {
         offsetY = mainScreenViewModel.offset.value.y,
         displayWeight = mainScreenViewModel.displayWeight.value,
         graphType = mainScreenViewModel.graph::class.simpleName.toString(),
-        vertices = DisplayVertices,
-        edges = DisplayEdges,
+        vertices = displayVertices,
+        edges = displayEdges,
     )
     val jsonGraph = jsow.writeValueAsString(display)
     val file =

@@ -15,7 +15,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 @Composable
-fun DirectedEdgeView(
+fun directedEdgeView(
     edgeViewModel: EdgeViewModel,
     displayWeight: MutableState<Boolean>,
     modifier: Modifier = Modifier,
@@ -70,5 +70,5 @@ fun DirectedEdgeView(
     }
 
     if (displayWeight.value)
-        WeightView(edgeViewModel, Modifier)
+        weightView(edgeViewModel)
 }

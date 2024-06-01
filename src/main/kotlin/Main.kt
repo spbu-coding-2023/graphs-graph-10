@@ -1,37 +1,33 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.background
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
-import io.sqlite.GraphDatabase
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
-import view.MainScreen
+import view.mainScreen
 
-import view.Welcome
+import view.welcome
 import viewmodel.MainScreenViewModel
 
 object WelcomeScreen : Screen {
     @Composable
     override fun Content() {
-        Welcome()
+        welcome()
     }
 }
 
 data class GraphScreen(val mainViewModel: MainScreenViewModel) : Screen {
     @Composable
     override fun Content() {
-        MainScreen(mainViewModel)
+        mainScreen(mainViewModel)
     }
 }
 
 @Composable
 @Preview
-fun App() {
+fun app() {
     Navigator(WelcomeScreen)
 }
 
@@ -41,6 +37,6 @@ fun main() = application {
         state = WindowState(width = 1200.dp, height = 800.dp),
         title = "Graphs 10"
     ) {
-        App()
+        app()
     }
 }
